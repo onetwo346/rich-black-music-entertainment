@@ -133,24 +133,41 @@
 
       /* Hero Section */
       #hero {
+        position: relative;
         background-image: url('hero-bg.jpg');
         background-size: cover;
         background-position: center;
         text-align: center;
         padding: 100px 20px;
         border-radius: 10px;
+        overflow: hidden;
+      }
+
+      #hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+        z-index: 1;
+      }
+
+      #hero h1, #hero p, #hero #countdown {
+        position: relative;
+        z-index: 2;
+        color: #fff; /* Ensure text is always white */
       }
 
       #hero h1 {
         font-size: 3rem;
         margin-bottom: 10px;
-        color: #fff; /* Ensure text is always white */
       }
 
       #hero p {
         font-size: 1.5rem;
         margin-bottom: 20px;
-        color: #fff; /* Ensure text is always white */
       }
 
       #countdown {
@@ -160,7 +177,6 @@
         padding: 10px 20px;
         border-radius: 10px;
         display: inline-block;
-        color: #fff; /* Ensure text is always white */
       }
 
       /* Responsive Design */
