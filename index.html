@@ -136,7 +136,6 @@
         background-image: url('hero-bg.jpg');
         background-size: cover;
         background-position: center;
-        color: #fff; /* Ensure text is always white */
         text-align: center;
         padding: 100px 20px;
         border-radius: 10px;
@@ -145,6 +144,7 @@
       #hero h1 {
         font-size: 3rem;
         margin-bottom: 10px;
+        color: #fff; /* Ensure text is always white */
       }
 
       #hero p {
@@ -312,10 +312,18 @@
     </button>
 
     <script>
+      // Auto-detect system preference for dark mode
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const body = document.body;
+
+      if (prefersDarkMode) {
+        body.classList.add('dark-mode');
+      }
+
       // Dark Mode Toggle
       const toggleButton = document.getElementById('theme-toggle');
       toggleButton.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
+        body.classList.toggle('dark-mode');
       });
 
       // Countdown Timer
