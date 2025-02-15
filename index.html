@@ -27,6 +27,14 @@
         text-align: center;
       }
 
+      .logo {
+        width: 150px;
+        height: auto;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
       nav {
         background: #333;
         padding: 10px;
@@ -98,10 +106,14 @@
       }
 
       .social-links a {
-        color: #fff;
+        color: #333; /* Default to black in light mode */
         margin: 0 10px;
         text-decoration: none;
         transition: color 0.3s;
+      }
+
+      .dark-mode .social-links a {
+        color: #fff; /* White in dark mode */
       }
 
       .social-links a:hover {
@@ -196,6 +208,10 @@
         .artist img {
           max-width: 100%;
         }
+
+        .logo {
+          width: 120px;
+        }
       }
 
       /* Dark Mode */
@@ -229,6 +245,8 @@
   </head>
   <body>
     <header>
+      <!-- Logo Added Here -->
+      <img src="IMG_3717.jpeg" alt="RICH&BLACK STUDIO Logo" class="logo" />
       <h1>RICH&BLACK STUDIO</h1>
       <p>Representing Agona Nsaba, Ghana Central Region</p>
       <nav>
