@@ -5,11 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RICH&BLACK MUSIC ENTERTAINMENT</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* Basic Styles */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f4f4f4;
+      }
+
+      header {
+        background: #1f1f1f;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      nav {
+        background: #333;
+        padding: 10px;
+        text-align: center;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      nav ul li {
+        margin: 0 15px;
+      }
+
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      section {
+        padding: 20px;
+        margin: 20px 0;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #1f1f1f;
+      }
+
+      .artist, .management-member {
+        margin-bottom: 20px;
+      }
+
+      .artist img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      footer {
+        background: #1f1f1f;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+      }
+
+      .social-links a {
+        color: #fff;
+        margin: 0 10px;
+        text-decoration: none;
+      }
+
+      .social-links a:hover {
+        text-decoration: underline;
+      }
+
+      .music-player {
+        margin: 20px 0;
+      }
+
+      .music-player audio {
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .music-player a {
+        display: inline-block;
+        margin-top: 10px;
+        color: #1f1f1f;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .music-player a:hover {
+        text-decoration: underline;
+      }
+
+      /* Dark Mode */
+      .dark-mode {
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      .dark-mode header, .dark-mode footer {
+        background-color: #1f1f1f;
+      }
+
+      .dark-mode h2 {
+        color: #ffffff;
+      }
+
+      .dark-mode .music-player a {
+        color: #ffffff;
+      }
+    </style>
   </head>
   <body>
     <header>
       <h1>RICH&BLACK MUSIC ENTERTAINMENT</h1>
       <p>Representing Agona Nsaba, Ghana Central Region</p>
+      <nav>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#artists">Our Artists</a></li>
+          <li><a href="#management">Management</a></li>
+          <li><a href="#music">Music</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
     </header>
 
     <section id="about">
@@ -39,14 +169,6 @@
           their innovative style and passion for music.
         </p>
       </div>
-      <div class="artist">
-        <img src="both_artists.jpg" alt="R&B-ACJ & R&B-AGONA YOONA" />
-        <h3>R&B-ACJ & R&B-AGONA YOONA</h3>
-        <p>
-          R&B-ACJ and R&B-AGONA YOONA collaborate to bring you an unforgettable
-          musical experience from Agona Nsaba.
-        </p>
-      </div>
     </section>
 
     <section id="management">
@@ -61,11 +183,62 @@
       </div>
     </section>
 
+    <section id="music">
+      <h2>Music</h2>
+      <div class="music-player">
+        <h3>Track 1: "Agona Vibes"</h3>
+        <audio controls>
+          <source src="agona_vibes.mp3" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+        <a href="agona_vibes.mp3" download>Download "Agona Vibes"</a>
+      </div>
+      <div class="music-player">
+        <h3>Track 2: "Nsaba Groove"</h3>
+        <audio controls>
+          <source src="nsaba_groove.mp3" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+        <a href="nsaba_groove.mp3" download>Download "Nsaba Groove"</a>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>
+        For inquiries, collaborations, or feedback, reach out to us at:
+        <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a>.
+      </p>
+    </section>
+
     <footer>
       <p>
         &copy; 2024 RICH&BLACK MUSIC ENTERTAINMENT. Designed by Kofi Fosu. All
         rights reserved.
       </p>
+      <div class="social-links">
+        <a href="https://twitter.com/yourprofile" target="_blank">Twitter</a>
+      </div>
     </footer>
+
+    <script>
+      // Dark Mode Toggle
+      const toggleButton = document.createElement('button');
+      toggleButton.textContent = 'Toggle Dark Mode';
+      toggleButton.style.position = 'fixed';
+      toggleButton.style.bottom = '20px';
+      toggleButton.style.right = '20px';
+      toggleButton.style.padding = '10px';
+      toggleButton.style.backgroundColor = '#1f1f1f';
+      toggleButton.style.color = '#fff';
+      toggleButton.style.border = 'none';
+      toggleButton.style.borderRadius = '5px';
+      toggleButton.style.cursor = 'pointer';
+      document.body.appendChild(toggleButton);
+
+      toggleButton.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+      });
+    </script>
   </body>
 </html>
