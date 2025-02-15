@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RICH&BLACK MUSIC ENTERTAINMENT</title>
+    <title>RICH&BLACK STUDIO</title>
     <style>
       /* Basic Reset */
       * {
@@ -13,10 +13,11 @@
       }
 
       body {
-        font-family: Arial, sans-serif;
+        font-family: 'Arial', sans-serif;
         line-height: 1.6;
         color: #333;
         background-color: #f4f4f4;
+        transition: background-color 0.3s, color 0.3s;
       }
 
       header {
@@ -49,23 +50,32 @@
         color: #fff;
         text-decoration: none;
         font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      nav ul li a:hover {
+        color: #ff6f61;
       }
 
       section {
-        padding: 20px;
+        padding: 40px 20px;
         margin: 20px;
         background: #fff;
         border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s;
       }
 
       h2 {
         color: #1f1f1f;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        text-align: center;
       }
 
       .artist, .management-member {
         margin-bottom: 20px;
+        text-align: center;
       }
 
       .artist img {
@@ -73,27 +83,34 @@
         max-width: 300px;
         height: auto;
         border-radius: 10px;
+        transition: transform 0.3s;
+      }
+
+      .artist img:hover {
+        transform: scale(1.05);
       }
 
       footer {
         background: #1f1f1f;
         color: #fff;
         text-align: center;
-        padding: 10px;
+        padding: 20px;
       }
 
       .social-links a {
         color: #fff;
         margin: 0 10px;
         text-decoration: none;
+        transition: color 0.3s;
       }
 
       .social-links a:hover {
-        text-decoration: underline;
+        color: #ff6f61;
       }
 
       .music-player {
         margin: 20px 0;
+        text-align: center;
       }
 
       .music-player audio {
@@ -107,10 +124,11 @@
         color: #1f1f1f;
         text-decoration: none;
         font-weight: bold;
+        transition: color 0.3s;
       }
 
       .music-player a:hover {
-        text-decoration: underline;
+        color: #ff6f61;
       }
 
       /* Hero Section */
@@ -121,15 +139,26 @@
         color: #fff;
         text-align: center;
         padding: 100px 20px;
+        border-radius: 10px;
       }
 
       #hero h1 {
-        font-size: 2.5rem;
+        font-size: 3rem;
         margin-bottom: 10px;
       }
 
       #hero p {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      #countdown {
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: inline-block;
       }
 
       /* Responsive Design */
@@ -139,7 +168,7 @@
         }
 
         #hero p {
-          font-size: 1rem;
+          font-size: 1.2rem;
         }
 
         nav ul {
@@ -161,6 +190,12 @@
         background-color: #1f1f1f;
       }
 
+      .dark-mode section {
+        background-color: #1f1f1f;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+      }
+
       .dark-mode h2 {
         color: #ffffff;
       }
@@ -168,11 +203,15 @@
       .dark-mode .music-player a {
         color: #ffffff;
       }
+
+      .dark-mode #hero {
+        background-image: url('hero-bg-dark.jpg');
+      }
     </style>
   </head>
   <body>
     <header>
-      <h1>RICH&BLACK MUSIC ENTERTAINMENT</h1>
+      <h1>RICH&BLACK STUDIO</h1>
       <p>Representing Agona Nsaba, Ghana Central Region</p>
       <nav>
         <ul>
@@ -188,8 +227,10 @@
     <!-- Home Section -->
     <section id="home">
       <div id="hero">
-        <h1>Welcome to RICH&BLACK MUSIC ENTERTAINMENT</h1>
+        <h1>Welcome to RICH&BLACK STUDIO</h1>
         <p>Discover the best music from Agona Nsaba, Ghana.</p>
+        <p>New Song Coming Soon!</p>
+        <div id="countdown">Next Week: <span id="timer"></span></div>
       </div>
     </section>
 
@@ -197,9 +238,9 @@
     <section id="about">
       <h2>About Us</h2>
       <p>
-        Welcome to RICH&BLACK MUSIC ENTERTAINMENT. We are dedicated to bringing
-        you the best music from Agona Nsaba, located in the Central Region of
-        Ghana. Stay tuned for updates on our latest releases and events.
+        Welcome to RICH&BLACK STUDIO. We are dedicated to bringing you the best
+        music from Agona Nsaba, located in the Central Region of Ghana. Stay tuned
+        for updates on our latest releases and events.
       </p>
     </section>
 
@@ -252,16 +293,15 @@
         For inquiries, collaborations, or feedback, reach out to us at:
         <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a>.
       </p>
+      <div class="social-links">
+        <a href="https://twitter.com/cosmoscoderr" target="_blank">Twitter</a>
+      </div>
     </section>
 
     <footer>
       <p>
-        &copy; 2024 RICH&BLACK MUSIC ENTERTAINMENT. Designed by Kofi Fosu. All
-        rights reserved.
+        &copy; 2024 RICH&BLACK STUDIO. Designed by Kofi Fosu. All rights reserved.
       </p>
-      <div class="social-links">
-        <a href="https://x.com/cosmoscoderr?s=21" target="_blank">Twitter</a>
-      </div>
     </footer>
 
     <!-- Dark Mode Toggle -->
@@ -275,6 +315,32 @@
       toggleButton.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
       });
+
+      // Countdown Timer
+      const countdownDate = new Date();
+      countdownDate.setDate(countdownDate.getDate() + 7); // 7 days from now
+
+      const timer = document.getElementById('timer');
+
+      const updateCountdown = () => {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        timer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          timer.innerHTML = "The song is here!";
+        }
+      };
+
+      const countdownInterval = setInterval(updateCountdown, 1000);
+      updateCountdown();
     </script>
   </body>
 </html>
