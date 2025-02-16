@@ -183,6 +183,15 @@
 
       .playlist ul li {
         margin: 10px 0;
+        cursor: pointer;
+        padding: 10px;
+        background: #333;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+
+      .playlist ul li:hover {
+        background: #444;
       }
 
       .playlist ul li a {
@@ -194,6 +203,27 @@
 
       .playlist ul li a:hover {
         color: #ff6f61;
+      }
+
+      /* Now Playing Section */
+      .now-playing {
+        margin-top: 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      /* Drag and Drop Styles */
+      .drag-drop {
+        border: 2px dashed #fff;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .drag-drop.dragover {
+        background: rgba(255, 255, 255, 0.1);
       }
 
       /* Hidden Sections */
@@ -426,19 +456,22 @@
       <h2>Music</h2>
       <div class="advanced-music-player">
         <h3>Advanced Music Player</h3>
+        <div class="now-playing">Now Playing: <span id="now-playing"></span></div>
         <div class="waveform"></div>
         <div class="controls">
           <button id="play">Play</button>
           <button id="pause">Pause</button>
           <button id="stop">Stop</button>
-          <button id="shuffle">Shuffle</button>
-          <button id="download">Download</button>
+          <button id="clear">Clear</button>
+        </div>
+        <div class="drag-drop" id="drag-drop">
+          Drag and drop a song here to download
         </div>
         <div class="playlist">
           <h4>Playlist</h4>
           <ul>
-            <li><a href="acj-cashdown.mp3">acj-cashdown</a></li>
-            <li><a href="nsaba_groove.mp3">Nsaba Groove</a></li>
+            <li data-src="acj-cashdown.mp3">acj-cashdown</li>
+            <li data-src="nsaba_groove.mp3">Nsaba Groove</li>
           </ul>
         </div>
       </div>
@@ -508,38 +541,83 @@
       const countdownInterval = setInterval(updateCountdown, 1000);
       updateCountdown();
 
-      // Advanced Music Player Functionality
+      // Music Player Functionality
+      const audio = new Audio();
+      const nowPlaying = document.getElementById('now-playing');
       const playButton = document.getElementById('play');
       const pauseButton = document.getElementById('pause');
       const stopButton = document.getElementById('stop');
-      const shuffleButton = document.getElementById('shuffle');
-      const downloadButton = document.getElementById('download');
+      const clearButton = document.getElementById('clear');
+      const dragDrop = document.getElementById('drag-drop');
 
-      const audio = new Audio('agona_vibes.mp3'); // Replace with your track
-
-      playButton.addEventListener('click', () => {
-        audio.play();
+      // Playlist functionality
+      const playlistItems = document.querySelectorAll('.playlist ul li');
+      playlistItems.forEach(item => {
+        item.addEventListener('click', () => {
+          const songSrc = item.getAttribute('data-src');
+          audio.src = songSrc;
+          audio.play();
+          nowPlaying.textContent = item.textContent;
+          playButton.textContent = 'Pause';
+        });
       });
 
+      // Play/Pause functionality
+      playButton.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play();
+          playButton.textContent = 'Pause';
+        } else {
+          audio.pause();
+          playButton.textContent = 'Play';
+        }
+      });
+
+      // Pause functionality
       pauseButton.addEventListener('click', () => {
         audio.pause();
+        playButton.textContent = 'Play';
       });
 
+      // Stop functionality
       stopButton.addEventListener('click', () => {
         audio.pause();
         audio.currentTime = 0;
+        playButton.textContent = 'Play';
       });
 
-      shuffleButton.addEventListener('click', () => {
-        // Add shuffle logic here
-        alert('Shuffle mode activated!');
+      // Clear functionality
+      clearButton.addEventListener('click', () => {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.src = '';
+        nowPlaying.textContent = '';
+        playButton.textContent = 'Play';
       });
 
-      downloadButton.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.href = audio.src;
-        link.download = 'agona_vibes.mp3';
-        link.click();
+      // Drag and Drop functionality
+      dragDrop.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dragDrop.classList.add('dragover');
+      });
+
+      dragDrop.addEventListener('dragleave', () => {
+        dragDrop.classList.remove('dragover');
+      });
+
+      dragDrop.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dragDrop.classList.remove('dragover');
+
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('audio/')) {
+          const url = URL.createObjectURL(file);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = file.name;
+          link.click();
+          URL.revokeObjectURL(url);
+        }
       });
 
       // Show hidden sections when links are clicked
