@@ -76,10 +76,6 @@
         color: #ff6f61;
       }
 
-      .hidden-link {
-        display: none; /* Hide these links by default */
-      }
-
       section {
         padding: 40px 20px;
         margin: 20px;
@@ -135,30 +131,6 @@
         color: #ff6f61;
       }
 
-      /* Music Player Styles */
-      .music-player {
-        margin: 20px 0;
-        text-align: center;
-      }
-
-      .music-player audio {
-        width: 100%;
-        max-width: 400px;
-      }
-
-      .music-player a {
-        display: inline-block;
-        margin-top: 10px;
-        color: #1f1f1f;
-        text-decoration: none;
-        font-weight: bold;
-        transition: color 0.3s;
-      }
-
-      .music-player a:hover {
-        color: #ff6f61;
-      }
-
       /* Advanced Music Player */
       .advanced-music-player {
         background: #1f1f1f;
@@ -166,6 +138,7 @@
         border-radius: 10px;
         color: #fff;
         text-align: center;
+        margin: 20px 0;
       }
 
       .advanced-music-player .controls {
@@ -173,6 +146,7 @@
         justify-content: center;
         gap: 10px;
         margin-top: 10px;
+        flex-wrap: wrap;
       }
 
       .advanced-music-player .controls button {
@@ -195,6 +169,11 @@
         background: #333;
         margin-top: 20px;
         border-radius: 5px;
+      }
+
+      /* Hidden Sections */
+      .hidden-section {
+        display: none; /* Hide by default */
       }
 
       /* Hero Section */
@@ -354,9 +333,9 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#blog">Blog/News</a></li>
           <li><a href="#music">Music</a></li>
-          <li><a href="#about" class="hidden-link">About Us</a></li>
-          <li><a href="#artists" class="hidden-link">Our Artists</a></li>
-          <li><a href="#contact" class="hidden-link">Contact</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#artists">Our Artists</a></li>
+          <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
     </header>
@@ -386,7 +365,7 @@
     </section>
 
     <!-- About Section -->
-    <section id="about">
+    <section id="about" class="hidden-section">
       <h2>About Us</h2>
       <p>
       Welcome to Rich and Black where creativity meets culture. Our label is dedicated to showcasing the vibrant talents of artists who embody the spirit of innovation and authenticity. 
@@ -395,7 +374,7 @@
     </section>
 
     <!-- Artists Section -->
-    <section id="artists">
+    <section id="artists" class="hidden-section">
       <h2>Our Artists</h2>
       <div class="artist">
         <img src="acj.jpg" alt="R&B-ACJ" />
@@ -427,7 +406,7 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact">
+    <section id="contact" class="hidden-section">
       <h2>Contact Us</h2>
       <p>
         For inquiries, collaborations, or feedback, reach out to us at:
@@ -522,6 +501,17 @@
         link.href = audio.src;
         link.download = 'agona_vibes.mp3';
         link.click();
+      });
+
+      // Show hidden sections when links are clicked
+      document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          if (targetSection.classList.contains('hidden-section')) {
+            targetSection.classList.remove('hidden-section');
+          }
+        });
       });
     </script>
   </body>
