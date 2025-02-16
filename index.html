@@ -76,6 +76,10 @@
         color: #ff6f61;
       }
 
+      .hidden-link {
+        display: none; /* Hide these links by default */
+      }
+
       section {
         padding: 40px 20px;
         margin: 20px;
@@ -131,6 +135,7 @@
         color: #ff6f61;
       }
 
+      /* Music Player Styles */
       .music-player {
         margin: 20px 0;
         text-align: center;
@@ -152,6 +157,44 @@
 
       .music-player a:hover {
         color: #ff6f61;
+      }
+
+      /* Advanced Music Player */
+      .advanced-music-player {
+        background: #1f1f1f;
+        padding: 20px;
+        border-radius: 10px;
+        color: #fff;
+        text-align: center;
+      }
+
+      .advanced-music-player .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .advanced-music-player .controls button {
+        background: #ff6f61;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .advanced-music-player .controls button:hover {
+        background: #e65a50;
+      }
+
+      .advanced-music-player .waveform {
+        width: 100%;
+        height: 100px;
+        background: #333;
+        margin-top: 20px;
+        border-radius: 5px;
       }
 
       /* Hero Section */
@@ -310,10 +353,10 @@
         <ul>
           <li><a href="#home">Home</a></li>
           <li><a href="#blog">Blog/News</a></li>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#artists">Our Artists</a></li>
           <li><a href="#music">Music</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#about" class="hidden-link">About Us</a></li>
+          <li><a href="#artists" class="hidden-link">Our Artists</a></li>
+          <li><a href="#contact" class="hidden-link">Contact</a></li>
         </ul>
       </nav>
     </header>
@@ -370,21 +413,16 @@
     <!-- Music Section -->
     <section id="music">
       <h2>Music</h2>
-      <div class="music-player">
-        <h3>Track 1: "Agona Vibes"</h3>
-        <audio controls>
-          <source src="agona_vibes.mp3" type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-        <a href="agona_vibes.mp3" download>Download "Agona Vibes"</a>
-      </div>
-      <div class="music-player">
-        <h3>Track 2: "Nsaba Groove"</h3>
-        <audio controls>
-          <source src="nsaba_groove.mp3" type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
-        <a href="nsaba_groove.mp3" download>Download "Nsaba Groove"</a>
+      <div class="advanced-music-player">
+        <h3>Advanced Music Player</h3>
+        <div class="waveform"></div>
+        <div class="controls">
+          <button id="play">Play</button>
+          <button id="pause">Pause</button>
+          <button id="stop">Stop</button>
+          <button id="shuffle">Shuffle</button>
+          <button id="download">Download</button>
+        </div>
       </div>
     </section>
 
@@ -451,6 +489,40 @@
 
       const countdownInterval = setInterval(updateCountdown, 1000);
       updateCountdown();
+
+      // Advanced Music Player Functionality
+      const playButton = document.getElementById('play');
+      const pauseButton = document.getElementById('pause');
+      const stopButton = document.getElementById('stop');
+      const shuffleButton = document.getElementById('shuffle');
+      const downloadButton = document.getElementById('download');
+
+      const audio = new Audio('agona_vibes.mp3'); // Replace with your track
+
+      playButton.addEventListener('click', () => {
+        audio.play();
+      });
+
+      pauseButton.addEventListener('click', () => {
+        audio.pause();
+      });
+
+      stopButton.addEventListener('click', () => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+
+      shuffleButton.addEventListener('click', () => {
+        // Add shuffle logic here
+        alert('Shuffle mode activated!');
+      });
+
+      downloadButton.addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.href = audio.src;
+        link.download = 'agona_vibes.mp3';
+        link.click();
+      });
     </script>
   </body>
 </html>
