@@ -186,11 +186,13 @@
       #hero h1 {
         font-size: 3rem;
         margin-bottom: 10px;
+        animation: fadeIn 2s ease-in-out;
       }
 
       #hero p {
         font-size: 1.5rem;
         margin-bottom: 20px;
+        animation: fadeIn 3s ease-in-out;
       }
 
       #countdown {
@@ -200,6 +202,50 @@
         padding: 10px 20px;
         border-radius: 10px;
         display: inline-block;
+        animation: pulse 2s infinite;
+      }
+
+      /* Blog/News Section */
+      #blog {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .blog-card {
+        background: #1e1e1e;
+        border-radius: 10px;
+        padding: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .blog-card h3 {
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      .blog-card p {
+        color: #ccc;
+        font-size: 1rem;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
       }
 
       /* Responsive Design */
@@ -263,6 +309,7 @@
       <nav>
         <ul>
           <li><a href="#home">Home</a></li>
+          <li><a href="#blog">Blog/News</a></li>
           <li><a href="#about">About Us</a></li>
           <li><a href="#artists">Our Artists</a></li>
           <li><a href="#music">Music</a></li>
@@ -279,6 +326,19 @@
       Get ready Our next drop is just around the corner!</p>
         <p> Stay tuned as the timer counts down to the release of our latest tracks.</p>
         <div id="countdown">New Song Drops In: <span id="timer"></span></div>
+      </div>
+    </section>
+
+    <!-- Blog/News Section -->
+    <section id="blog">
+      <h2>Blog/News</h2>
+      <div class="blog-card">
+        <h3>New Album Release</h3>
+        <p>Our latest album is out now! Stream it on all platforms.</p>
+      </div>
+      <div class="blog-card">
+        <h3>Upcoming Event</h3>
+        <p>Join us for our live concert in Accra on March 15th.</p>
       </div>
     </section>
 
