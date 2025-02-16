@@ -174,12 +174,19 @@
       /* Hidden Sections */
       .hidden-section {
         display: none; /* Hide by default */
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .hidden-section.visible {
+        display: block;
+        opacity: 1;
       }
 
       /* Hero Section */
       #hero {
         position: relative;
-        background-image: url('hero-bg.jpg');
+        background-image: url('IMG_3731.gif'); /* Updated with your GIF */
         background-size: cover;
         background-position: center;
         text-align: center;
@@ -402,6 +409,13 @@
           <button id="shuffle">Shuffle</button>
           <button id="download">Download</button>
         </div>
+        <div class="playlist">
+          <h4>Playlist</h4>
+          <ul>
+            <li><a href="agona_vibes.mp3">Agona Vibes</a></li>
+            <li><a href="nsaba_groove.mp3">Nsaba Groove</a></li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -504,12 +518,17 @@
       });
 
       // Show hidden sections when links are clicked
+      let hideTimeout;
       document.querySelectorAll('nav ul li a').forEach(link => {
         link.addEventListener('click', (e) => {
           const targetId = link.getAttribute('href').substring(1);
           const targetSection = document.getElementById(targetId);
           if (targetSection.classList.contains('hidden-section')) {
-            targetSection.classList.remove('hidden-section');
+            targetSection.classList.add('visible');
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+              targetSection.classList.remove('visible');
+            }, 5000); // Hide after 5 seconds of inactivity
           }
         });
       });
