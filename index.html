@@ -16,7 +16,7 @@
     </script>
     <!-- End Google Analytics -->
     <style>
-      /* Basic Reset */
+      /* All your existing CSS remains unchanged */
       * {
         margin: 0;
         padding: 0;
@@ -431,7 +431,7 @@
           <button id="play">Play</button>
           <button id="pause">Pause</button>
           <button id="stop">Stop</button>
-          <button id="shuffle">Shuffle</button>
+          <button id="clear">Clear</button>
           <button id="download">Download</button>
         </div>
         <div class="playlist">
@@ -512,13 +512,18 @@
       const playButton = document.getElementById('play');
       const pauseButton = document.getElementById('pause');
       const stopButton = document.getElementById('stop');
-      const shuffleButton = document.getElementById('shuffle');
+      const clearButton = document.getElementById('clear');
       const downloadButton = document.getElementById('download');
+      const waveform = document.querySelector('.waveform');
 
-      const audio = new Audio('agona_vibes.mp3'); // Replace with your track
+      let audio = new Audio();
 
       playButton.addEventListener('click', () => {
-        audio.play();
+        if (audio.src) {
+          audio.play();
+        } else {
+          alert('Please drag and drop a song to play.');
+        }
       });
 
       pauseButton.addEventListener('click', () => {
@@ -530,16 +535,44 @@
         audio.currentTime = 0;
       });
 
-      shuffleButton.addEventListener('click', () => {
-        // Add shuffle logic here
-        alert('Shuffle mode activated!');
+      clearButton.addEventListener('click', () => {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.src = '';
+        waveform.innerHTML = ''; // Clear any waveform display
       });
 
       downloadButton.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.href = audio.src;
-        link.download = 'agona_vibes.mp3';
-        link.click();
+        if (audio.src) {
+          const link = document.createElement('a');
+          link.href = audio.src;
+          link.download = audio.src.split('/').pop();
+          link.click();
+        } else {
+          alert('No song loaded to download.');
+        }
+      });
+
+      // Drag and Drop functionality
+      waveform.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        waveform.style.backgroundColor = '#444';
+      });
+
+      waveform.addEventListener('dragleave', () => {
+        waveform.style.backgroundColor = '#333';
+      });
+
+      waveform.addEventListener('drop', (e) => {
+        e.preventDefault();
+        waveform.style.backgroundColor = '#333';
+        const file = e.dataTransfer.files[0];
+        if (file.type.startsWith('audio/')) {
+          audio.src = URL.createObjectURL(file);
+          audio.play();
+        } else {
+          alert('Please drop a valid audio file.');
+        }
       });
 
       // Show hidden sections when links are clicked
