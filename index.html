@@ -4,17 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RICH&BLACK STUDIO</title>
-    <!-- Google Analytics Tracking Code -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=345971163"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH2EW6V2RP"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
       gtag('js', new Date());
-      gtag('config', '345971163'); // Your Tracking ID
+      gtag('config', 'G-LH2EW6V2RP');
     </script>
-    <!-- End Google Analytics -->
+    <!-- End Google tag -->
     <style>
       /* All your existing CSS remains unchanged */
       * {
@@ -163,22 +163,28 @@
         background: #e65a50;
       }
 
-      .advanced-music-player .waveform {
+      .advanced-music-player .progress-bar {
         width: 100%;
-        height: 100px;
+        height: 10px;
         background: #333;
         margin-top: 20px;
         border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-weight: bold;
-        transition: background 0.3s;
+        position: relative;
+        overflow: hidden;
       }
 
-      .advanced-music-player .waveform.dragover {
-        background: #444;
+      .advanced-music-player .progress-bar .progress {
+        height: 100%;
+        background: #ff6f61;
+        width: 0%;
+        border-radius: 5px;
+        transition: width 0.1s;
+      }
+
+      .advanced-music-player .current-song {
+        margin-top: 10px;
+        font-size: 1.2rem;
+        font-weight: bold;
       }
 
       /* Playlist Styles */
@@ -436,7 +442,10 @@
       <h2>Music</h2>
       <div class="advanced-music-player">
         <h3>Advanced Music Player</h3>
-        <div class="waveform" id="waveform">Drag and drop an MP3 file here</div>
+        <div class="current-song" id="current-song">No song playing</div>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
         <div class="controls">
           <button id="play">Play</button>
           <button id="pause">Pause</button>
@@ -448,6 +457,7 @@
           <ul>
             <li><a href="#" data-src="acj-cashdown.mp3">acj-cashdown</a></li>
             <li><a href="#" data-src="acj-paid.mp3">acj-paid</a></li>
+            <li><a href="#" data-src="acj-alot.mp3">acj-alot</a></li>
           </ul>
         </div>
       </div>
@@ -522,56 +532,53 @@
       const pauseButton = document.getElementById('pause');
       const stopButton = document.getElementById('stop');
       const clearButton = document.getElementById('clear');
-      const waveform = document.getElementById('waveform');
+      const currentSongDisplay = document.getElementById('current-song');
+      const progressBar = document.getElementById('progress');
 
       let audio = new Audio();
+      let isPlaying = false;
 
-      // Drag and Drop functionality
-      waveform.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        waveform.classList.add('dragover');
-      });
-
-      waveform.addEventListener('dragleave', () => {
-        waveform.classList.remove('dragover');
-      });
-
-      waveform.addEventListener('drop', (e) => {
-        e.preventDefault();
-        waveform.classList.remove('dragover');
-        const file = e.dataTransfer.files[0];
-        if (file.type.startsWith('audio/')) {
-          audio.src = URL.createObjectURL(file);
-          waveform.textContent = file.name; // Show the file name
-          audio.play();
-        } else {
-          alert('Please drop a valid audio file.');
+      // Update progress bar
+      const updateProgress = () => {
+        if (audio.duration) {
+          const progressPercent = (audio.currentTime / audio.duration) * 100;
+          progressBar.style.width = `${progressPercent}%`;
         }
-      });
+        if (isPlaying) {
+          requestAnimationFrame(updateProgress);
+        }
+      };
 
       // Play, Pause, Stop, Clear buttons
       playButton.addEventListener('click', () => {
         if (audio.src) {
           audio.play();
+          isPlaying = true;
+          updateProgress();
         } else {
-          alert('Please drag and drop a song to play.');
+          alert('Please select a song from the playlist to play.');
         }
       });
 
       pauseButton.addEventListener('click', () => {
         audio.pause();
+        isPlaying = false;
       });
 
       stopButton.addEventListener('click', () => {
         audio.pause();
         audio.currentTime = 0;
+        isPlaying = false;
+        progressBar.style.width = '0%';
       });
 
       clearButton.addEventListener('click', () => {
         audio.pause();
         audio.currentTime = 0;
         audio.src = '';
-        waveform.textContent = 'Drag and drop an MP3 file here';
+        isPlaying = false;
+        progressBar.style.width = '0%';
+        currentSongDisplay.textContent = 'No song playing';
       });
 
       // Playlist functionality
@@ -582,6 +589,9 @@
           if (songSrc) {
             audio.src = songSrc;
             audio.play();
+            isPlaying = true;
+            currentSongDisplay.textContent = link.textContent;
+            updateProgress();
           }
         });
       });
