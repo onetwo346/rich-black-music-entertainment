@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RICH&BLACK STUDIO</title>
+    <!-- Google Analytics Tracking Code -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=345971163"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', '345971163'); // Your Tracking ID
+    </script>
+    <!-- End Google Analytics -->
+    <style>
+      /* All your existing CSS remains unchanged */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f4f4f4;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      header {
+        background: #1f1f1f;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .logo {
+        width: 150px;
+        height: auto;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      nav {
+        background: #333;
+        padding: 10px;
+        text-align: center;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      nav ul li {
+        margin: 5px 15px;
+      }
+
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      nav ul li a:hover {
+        color: #ff6f61;
+      }
+
+      section {
+        padding: 40px 20px;
+        margin: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s;
+      }
+
+      h2 {
+        color: #1f1f1f;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .artist, .management-member {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .artist img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 10px;
+        transition: transform 0.3s;
+      }
+
+      .artist img:hover {
+        transform: scale(1.05);
+      }
+
+      footer {
+        background: #1f1f1f;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .social-links a {
+        color: #333; /* Default to black in light mode */
+        margin: 0 10px;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .dark-mode .social-links a {
+        color: #fff; /* White in dark mode */
+      }
+
+      .social-links a:hover {
+        color: #ff6f61;
+      }
+
+      /* Advanced Music Player */
+      .advanced-music-player {
+        background: #1f1f1f;
+        padding: 20px;
+        border-radius: 10px;
+        color: #fff;
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      .advanced-music-player .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+
+      .advanced-music-player .controls button {
+        background: #ff6f61;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .advanced-music-player .controls button:hover {
+        background: #e65a50;
+      }
+
+      .advanced-music-player .waveform {
+        width: 100%;
+        height: 100px;
+        background: #333;
+        margin-top: 20px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      .advanced-music-player .waveform.dragover {
+        background: #444;
+      }
+
+      /* Playlist Styles */
+      .playlist {
+        margin-top: 20px;
+      }
+
+      .playlist ul {
+        list-style: none; /* Remove bullets */
+        padding: 0;
+      }
+
+      .playlist ul li {
+        margin: 10px 0;
+      }
+
+      .playlist ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      .playlist ul li a:hover {
+        color: #ff6f61;
+      }
+
+      /* Hidden Sections */
+      .hidden-section {
+        display: none; /* Hide by default */
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .hidden-section.visible {
+        display: block;
+        opacity: 1;
+      }
+
+      /* Hero Section */
+      #hero {
+        position: relative;
+        background-image: url('IMG_3731.gif'); /* Updated with your GIF */
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+        padding: 100px 20px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .dark-mode #hero {
+        background-image: url('IMG_3731.gif'); /* Same GIF for dark mode */
+      }
+
+      #hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+        z-index: 1;
+      }
+
+      #hero h1, #hero p, #hero #countdown {
+        position: relative;
+        z-index: 2;
+        color: #fff; /* Ensure text is always white */
+      }
+
+      #hero h1 {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      #hero p {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        animation: fadeIn 3s ease-in-out;
+      }
+
+      #countdown {
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: inline-block;
+        animation: pulse 2s infinite;
+      }
+
+      /* Blog/News Section */
+      #blog {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .blog-card {
+        background: #1e1e1e;
+        border-radius: 10px;
+        padding: 20px;
+        transition: transform 0.3s ease;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .blog-card h3 {
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      .blog-card p {
+        color: #ccc;
+        font-size: 1rem;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        #hero h1 {
+          font-size: 2rem;
+        }
+
+        #hero p {
+          font-size: 1.2rem;
+        }
+
+        nav ul {
+          flex-direction: column;
+        }
+
+        .artist img {
+          max-width: 100%;
+        }
+
+        .logo {
+          width: 120px;
+        }
+      }
+
+      /* Dark Mode */
+      .dark-mode {
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      .dark-mode header, .dark-mode footer {
+        background-color: #1f1f1f;
+      }
+
+      .dark-mode section {
+        background-color: #1f1f1f;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+      }
+
+      .dark-mode h2 {
+        color: #ffffff;
+      }
+
+      .dark-mode .music-player a {
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- Logo Added Here -->
+      <img src="IMG_3717.jpeg" alt="RICH&BLACK STUDIO Logo" class="logo" />
+      <h1>RICH&BLACK STUDIO</h1>
+      <p>Representing, Ghana Central Region</p>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#blog">Blog/News</a></li>
+          <li><a href="#music">Music</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#artists">Our Artist</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home">
+      <div id="hero">
+        <h1>Welcome to RICH&BLACK STUDIO</h1>
+        <p> Hello Rich&Black gang 
+      Get ready Our next drop is just around the corner!</p>
+        <p> Stay tuned as the timer counts down to the release of our latest tracks.</p>
+        <div id="countdown">New Song Drops In: <span id="timer"></span></div>
+      </div>
+    </section>
+
+    <!-- Blog/News Section -->
+    <section id="blog">
+      <h2>Blog/News</h2>
+      <div class="blog-card">
+        <h3>New Album Release</h3>
+        <p>Our latest album is out now! Stream it on all platforms.</p>
+      </div>
+      <div class="blog-card">
+        <h3>Upcoming Event</h3>
+        <p>Join us for our live concert in Accra on March 15th.</p>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="hidden-section">
+      <h2>About Us</h2>
+      <p>
+      Welcome to Rich and Black where creativity meets culture. Our label is dedicated to showcasing the vibrant talents of artists who embody the spirit of innovation and authenticity. 
+        Join us on a journey that celebrates diversity, passion, and the rich tapestry of sounds that define our unique identity. Explore our latest projects, discover new music, and be part of a community that values artistic expression. Together, we are Rich and Black.
+      </p>
+    </section>
+
+    <!-- Artists Section -->
+    <section id="artists" class="hidden-section">
+      <h2>Our Artist</h2>
+      <div class="artist">
+        <img src="acj.jpg" alt="R&B-ACJ" />
+        <h3>R&B-ACJ</h3>
+        <p>
+          R&B-ACJ is a talented artist from central region, known for his unique
+          sound and captivating performances.
+        </p>
+      </div>
+      <div class="artist">
+        <img src="yoona.jpg"/>
+      </div>
+    </section>
+
+    <!-- Music Section -->
+    <section id="music">
+      <h2>Music</h2>
+      <div class="advanced-music-player">
+        <h3>Advanced Music Player</h3>
+        <div class="waveform" id="waveform">Drag and drop an MP3 file here</div>
+        <div class="controls">
+          <button id="play">Play</button>
+          <button id="pause">Pause</button>
+          <button id="stop">Stop</button>
+          <button id="clear">Clear</button>
+        </div>
+        <div class="playlist">
+          <h4>Playlist</h4>
+          <ul>
+            <li><a href="#" data-src="acj-cashdown.mp3">acj-cashdown</a></li>
+            <li><a href="#" data-src="nsaba_groove.mp3">Nsaba Groove</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="hidden-section">
+      <h2>Contact Us</h2>
+      <p>
+        For inquiries, collaborations, or feedback, reach out to us at:
+        <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a>.
+      </p>
+      <div class="social-links">
+        <a href="https://twitter.com/cosmoscoderr" target="_blank">Twitter</a>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        &copy; 2024 RICH&BLACK STUDIO. Designed by Kofi Fosu. All rights reserved.
+      </p>
+    </footer>
+
+    <!-- Dark Mode Toggle -->
+    <button id="theme-toggle" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #1f1f1f; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+      Toggle Dark Mode
+    </button>
+
+    <script>
+      // Auto-detect system preference for dark mode
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const body = document.body;
+
+      if (prefersDarkMode) {
+        body.classList.add('dark-mode');
+      }
+
+      // Dark Mode Toggle
+      const toggleButton = document.getElementById('theme-toggle');
+      toggleButton.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+      });
+
+      // Countdown Timer
+      const countdownDate = new Date();
+      countdownDate.setDate(countdownDate.getDate() + 7); // 7 days from now
+
+      const timer = document.getElementById('timer');
+
+      const updateCountdown = () => {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        timer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          timer.innerHTML = "The song is here!";
+        }
+      };
+
+      const countdownInterval = setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // Advanced Music Player Functionality
+      const playButton = document.getElementById('play');
+      const pauseButton = document.getElementById('pause');
+      const stopButton = document.getElementById('stop');
+      const clearButton = document.getElementById('clear');
+      const waveform = document.getElementById('waveform');
+
+      let audio = new Audio();
+
+      // Drag and Drop functionality
+      waveform.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        waveform.classList.add('dragover');
+      });
+
+      waveform.addEventListener('dragleave', () => {
+        waveform.classList.remove('dragover');
+      });
+
+      waveform.addEventListener('drop', (e) => {
+        e.preventDefault();
+        waveform.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file.type.startsWith('audio/')) {
+          audio.src = URL.createObjectURL(file);
+          waveform.textContent = file.name; // Show the file name
+          audio.play();
+        } else {
+          alert('Please drop a valid audio file.');
+        }
+      });
+
+      // Play, Pause, Stop, Clear buttons
+      playButton.addEventListener('click', () => {
+        if (audio.src) {
+          audio.play();
+        } else {
+          alert('Please drag and drop a song to play.');
+        }
+      });
+
+      pauseButton.addEventListener('click', () => {
+        audio.pause();
+      });
+
+      stopButton.addEventListener('click', () => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+
+      clearButton.addEventListener('click', () => {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.src = '';
+        waveform.textContent = 'Drag and drop an MP3 file here';
+      });
+
+      // Playlist functionality
+      document.querySelectorAll('.playlist ul li a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const songSrc = link.getAttribute('data-src');
+          if (songSrc) {
+            audio.src = songSrc;
+            audio.play();
+          }
+        });
+      });
+
+      // Show hidden sections when links are clicked
+      let hideTimeout;
+      document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          if (targetSection.classList.contains('hidden-section')) {
+            targetSection.classList.add('visible');
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => {
+              targetSection.classList.remove('visible');
+            }, 5000); // Hide after 5 seconds of inactivity
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
