@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RICH&BLACK STUDIO</title>
@@ -169,6 +169,16 @@
         background: #333;
         margin-top: 20px;
         border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
+
+      .advanced-music-player .waveform.dragover {
+        background: #444;
       }
 
       /* Playlist Styles */
@@ -426,7 +436,7 @@
       <h2>Music</h2>
       <div class="advanced-music-player">
         <h3>Advanced Music Player</h3>
-        <div class="waveform"></div>
+        <div class="waveform" id="waveform">Drag and drop an MP3 file here</div>
         <div class="controls">
           <button id="play">Play</button>
           <button id="pause">Pause</button>
@@ -514,11 +524,34 @@
       const stopButton = document.getElementById('stop');
       const clearButton = document.getElementById('clear');
       const downloadButton = document.getElementById('download');
-      const waveform = document.querySelector('.waveform');
+      const waveform = document.getElementById('waveform');
 
       let audio = new Audio();
-      let currentSong = null;
 
+      // Drag and Drop functionality
+      waveform.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        waveform.classList.add('dragover');
+      });
+
+      waveform.addEventListener('dragleave', () => {
+        waveform.classList.remove('dragover');
+      });
+
+      waveform.addEventListener('drop', (e) => {
+        e.preventDefault();
+        waveform.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file.type.startsWith('audio/')) {
+          audio.src = URL.createObjectURL(file);
+          waveform.textContent = file.name; // Show the file name
+          audio.play();
+        } else {
+          alert('Please drop a valid audio file.');
+        }
+      });
+
+      // Play, Pause, Stop, Clear, and Download buttons
       playButton.addEventListener('click', () => {
         if (audio.src) {
           audio.play();
@@ -540,41 +573,17 @@
         audio.pause();
         audio.currentTime = 0;
         audio.src = '';
-        waveform.innerHTML = ''; // Clear any waveform display
-        currentSong = null;
+        waveform.textContent = 'Drag and drop an MP3 file here';
       });
 
       downloadButton.addEventListener('click', () => {
-        if (currentSong) {
+        if (audio.src) {
           const link = document.createElement('a');
-          link.href = currentSong;
-          link.download = currentSong.split('/').pop();
+          link.href = audio.src;
+          link.download = audio.src.split('/').pop() || 'song.mp3';
           link.click();
         } else {
           alert('No song loaded to download.');
-        }
-      });
-
-      // Drag and Drop functionality
-      waveform.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        waveform.style.backgroundColor = '#444';
-      });
-
-      waveform.addEventListener('dragleave', () => {
-        waveform.style.backgroundColor = '#333';
-      });
-
-      waveform.addEventListener('drop', (e) => {
-        e.preventDefault();
-        waveform.style.backgroundColor = '#333';
-        const file = e.dataTransfer.files[0];
-        if (file.type.startsWith('audio/')) {
-          currentSong = URL.createObjectURL(file);
-          audio.src = currentSong;
-          audio.play();
-        } else {
-          alert('Please drop a valid audio file.');
         }
       });
 
