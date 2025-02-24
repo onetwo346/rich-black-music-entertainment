@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RICH&BLACK STUDIO</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH2EW6V2RP"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-LH2EW6V2RP');
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Arial', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f4f4f4;
+        transition: background-color 0.3s, color 0.3s;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+      }
+
+      header {
+        background: #1f1f1f;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .logo {
+        width: 150px;
+        height: auto;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      nav {
+        background: #333;
+        padding: 10px;
+        text-align: center;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      nav ul li {
+        margin: 5px 15px;
+      }
+
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+      }
+
+      nav ul li a:hover {
+        color: #ff6f61;
+      }
+
+      section {
+        padding: 40px 20px;
+        margin: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, box-shadow 0.3s;
+      }
+
+      h2 {
+        color: #1f1f1f;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .artist {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .artist img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 10px;
+        transition: transform 0.3s;
+      }
+
+      .artist img:hover {
+        transform: scale(1.05);
+      }
+
+      footer {
+        background: #1f1f1f;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .social-links a {
+        color: #333;
+        margin: 0 10px;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .dark-mode .social-links a {
+        color: #fff;
+      }
+
+      .social-links a:hover {
+        color: #ff6f61;
+      }
+
+      /* Hidden Sections */
+      .hidden-section {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+
+      .hidden-section.visible {
+        display: block;
+        opacity: 1;
+      }
+
+      /* Hero Section */
+      #hero {
+        position: relative;
+        background-image: url('IMG_3731.gif');
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+        padding: 100px 20px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      #hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+
+      #hero h1, #hero p, #hero #countdown {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+      }
+
+      #hero h1 {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      #hero p {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        animation: fadeIn 3s ease-in-out;
+      }
+
+      #countdown {
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: inline-block;
+        animation: pulse 2s infinite;
+      }
+
+      /* Blog/News Section */
+      #blog {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+      }
+
+      .blog-card {
+        background: #1e1e1e;
+        border-radius: 10px;
+        padding: 20px;
+        transition: transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .blog-card h3 {
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+
+      .blog-card p {
+        color: #ccc;
+        font-size: 1rem;
+      }
+
+      /* Popup Styles */
+      .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #1f1f1f;
+        color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 111, 97, 0.5);
+        z-index: 1000;
+        max-width: 400px;
+        text-align: center;
+        animation: popupFadeIn 0.3s ease;
+      }
+
+      .popup.active {
+        display: block;
+      }
+
+      .popup h4 {
+        color: #ff6f61;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+      }
+
+      .popup p {
+        color: #fff;
+        font-size: 1.1rem;
+      }
+
+      .popup .close-btn {
+        background: #ff6f61;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background 0.3s;
+      }
+
+      .popup .close-btn:hover {
+        background: #e65a50;
+      }
+
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      .overlay.active {
+        display: block;
+      }
+
+      /* Cosmic Music Player */
+      .cosmic-music-player {
+        background: linear-gradient(135deg, #0d0d0d, #1a1a2e);
+        padding: 30px;
+        border-radius: 15px;
+        color: #fff;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(255, 111, 97, 0.5);
+        animation: pulseGlow 3s infinite;
+      }
+
+      .cosmic-music-player::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 111, 97, 0.2), transparent);
+        animation: rotate 10s linear infinite;
+      }
+
+      .player-core {
+        position: relative;
+        z-index: 1;
+      }
+
+      .cosmic-music-player h3 {
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #ff6f61;
+        text-shadow: 0 0 10px rgba(255, 111, 97, 0.8);
+      }
+
+      .current-song {
+        margin: 15px 0;
+        font-size: 1.4rem;
+        font-weight: bold;
+        color: #fff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        transition: all 0.3s;
+      }
+
+      .cosmic-gauge {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 20px auto;
+      }
+
+      .gauge-ring {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+      }
+
+      .gauge-base {
+        fill: none;
+        stroke: #333;
+        stroke-width: 10;
+      }
+
+      .gauge-progress {
+        fill: none;
+        stroke: #ff6f61;
+        stroke-width: 10;
+        stroke-linecap: round;
+        stroke-dasharray: 283;
+        stroke-dashoffset: 283;
+        transition: stroke-dashoffset 0.3s linear;
+      }
+
+      .time-display {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.1rem;
+        color: #fff;
+        text-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+      }
+
+      .cosmic-music-player .controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .cosmic-music-player .controls button {
+        background: none;
+        border: 2px solid #ff6f61;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cosmic-music-player .controls button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 111, 97, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.4s, height 0.4s;
+      }
+
+      .cosmic-music-player .controls button:hover::before {
+        width: 200%;
+        height: 200%;
+      }
+
+      .cosmic-music-player .controls button:hover {
+        box-shadow: 0 0 15px rgba(255, 111, 97, 0.8);
+      }
+
+      .playlist-orbit {
+        margin-top: 30px;
+        padding: 20px;
+        background: rgba(255, 111, 97, 0.1);
+        border-radius: 10px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .playlist-orbit h4 {
+        color: #ff6f61;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        text-shadow: 0 0 10px rgba(255, 111, 97, 0.5);
+      }
+
+      .playlist-orbit ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .playlist-orbit ul li {
+        margin: 15px 0;
+        transform: translateX(-20px);
+        transition: all 0.3s;
+      }
+
+      .playlist-orbit ul li:hover {
+        transform: translateX(0);
+      }
+
+      .playlist-orbit ul li a {
+        color: #fff;
+        font-size: 1.2rem;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        display: block; /* Ensure full click area */
+      }
+
+      .playlist-orbit ul li a:hover,
+      .playlist-orbit ul li a.active {
+        background: #ff6f61;
+        box-shadow: 0 0 10px rgba(255, 111, 97, 0.8);
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      @keyframes pulseGlow {
+        0% { box-shadow: 0 0 20px rgba(255, 111, 97, 0.5); }
+        50% { box-shadow: 0 0 30px rgba(255, 111, 97, 0.8); }
+        100% { box-shadow: 0 0 20px rgba(255, 111, 97, 0.5); }
+      }
+
+      @keyframes rotate {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @keyframes popupFadeIn {
+        0% { opacity: 0; transform: translate(-50%, -60%); }
+        100% { opacity: 1; transform: translate(-50%, -50%); }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        #hero h1 { font-size: 2rem; }
+        #hero p { font-size: 1.2rem; }
+        nav ul { flex-direction: column; }
+        .artist img { max-width: 100%; }
+        .logo { width: 120px; }
+        .popup { max-width: 90%; }
+        .cosmic-gauge { width: 120px; height: 120px; }
+      }
+
+      /* Dark Mode */
+      .dark-mode {
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      .dark-mode header, .dark-mode footer {
+        background-color: #1f1f1f;
+      }
+
+      .dark-mode section {
+        background-color: #1f1f1f;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+      }
+
+      .dark-mode h2 {
+        color: #ffffff;
+      }
+    </style>
+</head>
+<body>
+    <header>
+      <img src="IMG_3717.jpeg" alt="RICH&BLACK STUDIO Logo" class="logo" />
+      <h1>RICH&BLACK STUDIO</h1>
+      <p>Representing, Ghana Central Region</p>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#blog">Blog/News</a></li>
+          <li><a href="#music">Music</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#artists">Our Artist</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="home">
+      <div id="hero">
+        <h1>Welcome to RICH&BLACK STUDIO</h1>
+        <p>Hello Rich&Black gang, our new drops are in now!</p>
+        <p>Stay tuned as the timer counts down to the release of our first album.</p>
+        <div id="countdown">New album Drops In: <span id="timer"></span></div>
+      </div>
+    </section>
+
+    <section id="blog">
+      <h2>Blog/News</h2>
+      <div class="blog-card" data-popup="new-songs">
+        <h3>New Songs</h3>
+        <p>Our latest songs are out now! Stream them in the music player!</p>
+      </div>
+      <div class="blog-card" data-popup="upcoming-event">
+        <h3>Upcoming Event</h3>
+        <p>Join us for our live concert in Accra on March 15th.</p>
+      </div>
+    </section>
+
+    <section id="about" class="hidden-section">
+      <h2>About Us</h2>
+      <p>
+        Welcome to Rich and Black where creativity meets culture. Our label is dedicated to showcasing the vibrant talents of artists who embody the spirit of innovation and authenticity. Join us on a journey that celebrates diversity, passion, and the rich tapestry of sounds that define our unique identity.
+      </p>
+    </section>
+
+    <section id="artists" class="hidden-section">
+      <h2>Our Artist</h2>
+      <div class="artist">
+        <img src="acj.jpg" alt="R&B-ACJ" />
+        <h3>R&B-ACJ</h3>
+        <p>R&B-ACJ is a talented artist from the Central Region, known for his unique sound and captivating performances.</p>
+      </div>
+      <div class="artist">
+        <img src="yoona.jpg" alt="Yoona" />
+      </div>
+    </section>
+
+    <section id="music">
+      <h2>Music</h2>
+      <div class="cosmic-music-player">
+        <div class="player-core">
+          <h3>Cosmic Audio Interface</h3>
+          <div class="current-song" id="current-song">Initializing...</div>
+          <div class="cosmic-gauge">
+            <svg class="gauge-ring" viewBox="0 0 100 100">
+              <circle class="gauge-base" cx="50" cy="50" r="45"></circle>
+              <circle class="gauge-progress" id="gauge-progress" cx="50" cy="50" r="45"></circle>
+            </svg>
+            <div class="time-display">
+              <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+            </div>
+          </div>
+          <div class="controls">
+            <button id="play"><span>▶</span></button>
+            <button id="pause"><span>⏸</span></button>
+            <button id="stop"><span>⏹</span></button>
+            <button id="shuffle"><span>🔀</span></button>
+          </div>
+        </div>
+        <div class="playlist-orbit">
+          <h4>Orbital Playlist</h4>
+          <ul id="playlist">
+            <li><a href="#" data-src="acj-cashdown.mp3">acj-cashdown</a></li>
+            <li><a href="#" data-src="acj-paid.mp3">acj-paid</a></li>
+            <li><a href="#" data-src="acj-alot.mp3">acj-alot</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="hidden-section">
+      <h2>Contact Us</h2>
+      <p>For inquiries, collaborations, or feedback, reach out to us at: <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a>.</p>
+      <div class="social-links">
+        <a href="https://twitter.com/cosmoscoderr" target="_blank">Twitter</a>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2024 RICH&BLACK STUDIO. Designed by Nana Kofi Fosu. All rights reserved.</p>
+    </footer>
+
+    <!-- Popup Container -->
+    <div class="overlay" id="popup-overlay"></div>
+    <div class="popup" id="new-songs-popup">
+      <h4>New Songs Alert!</h4>
+      <p>We’ve dropped some fresh tracks! Head over to the Cosmic Audio Interface below and stream "acj-cashdown," "acj-paid," and "acj-alot" now!</p>
+      <button class="close-btn">Close</button>
+    </div>
+    <div class="popup" id="upcoming-event-popup">
+      <h4>Upcoming Event Details</h4>
+      <p>Get ready for our live concert in Accra! Join us on March 15th at 7 PM at the Accra Music Arena. Tickets available soon—stay tuned!</p>
+      <button class="close-btn">Close</button>
+    </div>
+
+    <button id="theme-toggle" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background-color: #1f1f1f; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Toggle Dark Mode</button>
+
+    <script>
+      // Dark Mode Toggle
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const body = document.body;
+      if (prefersDarkMode) body.classList.add('dark-mode');
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+      });
+
+      // Countdown Timer
+      const countdownDate = new Date();
+      countdownDate.setDate(countdownDate.getDate() + 7);
+      const timer = document.getElementById('timer');
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          timer.innerHTML = "The album is here!";
+          return;
+        }
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        timer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+      const countdownInterval = setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // Blog/News Popups
+      const blogCards = document.querySelectorAll('.blog-card');
+      const overlay = document.getElementById('popup-overlay');
+      const popups = document.querySelectorAll('.popup');
+      const closeButtons = document.querySelectorAll('.popup .close-btn');
+
+      function closePopups() {
+        overlay.classList.remove('active');
+        popups.forEach(popup => popup.classList.remove('active'));
+      }
+
+      blogCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const popupId = card.getAttribute('data-popup') + '-popup';
+          const popup = document.getElementById(popupId);
+          if (popup) {
+            overlay.classList.add('active');
+            popup.classList.add('active');
+          }
+        });
+      });
+
+      closeButtons.forEach(btn => {
+        btn.addEventListener('click', closePopups);
+      });
+
+      overlay.addEventListener('click', closePopups);
+
+      // Cosmic Music Player
+      const playButton = document.getElementById('play');
+      const pauseButton = document.getElementById('pause');
+      const stopButton = document.getElementById('stop');
+      const shuffleButton = document.getElementById('shuffle');
+      const currentSongDisplay = document.getElementById('current-song');
+      const gaugeProgress = document.getElementById('gauge-progress');
+      const currentTimeDisplay = document.getElementById('current-time');
+      const durationDisplay = document.getElementById('duration');
+      const playlistLinks = document.querySelectorAll('.playlist-orbit ul li a');
+
+      let audio = new Audio();
+      let isPlaying = false;
+      let animationFrameId = null;
+
+      function formatTime(seconds) {
+        if (isNaN(seconds)) return '0:00';
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
+      }
+
+      function updateGauge() {
+        if (audio.duration && !isNaN(audio.duration)) {
+          const progress = (audio.currentTime / audio.duration) * 283;
+          gaugeProgress.style.strokeDashoffset = 283 - progress;
+          currentTimeDisplay.textContent = formatTime(audio.currentTime);
+          durationDisplay.textContent = formatTime(audio.duration);
+        }
+        if (isPlaying) {
+          animationFrameId = requestAnimationFrame(updateGauge);
+        }
+      }
+
+      function stopAnimation() {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+      }
+
+      playButton.addEventListener('click', () => {
+        if (audio.src) {
+          audio.play().catch(err => console.error('Playback error:', err));
+          isPlaying = true;
+          updateGauge();
+        } else {
+          alert('Select a track from the Orbital Playlist to begin!');
+        }
+      });
+
+      pauseButton.addEventListener('click', () => {
+        audio.pause();
+        isPlaying = false;
+        stopAnimation();
+      });
+
+      stopButton.addEventListener('click', () => {
+        audio.pause();
+        audio.currentTime = 0;
+        isPlaying = false;
+        stopAnimation();
+        gaugeProgress.style.strokeDashoffset = 283;
+        currentTimeDisplay.textContent = '0:00';
+      });
+
+      shuffleButton.addEventListener('click', () => {
+        const songs = Array.from(playlistLinks);
+        const randomSong = songs[Math.floor(Math.random() * songs.length)];
+        audio.src = randomSong.getAttribute('data-src');
+        audio.play().catch(err => console.error('Playback error:', err));
+        isPlaying = true;
+        currentSongDisplay.textContent = randomSong.textContent;
+        playlistLinks.forEach(link => link.classList.remove('active'));
+        randomSong.classList.add('active');
+        updateGauge();
+      });
+
+      playlistLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const songSrc = link.getAttribute('data-src');
+          if (songSrc) {
+            if (audio.src !== songSrc) {
+              audio.src = songSrc;
+            }
+            audio.play().catch(err => console.error('Playback error:', err));
+            isPlaying = true;
+            currentSongDisplay.textContent = link.textContent;
+            playlistLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            updateGauge();
+          }
+        });
+      });
+
+      audio.addEventListener('ended', () => {
+        isPlaying = false;
+        stopAnimation();
+        gaugeProgress.style.strokeDashoffset = 283;
+        currentTimeDisplay.textContent = '0:00';
+      });
+
+      audio.addEventListener('error', () => {
+        console.error('Audio error:', audio.error);
+        currentSongDisplay.textContent = 'Error loading track';
+        isPlaying = false;
+        stopAnimation();
+      });
+
+      // Show Hidden Sections
+      let hideTimeout;
+      document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault(); // Prevent default anchor behavior
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          if (targetSection.classList.contains('hidden-section')) {
+            targetSection.classList.add('visible');
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => targetSection.classList.remove('visible'), 5000);
+          }
+          window.scrollTo({ top: targetSection.offsetTop - 20, behavior: 'smooth' });
+        });
+      });
+    </script>
+</body>
+</html>
