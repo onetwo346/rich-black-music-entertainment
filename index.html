@@ -515,8 +515,8 @@
       /* Responsive Design */
       @media (max-width: 900px) {
         nav ul {
-          flex-direction: column;
-          gap: 10px;
+          flex-direction: row !important;
+          gap: 12px !important;
         }
         #hero, #blog, #videos, #about, #artists, #contact {
           padding: 28px 6vw;
@@ -537,8 +537,8 @@
           font-size: 1.5rem !important;
         }
         nav ul li a {
-          font-size: 1rem;
-          padding: 6px 10px;
+          font-size: 0.98rem;
+          padding: 5px 7px;
         }
         #hero {
           min-height: 260px;
@@ -566,7 +566,8 @@
           font-size: 0.9rem;
         }
         nav ul li a {
-          font-size: 0.95rem;
+          font-size: 0.93rem;
+          padding: 4px 4px;
         }
       }
 
@@ -710,6 +711,38 @@
       }
       @media (max-width:600px) {
         .hero-slideshow { min-height:180px; }
+      }
+
+      /* Always keep nav horizontal, even on mobile */
+      nav ul {
+        flex-direction: row !important;
+        gap: 20px !important;
+      }
+      @media (max-width: 900px) {
+        nav ul {
+          flex-direction: row !important;
+          gap: 12px !important;
+        }
+      }
+      @media (max-width: 600px) {
+        nav ul {
+          flex-direction: row !important;
+          gap: 8px !important;
+        }
+        nav ul li a {
+          font-size: 0.98rem;
+          padding: 5px 7px;
+        }
+      }
+      @media (max-width: 400px) {
+        nav ul {
+          flex-direction: row !important;
+          gap: 4px !important;
+        }
+        nav ul li a {
+          font-size: 0.93rem;
+          padding: 4px 4px;
+        }
       }
     </style>
     <!-- Google Fonts for Professional Typography -->
