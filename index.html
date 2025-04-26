@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>RICH&BLACK STUDIO</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH2EW6V2RP"></script>
@@ -214,6 +214,83 @@
       .blog-card p {
         color: #ccc;
         font-size: 0.95rem;
+      }
+
+      /* Videos Section */
+      #videos {
+        padding: 50px 20px;
+        margin: 30px auto;
+        max-width: 1200px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0,0,0,0.10);
+      }
+      #videos h2 {
+        color: #1a1a1a;
+        margin-bottom: 25px;
+        font-size: 2.2rem;
+        text-align: center;
+        font-weight: 600;
+      }
+      .video-carousel {
+        position: relative;
+        max-width: 640px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .video-slide-container {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        min-height: 300px;
+      }
+      .video-slide {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        transition: opacity 0.5s;
+      }
+      .video-slide.active {
+        display: flex;
+      }
+      .carousel-arrow {
+        background: #ff6f61;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        font-size: 2rem;
+        cursor: pointer;
+        margin: 0 12px;
+        box-shadow: 0 2px 8px rgba(255,111,97,0.15);
+        transition: background 0.2s;
+        z-index: 2;
+      }
+      .carousel-arrow:hover {
+        background: #e65a50;
+      }
+      .carousel-dots {
+        display: flex;
+        justify-content: center;
+        margin-top: 18px;
+        gap: 10px;
+      }
+      .carousel-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ccc;
+        border: none;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .carousel-dot.active {
+        background: #ff6f61;
       }
 
       /* Artist Section */
@@ -436,13 +513,61 @@
       }
 
       /* Responsive Design */
-      @media (max-width: 768px) {
-        #hero h1 { font-size: 2rem; }
-        #hero p { font-size: 1.1rem; }
-        nav ul { flex-direction: column; gap: 10px; }
-        .artist img { max-width: 200px; }
-        .logo { width: 100px; }
-        .popup { max-width: 90%; }
+      @media (max-width: 900px) {
+        nav ul {
+          flex-direction: column;
+          gap: 10px;
+        }
+        #hero, #blog, #videos, #about, #artists, #contact {
+          padding: 28px 6vw;
+          margin: 18px 0;
+        }
+        .video-carousel {
+          max-width: 98vw;
+        }
+      }
+      @media (max-width: 600px) {
+        header {
+          padding: 18px 2vw;
+        }
+        .logo {
+          width: 75px;
+        }
+        h1, #typewriter-headline {
+          font-size: 1.5rem !important;
+        }
+        nav ul li a {
+          font-size: 1rem;
+          padding: 6px 10px;
+        }
+        #hero {
+          min-height: 260px;
+        }
+        .video-slide-container {
+          min-height: 180px;
+        }
+        .carousel-arrow {
+          width: 36px;
+          height: 36px;
+          font-size: 1.3rem;
+        }
+        .video-slide h3 {
+          font-size: 1rem;
+        }
+        .blog-card, .video-card {
+          padding: 10px 4px;
+        }
+        .video-slide video {
+          min-height: 120px;
+        }
+      }
+      @media (max-width: 400px) {
+        .video-slide h3 {
+          font-size: 0.9rem;
+        }
+        nav ul li a {
+          font-size: 0.95rem;
+        }
       }
 
       /* Dark Mode */
@@ -485,6 +610,23 @@
         padding: 20px;
         color: #666;
       }
+
+      #hero { position:relative; min-height:420px; }
+      #cta-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 24px rgba(255,111,97,0.5);
+        background:linear-gradient(90deg,#e65a50,#ff6f61);
+      }
+      #typewriter-headline {
+        font-size:2.8rem;
+        font-weight:800;
+        color:#fff;
+        margin-bottom:20px;
+        text-shadow:0 2px 12px rgba(0,0,0,0.25);
+        min-height: 3.2em;
+        letter-spacing: 1px;
+      }
+      #cosmic-bg { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none; }
     </style>
     <!-- Google Fonts for Professional Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
@@ -498,6 +640,7 @@
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#blog">Blog/News</a></li>
+                <li><a href="#videos">Videos</a></li>
                 <li><a href="#music">Music</a></li>
                 <li><a href="#about">About Us</a></li>
                 <li><a href="#artists">Our Artist</a></li>
@@ -507,11 +650,14 @@
     </header>
 
     <section id="home">
-        <div id="hero">
-            <h1>Welcome to RICH&BLACK STUDIO</h1>
-            <p>Hello Rich&Black gang, our new drops are in now!</p>
-            <p>Stay tuned as the timer counts down to the release of our first album.</p>
-            <div id="countdown">New album Drops In: <span id="timer"></span></div>
+        <div id="hero" style="position:relative; overflow:hidden;">
+            <!-- Cosmic Animated Background -->
+            <canvas id="cosmic-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;"></canvas>
+            <div style="position:relative;z-index:2;">
+                <h1 id="typewriter-headline"></h1>
+                <p>Hello Rich&Black gang, our new drops are in now!</p>
+                <button id="cta-btn" style="margin-top:30px;padding:16px 36px;font-size:1.2rem;font-weight:700;background:linear-gradient(90deg,#ff6f61,#e65a50);color:#fff;border:none;border-radius:8px;box-shadow:0 4px 16px rgba(255,111,97,0.3);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;">Listen to the Latest Drop</button>
+            </div>
         </div>
     </section>
 
@@ -534,6 +680,45 @@
             <h3>New Songs</h3>
             <p>Our latest songs are out now! Stream them in the music player!</p>
         </div>
+    </section>
+
+    <section id="videos">
+        <h2>Videos</h2>
+        <div class="video-carousel">
+            <button class="carousel-arrow left" aria-label="Previous Video">&#10094;</button>
+            <div class="video-slide-container">
+                <div class="video-slide active">
+                    <video src="v1.mp4" controls poster="" style="width:100%;min-height:220px;border-radius:8px;background:#111;"></video>
+                    <h3>Studio Video 1</h3>
+                </div>
+                <div class="video-slide">
+                    <video src="v2.mp4" controls poster="" style="width:100%;min-height:220px;border-radius:8px;background:#111;"></video>
+                    <h3>Studio Video 2</h3>
+                </div>
+                <div class="video-slide">
+                    <video src="v3.mp4" controls poster="" style="width:100%;min-height:220px;border-radius:8px;background:#111;"></video>
+                    <h3>Studio Video 3</h3>
+                </div>
+                <div class="video-slide">
+                    <video src="v4.mp4" controls poster="" style="width:100%;min-height:220px;border-radius:8px;background:#111;"></video>
+                    <h3>Studio Video 4</h3>
+                </div>
+                <div class="video-slide">
+                    <video src="v5.mp4" controls poster="" style="width:100%;min-height:220px;border-radius:8px;background:#111;"></video>
+                    <h3>Studio Video 5</h3>
+                </div>
+                <div class="video-slide">
+                    <video src="v6.mp4" controls poster="" style="width:100%;min-height:220px;border-radius:8px;background:#111;"></video>
+                    <h3>Studio Video 6</h3>
+                </div>
+                <div class="video-slide">
+                    <video src="v7.mp4" controls poster="" style="width:100%;min-height:220px;border-radius:8px;background:#111;"></video>
+                    <h3>Studio Video 7</h3>
+                </div>
+            </div>
+            <button class="carousel-arrow right" aria-label="Next Video">&#10095;</button>
+        </div>
+        <div class="carousel-dots"></div>
     </section>
 
     <section id="about" class="hidden-section">
@@ -634,27 +819,6 @@
       document.getElementById('theme-toggle').addEventListener('click', () => {
         body.classList.toggle('dark-mode');
       });
-
-      // Countdown Timer
-      const countdownDate = new Date();
-      countdownDate.setDate(countdownDate.getDate() + 7);
-      const timer = document.getElementById('timer');
-      function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = countdownDate - now;
-        if (distance < 0) {
-          clearInterval(countdownInterval);
-          timer.innerHTML = "The album is here!";
-          return;
-        }
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        timer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-      }
-      const countdownInterval = setInterval(updateCountdown, 1000);
-      updateCountdown();
 
       // Blog/News Popups
       const blogCards = document.querySelectorAll('.blog-card');
@@ -797,6 +961,111 @@
           window.scrollTo({ top: targetSection.offsetTop - 20, behavior: 'smooth' });
         });
       });
+
+      // Cosmic Animated Background
+      const canvas = document.getElementById('cosmic-bg');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let w, h, stars = [];
+        function resize() {
+          w = canvas.width = canvas.offsetWidth;
+          h = canvas.height = canvas.offsetHeight;
+        }
+        function createStars() {
+          stars = [];
+          for (let i = 0; i < 120; i++) {
+            stars.push({ x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.8 + 0.2, dx: (Math.random() - 0.5) * 0.2, dy: (Math.random() - 0.5) * 0.2, opacity: Math.random() * 0.7 + 0.3 });
+          }
+        }
+        function animate() {
+          ctx.clearRect(0, 0, w, h);
+          for (const s of stars) {
+            ctx.globalAlpha = s.opacity;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, 2 * Math.PI);
+            ctx.fillStyle = '#fff';
+            ctx.shadowColor = '#a7c7f9';
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            s.x += s.dx; s.y += s.dy;
+            if (s.x < 0 || s.x > w) s.x = Math.random() * w;
+            if (s.y < 0 || s.y > h) s.y = Math.random() * h;
+          }
+          ctx.globalAlpha = 1;
+          requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); createStars(); });
+        setTimeout(() => { resize(); createStars(); animate(); }, 200);
+      }
+
+      // Typewriter Headline
+      const headlines = [
+        'Welcome to RICH&BLACK STUDIO',
+        'Where Ghana’s sound meets the world.',
+        'New drops. Fresh vibes. All for you.',
+        'Feel the rhythm. Join the movement.'
+      ];
+      let headlineIdx = 0, charIdx = 0, deleting = false;
+      const headlineElem = document.getElementById('typewriter-headline');
+      function typeLoop() {
+        if (!headlineElem) return;
+        const current = headlines[headlineIdx];
+        if (!deleting && charIdx < current.length) {
+          headlineElem.textContent = current.slice(0, ++charIdx);
+          setTimeout(typeLoop, 40);
+        } else if (deleting && charIdx > 0) {
+          headlineElem.textContent = current.slice(0, --charIdx);
+          setTimeout(typeLoop, 25);
+        } else if (!deleting && charIdx === current.length) {
+          setTimeout(() => { deleting = true; typeLoop(); }, 1200);
+        } else {
+          deleting = false;
+          headlineIdx = (headlineIdx + 1) % headlines.length;
+          setTimeout(typeLoop, 400);
+        }
+      }
+      setTimeout(typeLoop, 400);
+
+      // CTA Button scrolls to Blog/News
+      document.getElementById('cta-btn').onclick = () => {
+        const blog = document.getElementById('blog');
+        if (blog) blog.scrollIntoView({ behavior: 'smooth' });
+      };
+
+      // Video Carousel Logic
+      const slides = document.querySelectorAll('.video-slide');
+      const leftArrow = document.querySelector('.carousel-arrow.left');
+      const rightArrow = document.querySelector('.carousel-arrow.right');
+      const dotsContainer = document.querySelector('.carousel-dots');
+      let currentSlide = 0;
+      function showSlide(idx) {
+        slides.forEach((slide,i)=>{
+          slide.classList.toggle('active', i === idx);
+        });
+        document.querySelectorAll('.carousel-dot').forEach((dot,i)=>{
+          dot.classList.toggle('active', i === idx);
+        });
+        currentSlide = idx;
+      }
+      // Create dots
+      slides.forEach((_,i)=>{
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot'+(i===0?' active':'');
+        dot.setAttribute('aria-label','Go to video '+(i+1));
+        dot.onclick = ()=>showSlide(i);
+        dotsContainer.appendChild(dot);
+      });
+      leftArrow.onclick = ()=>showSlide((currentSlide-1+slides.length)%slides.length);
+      rightArrow.onclick = ()=>showSlide((currentSlide+1)%slides.length);
+      // Optional: Pause all videos when switching
+      function pauseAllVideos() {
+        slides.forEach(slide=>{
+          const vid = slide.querySelector('video');
+          if(vid) vid.pause();
+        });
+      }
+      [leftArrow,rightArrow].forEach(btn=>btn.addEventListener('click',pauseAllVideos));
+      document.querySelectorAll('.carousel-dot').forEach(btn=>btn.addEventListener('click',pauseAllVideos));
     </script>
 </body>
 </html>
