@@ -767,29 +767,55 @@
 
     <section id="music">
         <h2>Music</h2>
-        <div class="cosmic-music-player">
-            <h3>Cosmic Audio Interface</h3>
-            <div class="current-song" id="current-song">Select a track to play</div>
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
+        <div style="display: flex; gap: 32px; align-items: flex-start;">
+            <div style="flex: 2; min-width: 320px;">
+                <div class="cosmic-music-player">
+                    <h3>Cosmic Audio Interface</h3>
+                    <div class="current-song" id="current-song">Select a track to play</div>
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                    <div class="time-display">
+                        <span id="current-time">0:00</span>
+                        <span id="duration">0:00</span>
+                    </div>
+                    <div class="controls">
+                        <button id="play">▶</button>
+                        <button id="pause">⏸</button>
+                        <button id="stop">⏹</button>
+                        <button id="shuffle">🔀</button>
+                    </div>
+                    <div class="playlist">
+                        <h4>Playlist</h4>
+                        <ul id="playlist">
+                            <li><a href="#" data-src="acj-cashdown.mp3">acj-cashdown</a></li>
+                            <li><a href="#" data-src="acj-paid.mp3">acj-paid</a></li>
+                            <li><a href="#" data-src="acj-alot.mp3">acj-alot</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="time-display">
-                <span id="current-time">0:00</span>
-                <span id="duration">0:00</span>
-            </div>
-            <div class="controls">
-                <button id="play">▶</button>
-                <button id="pause">⏸</button>
-                <button id="stop">⏹</button>
-                <button id="shuffle">🔀</button>
-            </div>
-            <div class="playlist">
-                <h4>Playlist</h4>
-                <ul id="playlist">
-                    <li><a href="#" data-src="acj-cashdown.mp3">acj-cashdown</a></li>
-                    <li><a href="#" data-src="acj-paid.mp3">acj-paid</a></li>
-                    <li><a href="#" data-src="acj-alot.mp3">acj-alot</a></li>
-                </ul>
+            <div style="flex: 1; min-width: 260px;">
+                <!-- BROTHERHOOD Mixtape Interactive Card Start -->
+                <div class="mixtape-card glassmorphism" id="brotherhood-mixtape" style="padding:20px; border-radius:20px; background:rgba(255,255,255,0.10); box-shadow:0 8px 32px 0 rgba(31,38,135,0.25); backdrop-filter:blur(8px); cursor:pointer;">
+                    <div style="display:flex; align-items:center; gap:18px;" onclick="toggleMixtapeTracks()">
+                        <img src="bro.jpg" alt="BROTHERHOOD Cover" style="width:80px; height:80px; object-fit:cover; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+                        <div>
+                            <h3 style="font-size:1.25rem; font-family:'Inter',sans-serif; background:linear-gradient(90deg,#6a82fb,#fc5c7d);-webkit-background-clip:text;-webkit-text-fill-color:transparent; background-clip:text; color:transparent;">BROTHERHOOD</h3>
+                            <p style="color:#fff; font-weight:500; margin-top:3px;">by ACJS</p>
+                        </div>
+                        <span id="mixtape-arrow" style="margin-left:auto; font-size:1.5rem; color:#fff; transition:transform 0.3s;">▼</span>
+                    </div>
+                    <ul id="brotherhood-tracklist" class="mixtape-tracklist" style="margin-top:16px; display:none;">
+                        <li><a href="#" onclick="playMixtapeSong(event, 'ACJ - Story.mp3', 'Story (feat. Alpha Khalifa)')"><strong>Story</strong> <span style='color:#b0b0b0;'>(feat. Alpha Khalifa)</span></a></li>
+                        <li><a href="#" onclick="playMixtapeSong(event, 'ACJ - High Life.mp3', 'High Life (ACJ only)')"><strong>High Life</strong> <span style='color:#b0b0b0;'>(ACJ only)</span></a></li>
+                        <li><a href="#" onclick="playMixtapeSong(event, 'ACJ Ft. Kwame Nkrumah - Chill.mp3', 'Chill.. (feat. Kwame Nkrumah)')"><strong>Chill..</strong> <span style='color:#b0b0b0;'>(feat. Kwame Nkrumah)</span></a></li>
+                        <li><a href="#" onclick="playMixtapeSong(event, 'ACJ - Sika Dur.mp3', 'Sika Duro (feat. Smen)')"><strong>Sika Duro</strong> <span style='color:#b0b0b0;'>(feat. Smen)</span></a></li>
+                        <li><a href="#" onclick="playMixtapeSong(event, 'ACJ - Compassion.mp3', 'Compassion.. (feat. Jo Carter)')"><strong>Compassion..</strong> <span style='color:#b0b0b0;'>(feat. Jo Carter)</span></a></li>
+                        <li><a href="#" onclick="playMixtapeSong(event, 'ACJ - Time.mp3', 'Time (feat. Paaed x Agona Yoona)')"><strong>Time</strong> <span style='color:#b0b0b0;'>(feat. Paaed x Agona Yoona)</span></a></li>
+                    </ul>
+                </div>
+                <!-- BROTHERHOOD Mixtape Interactive Card End -->
             </div>
         </div>
         <div class="no-js-fallback" style="display: none;">
@@ -927,6 +953,7 @@
         isPlaying = false;
         progressBar.style.width = '0%';
         currentTimeDisplay.textContent = '0:00';
+        durationDisplay.textContent = audio.duration ? formatTime(audio.duration) : '0:00';
       });
 
       shuffleButton.addEventListener('click', () => {
@@ -948,12 +975,15 @@
           if (songSrc) {
             if (audio.src !== songSrc) {
               audio.src = songSrc;
+              audio.currentTime = 0;
             }
             audio.play().catch(err => console.error('Playback error:', err));
             isPlaying = true;
             currentSongDisplay.textContent = link.textContent;
             playlistLinks.forEach(l => l.classList.remove('active'));
             link.classList.add('active');
+            // Remove mixtape highlights
+            document.querySelectorAll('.mixtape-tracklist a').forEach(l => l.classList.remove('active'));
             updateProgress();
           }
         });
@@ -963,13 +993,53 @@
         isPlaying = false;
         progressBar.style.width = '0%';
         currentTimeDisplay.textContent = '0:00';
+        durationDisplay.textContent = audio.duration ? formatTime(audio.duration) : '0:00';
       });
 
       audio.addEventListener('error', () => {
         console.error('Audio error:', audio.error);
         currentSongDisplay.textContent = 'Error loading track';
         isPlaying = false;
+        progressBar.style.width = '0%';
+        currentTimeDisplay.textContent = '0:00';
+        durationDisplay.textContent = '0:00';
+        playlistLinks.forEach(l => l.classList.remove('active'));
+        document.querySelectorAll('.mixtape-tracklist a').forEach(l => l.classList.remove('active'));
       });
+
+      // (Optional) Make progress bar clickable for seeking
+      progressBar.parentElement.addEventListener('click', function(e) {
+        if (!audio.duration) return;
+        const rect = this.getBoundingClientRect();
+        const percent = (e.clientX - rect.left) / rect.width;
+        audio.currentTime = percent * audio.duration;
+        updateProgress();
+      });
+
+      // Play mixtape song in main player
+      function playMixtapeSong(event, src, title) {
+        event.preventDefault();
+        if (typeof audio === 'undefined') {
+          alert('Music player not initialized. Please refresh the page.');
+          return;
+        }
+        if (audio.src !== src) {
+          audio.src = src;
+          audio.currentTime = 0;
+        }
+        audio.play().catch(err => console.error('Playback error:', err));
+        isPlaying = true;
+        document.getElementById('current-song').textContent = title;
+        // Remove active from all playlist links
+        if (typeof playlistLinks !== 'undefined') {
+          playlistLinks.forEach(link => link.classList.remove('active'));
+        }
+        // Remove any mixtape active highlights
+        document.querySelectorAll('.mixtape-tracklist a').forEach(link => link.classList.remove('active'));
+        // Highlight the clicked mixtape link
+        event.currentTarget.classList.add('active');
+        updateProgress();
+      }
 
       // Show Hidden Sections
       let hideTimeout;
@@ -986,6 +1056,19 @@
           window.scrollTo({ top: targetSection.offsetTop - 20, behavior: 'smooth' });
         });
       });
+
+      // Mixtape expand/collapse logic
+      function toggleMixtapeTracks() {
+        const tracklist = document.getElementById('brotherhood-tracklist');
+        const arrow = document.getElementById('mixtape-arrow');
+        if (tracklist.style.display === 'none') {
+          tracklist.style.display = 'block';
+          arrow.style.transform = 'rotate(180deg)';
+        } else {
+          tracklist.style.display = 'none';
+          arrow.style.transform = 'rotate(0deg)';
+        }
+      }
 
       // Cosmic Animated Background
       const canvas = document.getElementById('cosmic-bg');
