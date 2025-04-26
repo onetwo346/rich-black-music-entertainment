@@ -570,6 +570,69 @@
         }
       }
 
+      /* Responsive Music Player & Mixtape Enhancements */
+      @media (max-width: 900px) {
+        .music-flex-row {
+          flex-direction: column !important;
+          gap: 24px !important;
+        }
+        .cosmic-music-player, .mixtape-card {
+          max-width: 100% !important;
+          margin: 0 auto 18px auto !important;
+        }
+      }
+      @media (max-width: 600px) {
+        .cosmic-music-player, .mixtape-card {
+          padding: 10px !important;
+        }
+        .cosmic-music-player h3 {
+          font-size: 1.1rem !important;
+        }
+        .playlist ul li a {
+          font-size: 0.95rem !important;
+          padding: 8px 10px !important;
+        }
+        .controls button {
+          width: 48px !important;
+          height: 48px !important;
+          font-size: 1.1rem !important;
+        }
+        .mixtape-card img {
+          width: 60px !important;
+          height: 60px !important;
+        }
+        .mixtape-card h3 {
+          font-size: 1rem !important;
+        }
+      }
+      @media (max-width: 400px) {
+        .cosmic-music-player, .mixtape-card {
+          padding: 4px !important;
+        }
+        .controls button {
+          width: 40px !important;
+          height: 40px !important;
+        }
+        .playlist ul li a {
+          font-size: 0.9rem !important;
+        }
+      }
+      /* Prevent horizontal scroll */
+      body {
+        overflow-x: hidden;
+      }
+      .music-flex-row {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .cosmic-music-player, .mixtape-card {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 500px;
+      }
+
       /* Dark Mode */
       .dark-mode {
         background-color: #121212;
@@ -767,7 +830,7 @@
 
     <section id="music">
         <h2>Music</h2>
-        <div style="display: flex; gap: 32px; align-items: flex-start;">
+        <div class="music-flex-row" style="display: flex; gap: 32px; align-items: flex-start;">
             <div style="flex: 2; min-width: 320px;">
                 <div class="cosmic-music-player">
                     <h3>Cosmic Audio Interface</h3>
