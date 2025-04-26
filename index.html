@@ -627,6 +627,26 @@
         letter-spacing: 1px;
       }
       #cosmic-bg { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none; }
+      .hero-slideshow {
+        position:absolute;
+        top:0;left:0;width:100%;height:100%;
+        z-index:0;
+        overflow:hidden;
+      }
+      .slide-img {
+        position:absolute;
+        top:0;left:0;width:100%;height:100%;object-fit:cover;
+        opacity:0;
+        transition:opacity 1.1s;
+        pointer-events:none;
+      }
+      .slide-img.active {
+        opacity:1;
+        z-index:1;
+      }
+      @media (max-width:600px) {
+        .hero-slideshow { min-height:180px; }
+      }
     </style>
     <!-- Google Fonts for Professional Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
@@ -651,8 +671,14 @@
 
     <section id="home">
         <div id="hero" style="position:relative; overflow:hidden;">
-            <!-- Cosmic Animated Background -->
-            <canvas id="cosmic-bg" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;"></canvas>
+            <!-- Hero Slideshow -->
+            <div class="hero-slideshow">
+                <img src="acj1.jpg" class="slide-img active" alt="ACJ 1" />
+                <img src="acj2.jpg" class="slide-img" alt="ACJ 2" />
+                <img src="acj3.jpg" class="slide-img" alt="ACJ 3" />
+                <img src="acj4.jpg" class="slide-img" alt="ACJ 4" />
+            </div>
+            <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(20,20,20,0.45);z-index:1;"></div>
             <div style="position:relative;z-index:2;">
                 <h1 id="typewriter-headline"></h1>
                 <p>Hello Rich&Black gang, our new drops are in now!</p>
@@ -1066,6 +1092,15 @@
       }
       [leftArrow,rightArrow].forEach(btn=>btn.addEventListener('click',pauseAllVideos));
       document.querySelectorAll('.carousel-dot').forEach(btn=>btn.addEventListener('click',pauseAllVideos));
+
+      // Hero Slideshow Logic
+      const heroSlides = document.querySelectorAll('.slide-img');
+      let heroIdx = 0;
+      setInterval(()=>{
+        heroSlides[heroIdx].classList.remove('active');
+        heroIdx = (heroIdx+1)%heroSlides.length;
+        heroSlides[heroIdx].classList.add('active');
+      }, 3800);
     </script>
 </body>
 </html>
