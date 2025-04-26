@@ -14,7 +14,6 @@
       gtag('js', new Date());
       gtag('config', 'G-LH2EW6V2RP');
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
       * {
         margin: 0;
@@ -23,7 +22,7 @@
       }
 
       body {
-        font-family: 'Inter', Arial, sans-serif;
+        font-family: 'Arial', sans-serif;
         line-height: 1.6;
         color: #333;
         background-color: #f4f4f4;
@@ -289,104 +288,178 @@
 
       /* Cosmic Music Player */
       .cosmic-music-player {
-        background: linear-gradient(135deg, #13131e 60%, #23234a 100%);
-        padding: 22px 16px 28px 16px;
-        border-radius: 16px;
-        color: #e5e5e5;
+        background: linear-gradient(135deg, #0d0d0d, #1a1a2e);
+        padding: 30px;
+        border-radius: 15px;
+        color: #fff;
         text-align: center;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 2px 14px rgba(40, 40, 60, 0.18);
+        box-shadow: 0 0 20px rgba(255, 111, 97, 0.5);
         animation: pulseGlow 3s infinite;
-        max-width: 420px;
-        margin: 0 auto 32px auto;
-        opacity: 0.96;
+      }
+
+      .cosmic-music-player::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 111, 97, 0.2), transparent);
+        animation: rotate 10s linear infinite;
+      }
+
+      .player-core {
+        position: relative;
+        z-index: 1;
       }
 
       .cosmic-music-player h3 {
-        font-size: 1.4rem;
-        font-weight: 600;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
         color: #ff6f61;
-        letter-spacing: 1.2px;
-        margin-bottom: 8px;
-        text-shadow: none;
+        text-shadow: 0 0 10px rgba(255, 111, 97, 0.8);
       }
 
       .current-song {
-        margin: 10px 0 8px 0;
-        font-size: 1.08rem;
-        font-weight: 500;
+        margin: 15px 0;
+        font-size: 1.4rem;
+        font-weight: bold;
         color: #fff;
-        text-shadow: none;
-        letter-spacing: 0.5px;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        transition: all 0.3s;
       }
 
       .cosmic-gauge {
-        width: 110px;
-        height: 110px;
-        margin: 12px auto 18px auto;
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 20px auto;
+      }
+
+      .gauge-ring {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
       }
 
       .gauge-base {
-        stroke-width: 7;
+        fill: none;
+        stroke: #333;
+        stroke-width: 10;
       }
 
       .gauge-progress {
-        stroke-width: 7;
+        fill: none;
+        stroke: #ff6f61;
+        stroke-width: 10;
+        stroke-linecap: round;
+        stroke-dasharray: 283;
+        stroke-dashoffset: 283;
+        transition: stroke-dashoffset 0.3s linear;
+      }
+
+      .time-display {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.1rem;
+        color: #fff;
+        text-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+      }
+
+      .cosmic-music-player .controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
       }
 
       .cosmic-music-player .controls button {
-        border: 1.5px solid #ff6f61;
-        width: 38px;
-        height: 38px;
+        background: none;
+        border: 2px solid #ff6f61;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         color: #fff;
-        font-size: 1.08rem;
+        font-size: 1.2rem;
         cursor: pointer;
-        background: rgba(255,255,255,0.06);
-        margin: 0 5px;
-        transition: all 0.22s;
-        box-shadow: none;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cosmic-music-player .controls button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 111, 97, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.4s, height 0.4s;
+      }
+
+      .cosmic-music-player .controls button:hover::before {
+        width: 200%;
+        height: 200%;
       }
 
       .cosmic-music-player .controls button:hover {
-        background: #ff6f61;
-        color: #fff;
-        border-color: #ffb88c;
+        box-shadow: 0 0 15px rgba(255, 111, 97, 0.8);
       }
 
       .playlist-orbit {
-        margin-top: 16px;
-        padding: 10px 8px 8px 8px;
-        background: rgba(255, 111, 97, 0.06);
+        margin-top: 30px;
+        padding: 20px;
+        background: rgba(255, 111, 97, 0.1);
         border-radius: 10px;
+        position: relative;
+        z-index: 1;
       }
 
       .playlist-orbit h4 {
-        color: #ffb88c;
-        font-size: 1.08rem;
-        margin-bottom: 8px;
-        text-shadow: none;
-        font-weight: 600;
+        color: #ff6f61;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        text-shadow: 0 0 10px rgba(255, 111, 97, 0.5);
+      }
+
+      .playlist-orbit ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .playlist-orbit ul li {
+        margin: 15px 0;
+        transform: translateX(-20px);
+        transition: all 0.3s;
+      }
+
+      .playlist-orbit ul li:hover {
+        transform: translateX(0);
       }
 
       .playlist-orbit ul li a {
         color: #fff;
-        font-size: 1rem;
+        font-size: 1.2rem;
         text-decoration: none;
-        padding: 7px 14px;
-        border-radius: 6px;
-        background: rgba(255, 255, 255, 0.07);
-        transition: all 0.22s;
-        display: block;
-        margin-bottom: 5px;
+        padding: 8px 15px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+        display: block; /* Ensure full click area */
       }
 
       .playlist-orbit ul li a:hover,
       .playlist-orbit ul li a.active {
         background: #ff6f61;
-        color: #fff;
-        box-shadow: 0 0 6px rgba(255, 111, 97, 0.25);
+        box-shadow: 0 0 10px rgba(255, 111, 97, 0.8);
       }
 
       /* Animations */
@@ -447,132 +520,6 @@
       .dark-mode h2 {
         color: #ffffff;
       }
-
-      .blog-news-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 32px;
-        padding: 0 10px 20px 10px;
-        justify-items: center;
-      }
-      .glass-card {
-        width: 100%;
-        max-width: 370px;
-        min-height: 220px;
-        background: rgba(255,255,255,0.15);
-        border-radius: 20px;
-        box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1.5px solid rgba(255,255,255,0.18);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 32px 28px 28px 28px;
-        position: relative;
-        cursor: pointer;
-        transition: transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s;
-        overflow: hidden;
-        animation: cardFadeIn 0.8s cubic-bezier(.4,2,.6,1);
-      }
-      .glass-card:focus {
-        outline: 2px solid #ff6f61;
-        outline-offset: 2px;
-      }
-      .glass-card:hover {
-        transform: translateY(-8px) scale(1.03);
-        box-shadow: 0 16px 40px 0 rgba(255,111,97,0.25), 0 8px 32px 0 rgba(31,38,135,0.37);
-        background: rgba(255,255,255,0.22);
-      }
-      .card-icon {
-        font-size: 2.8rem;
-        margin-bottom: 18px;
-        filter: drop-shadow(0 2px 8px rgba(255,111,97,0.15));
-      }
-      .card-title {
-        font-size: 1.35rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: #1a1a2e;
-        letter-spacing: 1px;
-      }
-      .card-desc {
-        font-size: 1.05rem;
-        color: #333;
-        margin-bottom: 18px;
-        opacity: 0.85;
-      }
-      .card-action {
-        font-size: 1rem;
-        color: #ff6f61;
-        font-weight: 600;
-        margin-top: auto;
-        letter-spacing: 0.5px;
-        transition: text-decoration 0.2s;
-      }
-      .glass-card:hover .card-action {
-        text-decoration: underline;
-      }
-      @media (max-width: 900px) {
-        .blog-news-grid {
-          grid-template-columns: 1fr;
-        }
-        .glass-card {
-          max-width: 95vw;
-        }
-      }
-      @keyframes cardFadeIn {
-        0% { opacity: 0; transform: translateY(30px) scale(0.98); }
-        100% { opacity: 1; transform: translateY(0) scale(1); }
-      }
-      .animated-hero-bg {
-        background: linear-gradient(120deg, #ff6f61 0%, #1a1a2e 100%);
-        position: relative;
-        overflow: hidden;
-        min-height: 380px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 8px 32px 0 rgba(31,38,135,0.15);
-        animation: heroGradient 8s ease-in-out infinite alternate;
-      }
-      @keyframes heroGradient {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 100% 50%; }
-      }
-      .hero-tagline {
-        font-size: 1.5rem;
-        color: #fff;
-        margin-bottom: 10px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      }
-      .hero-mission {
-        font-size: 1.1rem;
-        color: #f4f4f4;
-        margin-bottom: 28px;
-        font-weight: 400;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.12);
-      }
-      .hero-cta {
-        background: linear-gradient(90deg, #ff6f61, #ffb88c);
-        color: #fff;
-        font-size: 1.2rem;
-        font-weight: 700;
-        border: none;
-        border-radius: 30px;
-        padding: 14px 38px;
-        margin-bottom: 24px;
-        cursor: pointer;
-        box-shadow: 0 4px 16px rgba(255,111,97,0.18);
-        transition: background 0.3s, transform 0.2s;
-      }
-      .hero-cta:hover {
-        background: linear-gradient(90deg, #ffb88c, #ff6f61);
-        transform: scale(1.05);
-      }
     </style>
 </head>
 <body>
@@ -583,44 +530,33 @@
       <nav>
         <ul>
           <li><a href="#home">Home</a></li>
-          <li><a href="#news">News</a></li>
+          <li><a href="#blog">Blog/News</a></li>
           <li><a href="#music">Music</a></li>
-          <li><a href="#artists">Artists</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#artists">Our Artist</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
     </header>
 
     <section id="home">
-      <div id="hero" class="animated-hero-bg">
+      <div id="hero">
         <h1>Welcome to RICH&BLACK STUDIO</h1>
-        <p class="hero-tagline">Where Ghana's next sound is born.</p>
-        <p class="hero-mission">Empowering artists. Inspiring fans. Uniting culture through music.</p>
-        <button class="hero-cta" onclick="document.getElementById('music').scrollIntoView({behavior: 'smooth'})"> Listen Now</button>
+        <p>Hello Rich&Black gang, our new drops are in now!</p>
+        <p>Stay tuned as the timer counts down to the release of our first album.</p>
         <div id="countdown">New album Drops In: <span id="timer"></span></div>
       </div>
     </section>
 
-    <section id="blog" class="blog-news-grid">
-      <h2>Blog / News</h2>
-      <div class="glass-card" tabindex="0" data-popup="in-my-soul">
-        <img src="acj.jpg" alt="In My Soul Release" style="border-radius:14px; width:100%; max-width:320px; margin-bottom:14px; box-shadow:0 2px 12px #ff6f6130;" />
-        <div class="card-title">"In My Soul" Exclusive Release</div>
-        <div class="card-desc">ACJ is set to release his latest track, "In My Soul," on May 1st. The song will be available exclusively on the Rich and Black website for 24 hours before its official release on all digital stores.</div>
-        <button class="card-action" onclick="event.stopPropagation();document.getElementById('in-my-soul-popup').classList.add('active');document.getElementById('popup-overlay').classList.add('active');">Read More →</button>
+    <section id="blog">
+      <h2>Blog/News</h2>
+      <div class="blog-card" data-popup="new-songs">
+        <h3>New Songs</h3>
+        <p>Our latest songs are out now! Stream them in the music player!</p>
       </div>
-      <div class="glass-card" tabindex="0" data-popup="upcoming-event">
-        <img src="yoona.jpg" alt="Event" style="border-radius:14px; width:100%; max-width:320px; margin-bottom:14px; box-shadow:0 2px 12px #ff6f6130;" />
-        <div class="card-title">Upcoming Event</div>
-        <div class="card-desc">Join us for our live concert in Accra on March 15th. Tickets available soon—stay tuned!</div>
-        <button class="card-action" onclick="event.stopPropagation();document.getElementById('upcoming-event-popup').classList.add('active');document.getElementById('popup-overlay').classList.add('active');">Event Details</button>
-      </div>
-      <div class="glass-card" tabindex="0" data-popup="new-songs">
-        <img src="acj.jpg" alt="New Songs" style="border-radius:14px; width:100%; max-width:320px; margin-bottom:14px; box-shadow:0 2px 12px #ff6f6130;" />
-        <div class="card-title">New Songs Out Now</div>
-        <div class="card-desc">We've dropped some fresh tracks! Head over to the Cosmic Audio Interface below and stream "acj-cashdown," "acj-paid," and "acj-alot" now!</div>
-        <button class="card-action" onclick="event.stopPropagation();document.getElementById('new-songs-popup').classList.add('active');document.getElementById('popup-overlay').classList.add('active');">Listen Now</button>
+      <div class="blog-card" data-popup="upcoming-event">
+        <h3>Upcoming Event</h3>
+        <p>Join us for our live concert in Accra on March 15th.</p>
       </div>
     </section>
 
@@ -685,31 +621,19 @@
     </section>
 
     <footer>
-      <p> 2024 RICH&BLACK STUDIO. Designed by Paaed. All rights reserved.</p>
+      <p>© 2024 RICH&BLACK STUDIO. Designed by Nana Kofi Fosu. All rights reserved.</p>
     </footer>
 
     <!-- Popup Container -->
     <div class="overlay" id="popup-overlay"></div>
     <div class="popup" id="new-songs-popup">
       <h4>New Songs Alert!</h4>
-      <p>We've dropped some fresh tracks! Head over to the Cosmic Audio Interface below and stream "acj-cashdown," "acj-paid," and "acj-alot" now!</p>
+      <p>We’ve dropped some fresh tracks! Head over to the Cosmic Audio Interface below and stream "acj-cashdown," "acj-paid," and "acj-alot" now!</p>
       <button class="close-btn">Close</button>
     </div>
     <div class="popup" id="upcoming-event-popup">
       <h4>Upcoming Event Details</h4>
       <p>Get ready for our live concert in Accra! Join us on March 15th at 7 PM at the Accra Music Arena. Tickets available soon—stay tuned!</p>
-      <button class="close-btn">Close</button>
-    </div>
-    <div class="popup" id="in-my-soul-popup">
-      <h4>FOR IMMEDIATE RELEASE</h4>
-      <p style="text-align:left; color:#fff;">
-        Acclaimed artist ACJ is set to release his latest track, <b>"In My Soul,"</b> on May 1st. The song will be available exclusively on the Rich and Black website for 24 hours before its official release on all digital stores.<br><br>
-        <b>"In My Soul"</b> is a powerful and introspective track that showcases ACJ's unique musical style. The song is sure to resonate with fans of all genres.<br><br>
-        "I'm excited to finally share 'In My Soul' with the world," said ACJ. "This song is very personal to me, and I hope it connects with listeners on a deep level."<br><br>
-        Fans can visit the Rich and Black website on May 1st to hear "In My Soul" before it's released on all digital stores.<br><br>
-        CEO<br>
-        PAAED
-      </p>
       <button class="close-btn">Close</button>
     </div>
 
@@ -745,8 +669,8 @@
       const countdownInterval = setInterval(updateCountdown, 1000);
       updateCountdown();
 
-      // Blog/News Popups (updated for glass cards)
-      const glassCards = document.querySelectorAll('.glass-card');
+      // Blog/News Popups
+      const blogCards = document.querySelectorAll('.blog-card');
       const overlay = document.getElementById('popup-overlay');
       const popups = document.querySelectorAll('.popup');
       const closeButtons = document.querySelectorAll('.popup .close-btn');
@@ -756,18 +680,13 @@
         popups.forEach(popup => popup.classList.remove('active'));
       }
 
-      glassCards.forEach(card => {
+      blogCards.forEach(card => {
         card.addEventListener('click', () => {
           const popupId = card.getAttribute('data-popup') + '-popup';
           const popup = document.getElementById(popupId);
           if (popup) {
             overlay.classList.add('active');
             popup.classList.add('active');
-          }
-        });
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            card.click();
           }
         });
       });
