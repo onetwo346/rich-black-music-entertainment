@@ -3,368 +3,504 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="RICH&BLACK STUDIO: Representing Ghana's Central Region with vibrant music and culture." />
     <title>RICH&BLACK STUDIO</title>
-    <!-- Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH2EW6V2RP"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-LH2EW6V2RP');
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-LH2EW6V2RP');
     </script>
-    <!-- Google Fonts -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" />
     <style>
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        html {
-            scroll-behavior: smooth;
-        }
+      body {
+        font-family: 'Poppins', sans-serif; /* Modern font for professionalism */
+        line-height: 1.6;
+        color: #333;
+        background-color: #f9f9f9; /* Softer background */
+        transition: background-color 0.3s, color 0.3s;
+        overflow-x: hidden;
+      }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-            transition: background-color 0.3s, color 0.3s;
-            overflow-x: hidden;
-        }
+      header {
+        background: #1a1a1a; /* Slightly lighter black for depth */
+        color: #fff;
+        padding: 30px;
+        text-align: center;
+        border-bottom: 3px solid #ff6f61; /* Accent border */
+      }
 
-        /* Header */
-        header {
-            background: #1a1a1a;
-            color: #fff;
-            padding: 2rem;
-            text-align: center;
-            border-bottom: 3px solid #ff6f61;
-        }
+      .logo {
+        width: 120px;
+        height: auto;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
 
-        .logo {
-            width: 100px;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            loading: lazy;
-        }
+      nav {
+        background: #2c2c2c;
+        padding: 15px;
+        text-align: center;
+      }
 
-        /* Navigation */
-        nav {
-            background: #2c2c2c;
-            padding: 1rem;
-        }
+      nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.1rem;
+        padding: 8px 15px;
+        border-radius: 5px;
+        transition: background 0.3s, color 0.3s;
+      }
 
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background 0.3s, color 0.3s;
-        }
+      nav ul li a:hover {
+        background: #ff6f61;
+        color: #fff;
+      }
 
-        nav ul li a:hover, nav ul li a:focus {
-            background: #ff6f61;
-            color: #fff;
-        }
+      section {
+        padding: 50px 20px;
+        margin: 30px auto;
+        max-width: 1200px; /* Centered content with max-width */
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
 
-        /* Sections */
-        section {
-            padding: 3rem 1rem;
-            margin: 2rem auto;
-            max-width: 1200px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
+      h2 {
+        color: #1a1a1a;
+        margin-bottom: 25px;
+        font-size: 2.2rem;
+        text-align: center;
+        font-weight: 600;
+      }
 
-        h2 {
-            color: #1a1a1a;
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
+      /* Announcement Section */
+      #announcement {
+        background: linear-gradient(135deg, #ff6f61, #e65a50);
+        color: #fff;
+        padding: 30px;
+        text-align: center;
+        border-radius: 12px;
+        margin: 20px auto;
+        max-width: 800px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
 
-        /* Hero Section */
-        #hero {
-            position: relative;
-            background-image: url('IMG_3731.gif');
-            background-size: cover;
-            background-position: center;
-            padding: 5rem 1rem;
-            border-radius: 12px;
-            text-align: center;
-            color: #fff;
-        }
+      #announcement h2 {
+        color: #fff;
+        font-size: 2rem;
+        margin-bottom: 15px;
+      }
 
-        #hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1;
-        }
+      #announcement p {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+      }
 
-        #hero h1, #hero p, #hero #countdown {
-            position: relative;
-            z-index: 2;
-        }
+      #announcement .highlight {
+        font-weight: bold;
+        font-style: italic;
+      }
 
-        #hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            animation: fadeIn 1.5s ease-in-out;
-        }
+      /* Hero Section */
+      #hero {
+        position: relative;
+        background-image: url('IMG_3731.gif');
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+        padding: 80px 20px;
+        border-radius: 12px;
+        overflow: hidden;
+      }
 
-        #hero p {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
+      #hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+      }
 
-        #countdown {
-            font-size: 1.3rem;
-            background: rgba(255, 111, 97, 0.8);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            animation: pulse 2s infinite;
-        }
+      #hero h1, #hero p, #hero #countdown {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+      }
 
-        /* Blog Section */
-        #blog {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            padding: 1rem;
-        }
+      #hero h1 {
+        font-size: 2.8rem;
+        margin-bottom: 15px;
+        animation: fadeIn 2s ease-in-out;
+      }
 
-        .blog-card {
-            background: #2c2c2c;
-            color: #fff;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
+      #hero p {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        animation: fadeIn 3s ease-in-out;
+      }
 
-        .blog-card:hover, .blog-card:focus {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba        }
+      #countdown {
+        font-size: 1.4rem;
+        font-weight: bold;
+        background: rgba(255, 111, 97, 0.8);
+        padding: 10px 20px;
+        border-radius: 8px;
+        display: inline-block;
+        animation: pulse 2s infinite;
+      }
 
-        .blog-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
+      /* Blog/News Section */
+      #blog {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .blog-card {
+        width: 100%;
+        margin: 0 auto;
+      }
 
-        .blog-card p {
-            font-size: 0.95rem;
-            color: #ccc;
-        }
+      /* Blog/News Section */
+      #blog {
+        padding: 50px 20px;
+        margin: 30px auto;
+        max-width: 1200px; /* Centered content with max-width */
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      }
 
-        .blog-card.announcement {
-            background: linear-gradient(135deg, #ff6f61, #e65a50);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
+      .blog-card {
+        background: #2c2c2c;
+        border-radius: 12px;
+        padding: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
 
-        /* Music Player */
-        .cosmic-music-player {
-            background: #1a1a1a;
-            color: #fff;
-            padding: 1.5rem;
-            border-radius: 12px;
-            max-width: 500px;
-            margin: 0 auto;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
+      .blog-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      }
 
-        .cosmic-music-player h3 {
-            font-size: 1.4rem;
-            color: #ff6f61;
-            margin-bottom: 1rem;
-        }
+      .blog-card h3 {
+        color: #fff;
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+      }
 
-        .current-song {
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
+      .blog-card p {
+        color: #ccc;
+        font-size: 0.95rem;
+      }
 
-        .progress-bar {
-            height: 5px;
-            background: #333;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-            position: relative;
-        }
+      /* Artist Section */
+      .artist {
+        margin-bottom: 30px;
+        text-align: center;
+      }
 
-        .progress {
-            height: 100%;
-            width: 0;
-            background: #ff6f61;
-            border-radius: 5px;
-            transition: width 0.3s linear;
-        }
+      .artist img {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        border-radius: 12px;
+        transition: transform 0.3s;
+      }
 
-        .time-display {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: #ccc;
-            margin-bottom: 1rem;
-        }
+      .artist img:hover {
+        transform: scale(1.03);
+      }
 
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
+      /* Music Player */
+      .cosmic-music-player {
+        background: #1a1a1a;
+        padding: 20px;
+        border-radius: 12px;
+        color: #fff;
+        text-align: center;
+        max-width: 500px; /* Smaller size */
+        margin: 0 auto;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+      }
 
-        .controls button {
-            background: #ff6f61;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+      .cosmic-music-player h3 {
+        font-size: 1.5rem;
+        color: #ff6f61;
+        margin-bottom: 15px;
+      }
 
-        .controls button:hover, .controls button:focus {
-            background: #e65a50;
-        }
+      .current-song {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        color: #fff;
+      }
 
-        .playlist ul {
-            list-style: none;
-        }
+      .progress-bar {
+        width: 100%;
+        height: 5px;
+        background: #333;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        position: relative;
+      }
 
-        .playlist ul li a {
-            color: #ccc;
-            text-decoration: none;
-            padding: 0.5rem;
-            display: block;
-            border-radius: 5px;
-            transition: background 0.3s, color 0.3s;
-        }
+      .progress {
+        height: 100%;
+        width: 0;
+        background: #ff6f61;
+        border-radius: 5px;
+        transition: width 0.3s linear;
+      }
 
-        .playlist ul li a:hover,
-        .playlist ul li a.active {
-            background: #ff6f61;
-            color: #fff;
-        }
+      .time-display {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: #ccc;
+        margin-bottom: 15px;
+      }
 
-        /* Hidden Sections */
-        .hidden-section {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
 
-        .hidden-section.visible {
-            display: block;
-            opacity: 1;
-        }
+      .controls button {
+        background: #ff6f61;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
 
-        /* Footer */
-        footer {
-            background: #1a1a1a;
-            color: #fff;
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.9rem;
-        }
+      .controls button:hover {
+        background: #e65a50;
+      }
 
-        .social-links a {
-            color: #fff;
-            margin: 0 0.5rem;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+      .playlist {
+        margin-top: 20px;
+      }
 
-        .social-links a:hover, .social-links a:focus {
-            color: #ff6f61;
-        }
+      .playlist ul {
+        list-style: none;
+        padding: 0;
+      }
 
-        /* Dark Mode */
-        .dark-mode {
-            background-color: #121212;
-            color: #fff;
-        }
+      .playlist ul li {
+        margin: 10px 0;
+      }
 
-        .dark-mode section {
-            background: #1e1e1e;
-            color: #fff;
-        }
+      .playlist ul li a {
+        color: #ccc;
+        text-decoration: none;
+        font-size: 1rem;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: block;
+        transition: background 0.3s, color 0.3s;
+      }
 
-        .dark-mode h2 {
-            color: #fff;
-        }
+      .playlist ul li a:hover,
+      .playlist ul li a.active {
+        background: #ff6f61;
+        color: #fff;
+      }
 
-        /* Animations */
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
+      /* Hidden Sections */
+      .hidden-section {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
+      .hidden-section.visible {
+        display: block;
+        opacity: 1;
+      }
 
-        /* No JavaScript Fallback */
-        .no-js .hidden-section {
-            display: block;
-            opacity: 1;
-        }
+      /* Popup Styles */
+      .popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #1a1a1a;
+        color: #fff;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        max-width: 400px;
+        text-align: center;
+      }
 
-        .no-js #countdown,
-        .no-js .cosmic-music-player {
-            display: none;
-        }
+      .popup.active {
+        display: block;
+      }
 
-        .no-js .no-js-fallback {
-            display: block;
-            text-align: center;
-            padding: 1rem;
-            color: #666;
-        }
+      .popup h4 {
+        color: #ff6f61;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+      }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            #hero h1 { font-size: 2rem; }
-            #hero p { font-size: 1rem; }
-            nav ul { flex-direction: column; gap: 0.5rem; }
-            .logo { width: 80px; }
-        }
+      .popup .close-btn {
+        background: #ff6f61;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background 0.3s;
+      }
+
+      .popup .close-btn:hover {
+        background: #e65a50;
+      }
+
+      .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+
+      .overlay.active {
+        display: block;
+      }
+
+      /* Footer */
+      footer {
+        background: #1a1a1a;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        font-size: 0.9rem;
+      }
+
+      .social-links a {
+        color: #fff;
+        margin: 0 10px;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .social-links a:hover {
+        color: #ff6f61;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        #hero h1 { font-size: 2rem; }
+        #hero p { font-size: 1.1rem; }
+        nav ul { flex-direction: column; gap: 10px; }
+        .artist img { max-width: 200px; }
+        .logo { width: 100px; }
+        .popup { max-width: 90%; }
+      }
+
+      /* Dark Mode */
+      .dark-mode {
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      .dark-mode header, .dark-mode footer {
+        background-color: #1a1a1a;
+      }
+
+      .dark-mode section {
+        background-color: #1e1e1e;
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+      }
+
+      .dark-mode h2 {
+        color: #ffffff;
+      }
+
+      /* No JavaScript Fallback */
+      .no-js section.hidden-section {
+        display: block;
+        opacity: 1;
+      }
+
+      .no-js #countdown {
+        display: none;
+      }
+
+      .no-js .cosmic-music-player {
+        display: none;
+      }
+
+      .no-js .no-js-fallback {
+        display: block;
+        text-align: center;
+        padding: 20px;
+        color: #666;
+      }
     </style>
+    <!-- Google Fonts for Professional Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="no-js">
     <header>
-        <img src="IMG_3717.jpeg" alt="RICH&BLACK STUDIO Logo" class="logo" loading="lazy" />
+        <img src="IMG_3717.jpeg" alt="RICH&BLACK STUDIO Logo" class="logo" />
         <h1>RICH&BLACK STUDIO</h1>
-        <p>Representing Ghana's Central Region</p>
-        <nav aria-label="Main navigation">
+        <p>Representing, Ghana Central Region</p>
+        <nav>
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#blog">Blog/News</a></li>
                 <li><a href="#music">Music</a></li>
                 <li><a href="#about">About Us</a></li>
-                <li><a href="#artists">Our Artists</a></li>
+                <li><a href="#artists">Our Artist</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
@@ -374,49 +510,54 @@
         <div id="hero">
             <h1>Welcome to RICH&BLACK STUDIO</h1>
             <p>Hello Rich&Black gang, our new drops are in now!</p>
-            <p>Stay tuned for our first album release.</p>
-            <div id="countdown" aria-live="polite">New album drops in: <span id="timer"></span></div>
+            <p>Stay tuned as the timer counts down to the release of our first album.</p>
+            <div id="countdown">New album Drops In: <span id="timer"></span></div>
         </div>
     </section>
 
-    <section id="blog" aria-labelledby="blog-heading">
-        <h2 id="blog-heading">Blog/News</h2>
-        <div class="blog-card announcement" data-popup="announcement">
-            <h3>For Immediate Release: ACJ's "In My Soul"</h3>
-            <p>Acclaimed artist ACJ releases his latest track, <strong>"In My Soul,"</strong> on May 1st. Available exclusively on our website for 24 hours before hitting all digital stores. <em>"This song is very personal to me,"</em> says ACJ.</p>
-        </div>
-        <div class="blog-card" data-popup="new-songs">
-            <h3>New Songs</h3>
-            <p>Our latest tracks are out! Stream them in the music player below.</p>
+    <section id="blog">
+        <h2>Blog/News</h2>
+        <!-- Announcement as Top Blog News -->
+        <div class="blog-card announcement-card" data-popup="immediate-release">
+            <h3>For Immediate Release</h3>
+            <p>Acclaimed artist ACJ is set to release his latest track, <span class="highlight">"In My Soul,"</span> on May 1st. The song will be available exclusively on the Rich and Black website for 24 hours before its official release on all digital stores.</p>
+            <p><span class="highlight">"In My Soul"</span> is a powerful and introspective track that showcases ACJ’s unique musical style. The song is sure to resonate with fans of all genres.</p>
+            <p class="highlight">"I’m excited to finally share 'In My Soul' with the world,” said ACJ. “This song is very personal to me, and I hope it connects with listeners on a deep level."</p>
+            <p>Fans can visit the Rich and Black website on May 1st to hear <span class="highlight">"In My Soul"</span> before it’s released on all digital stores.</p>
+            <p><strong>CEO</strong><br>PAAED</p>
         </div>
         <div class="blog-card" data-popup="upcoming-event">
             <h3>Upcoming Event</h3>
             <p>Join us for our live concert in Accra on March 15th.</p>
         </div>
+        <div class="blog-card" data-popup="new-songs">
+            <h3>New Songs</h3>
+            <p>Our latest songs are out now! Stream them in the music player!</p>
+        </div>
     </section>
 
-    <section id="about" class="hidden-section" aria-labelledby="about-heading">
-        <h2 id="about-heading">About Us</h2>
-        <p>Rich and Black Studio celebrates creativity and culture, showcasing vibrant talents who embody innovation and authenticity. Join us in exploring the rich tapestry of sounds defining our identity.</p>
+    <section id="about" class="hidden-section">
+        <h2>About Us</h2>
+        <p>Welcome to Rich and Black where creativity meets culture. Our label is dedicated to showcasing the vibrant talents of artists who embody the spirit of innovation and authenticity. Join us on a journey that celebrates diversity, passion, and the rich tapestry of sounds that define our unique identity.</p>
     </section>
 
-    <section id="artists" class="hidden-section" aria-labelledby="artists-heading">
-        <h2 id="artists-heading">Our Artists</h2>
+    <section id="artists" class="hidden-section">
+        <h2>Our Artist</h2>
         <div class="artist">
-            <img src="acj.jpg" alt="R&B-ACJ" loading="lazy" />
+            <img src="acj.jpg" alt="R&B-ACJ" />
             <h3>R&B-ACJ</h3>
-            <p>R&B-ACJ, from Ghana's Central Region, is known for his unique sound and captivating performances.</p>
+            <p>R&B-ACJ is a talented artist from the Central Region, known for his unique sound and captivating performances.</p>
         </div>
         <div class="artist">
-            <img src="yoona.jpg" alt="Yoona" loading="lazy" />
+            <img src="yoona.jpg" alt="Yoona, artist at RICH&BLACK STUDIO" />
             <h3>Yoona</h3>
-            <p>Yoona brings soulful melodies and a fresh perspective to the music scene.</p>
+            <p>Yoona brings a fresh perspective to the music scene with her soulful melodies.</p>
         </div>
     </section>
 
-    <section id="music" aria-labelledby="music-heading">
-        <h2 id="music-heading">Music</h2>
-        <div class="cosmic-music-player" role="region" aria-label="Music player">
+    <section id="music">
+        <h2>Music</h2>
+        <div class="cosmic-music-player">
             <h3>Cosmic Audio Interface</h3>
             <div class="current-song" id="current-song">Select a track to play</div>
             <div class="progress-bar">
@@ -427,224 +568,235 @@
                 <span id="duration">0:00</span>
             </div>
             <div class="controls">
-                <button id="play" aria-label="Play">▶</button>
-                <button id="pause" aria-label="Pause">⏸</button>
-                <button id="stop" aria-label="Stop">⏹</button>
-                <button id="shuffle" aria-label="Shuffle">🔀</button>
+                <button id="play">▶</button>
+                <button id="pause">⏸</button>
+                <button id="stop">⏹</button>
+                <button id="shuffle">🔀</button>
             </div>
             <div class="playlist">
                 <h4>Playlist</h4>
-                <ul id="playlist" role="listbox">
-                    <li role="option"><a href="#" data-src="acj-cashdown.mp3">acj-cashdown</a></li>
-                    <li role="option"><a href="#" data-src="acj-paid.mp3">acj-paid</a></li>
-                    <li role="option"><a href="#" data-src="acj-alot.mp3">acj-alot</a></li>
+                <ul id="playlist">
+                    <li><a href="#" data-src="acj-cashdown.mp3">acj-cashdown</a></li>
+                    <li><a href="#" data-src="acj-paid.mp3">acj-paid</a></li>
+                    <li><a href="#" data-src="acj-alot.mp3">acj-alot</a></li>
                 </ul>
             </div>
         </div>
         <div class="no-js-fallback" style="display: none;">
-            <p>JavaScript is required to use the music player. Please enable JavaScript or download tracks from our digital store.</p>
+            <p>JavaScript is disabled. Please enable JavaScript to use the music player, or download the tracks directly from our digital store.</p>
         </div>
     </section>
 
-    <section id="contact" class="hidden-section" aria-labelledby="contact-heading">
-        <h2 id="contact-heading">Contact Us</h2>
-        <p>For inquiries or collaborations, reach out at: <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a>.</p>
+    <section id="contact" class="hidden-section">
+        <h2>Contact Us</h2>
+        <p>For inquiries, collaborations, or feedback, reach out to us at: <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a>.</p>
         <div class="social-links">
-            <a href="https://twitter.com/cosmoscoderr" target="_blank" rel="noopener noreferrer" aria-label="Twitter">Twitter</a>
+            <a href="https://twitter.com/cosmoscoderr" target="_blank" rel="noopener noreferrer">Twitter</a>
         </div>
     </section>
 
     <footer>
-        <p>© 2025 RICH&BLACK STUDIO. Designed by Nana Kofi Fosu. All rights reserved.</p>
+        <p> 2025 RICH&BLACK STUDIO. Designed by PAAED. All rights reserved.</p>
     </footer>
 
     <!-- Popup Container -->
-    <div class="overlay" id="popup-overlay" role="presentation"></div>
-    <div class="popup" id="announcement-popup" role="dialog" aria-labelledby="announcement-popup-title">
-        <h4 id="announcement-popup-title">ACJ's "In My Soul" Release</h4>
-        <p>Available exclusively on May 1st for 24 hours on our website before hitting all digital stores. <em>"This song is very personal to me,"</em> says ACJ.</p>
-        <button class="close-btn" aria-label="Close popup">Close</button>
+    <div class="overlay" id="popup-overlay"></div>
+    <div class="popup" id="new-songs-popup">
+        <h4>New Songs Alert!</h4>
+        <p>We’ve dropped some fresh tracks! Head over to the Cosmic Audio Interface below and stream "acj-cashdown," "acj-paid," and "acj-alot" now!</p>
+        <button class="close-btn">Close</button>
     </div>
-    <div class="popup" id="new-songs-popup" role="dialog" aria-labelledby="new-songs-popup-title">
-        <h4 id="new-songs-popup-title">New Songs Alert!</h4>
-        <p>Stream "acj-cashdown," "acj-paid," and "acj-alot" now in the Cosmic Audio Interface!</p>
-        <button class="close-btn" aria-label="Close popup">Close</button>
+    <div class="popup" id="upcoming-event-popup">
+        <h4>Upcoming Event Details</h4>
+        <p>Get ready for our live concert in Accra! Join us on March 15th at 7 PM at the Accra Music Arena. Tickets available soon—stay tuned!</p>
+        <button class="close-btn">Close</button>
     </div>
-    <div class="popup" id="upcoming-event-popup" role="dialog" aria-labelledby="upcoming-event-popup-title">
-        <h4 id="upcoming-event-popup-title">Upcoming Event</h4>
-        <p>Join us for our live concert in Accra on March 15th at 7 PM at the Accra Music Arena. Tickets available soon!</p>
-        <button class="close-btn" aria-label="Close popup">Close</button>
+    <div class="popup" id="immediate-release-popup">
+        <h4>For Immediate Release</h4>
+        <p>Acclaimed artist ACJ is set to release his latest track, <span class="highlight">"In My Soul,"</span> on May 1st. The song will be available exclusively on the Rich and Black website for 24 hours before its official release on all digital stores.</p>
+        <p><span class="highlight">"In My Soul"</span> is a powerful and introspective track that showcases ACJ’s unique musical style. The song is sure to resonate with fans of all genres.</p>
+        <p class="highlight">"I’m excited to finally share 'In My Soul' with the world,” said ACJ. “This song is very personal to me, and I hope it connects with listeners on a deep level."</p>
+        <p>Fans can visit the Rich and Black website on May 1st to hear <span class="highlight">"In My Soul"</span> before it’s released on all digital stores.</p>
+        <p><strong>CEO</strong><br>PAAED</p>
+        <button class="close-btn">Close</button>
     </div>
 
-    <button id="theme-toggle" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 15px; background-color: #ff6f61; color: #fff; border: none; border-radius: 5px; cursor: pointer;" aria-label="Toggle dark mode">Toggle Dark Mode</button>
+    <button id="theme-toggle" style="position: fixed; bottom: 20px; right: 20px; padding: 10px 15px; background-color: #ff6f61; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-family: 'Poppins', sans-serif;">Toggle Dark Mode</button>
 
-    <script defer>
-        // Remove no-js class
-        document.body.classList.remove('no-js');
+    <script>
+      // Remove no-js class if JavaScript is enabled
+      document.body.classList.remove('no-js');
 
-        // Dark Mode with Local Storage
-        const body = document.body;
-        const themeToggle = document.getElementById('theme-toggle');
-        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDarkMode)) {
-            body.classList.add('dark-mode');
+      // Dark Mode Toggle
+      const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const body = document.body;
+      if (prefersDarkMode) body.classList.add('dark-mode');
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+      });
+
+      // Countdown Timer
+      const countdownDate = new Date();
+      countdownDate.setDate(countdownDate.getDate() + 7);
+      const timer = document.getElementById('timer');
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          timer.innerHTML = "The album is here!";
+          return;
         }
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light');
-        });
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        timer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+      const countdownInterval = setInterval(updateCountdown, 1000);
+      updateCountdown();
 
-        // Countdown Timer
-        const countdownDate = new Date().setDate(new Date().getDate() + 7);
-        const timer = document.getElementById('timer');
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
-            if (distance < 0) {
-                timer.textContent = "The album is here!";
-                return;
+      // Blog/News Popups
+      const blogCards = document.querySelectorAll('.blog-card');
+      const overlay = document.getElementById('popup-overlay');
+      const popups = document.querySelectorAll('.popup');
+      const closeButtons = document.querySelectorAll('.popup .close-btn');
+
+      function closePopups() {
+        overlay.classList.remove('active');
+        popups.forEach(popup => popup.classList.remove('active'));
+      }
+
+      blogCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const popupId = card.getAttribute('data-popup') + '-popup';
+          const popup = document.getElementById(popupId);
+          if (popup) {
+            overlay.classList.add('active');
+            popup.classList.add('active');
+          }
+        });
+      });
+
+      closeButtons.forEach(btn => {
+        btn.addEventListener('click', closePopups);
+      });
+
+      overlay.addEventListener('click', closePopups);
+
+      // Music Player
+      const playButton = document.getElementById('play');
+      const pauseButton = document.getElementById('pause');
+      const stopButton = document.getElementById('stop');
+      const shuffleButton = document.getElementById('shuffle');
+      const currentSongDisplay = document.getElementById('current-song');
+      const progressBar = document.getElementById('progress');
+      const currentTimeDisplay = document.getElementById('current-time');
+      const durationDisplay = document.getElementById('duration');
+      const playlistLinks = document.querySelectorAll('.playlist ul li a');
+
+      let audio = new Audio();
+      let isPlaying = false;
+
+      function formatTime(seconds) {
+        if (isNaN(seconds)) return '0:00';
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
+      }
+
+      function updateProgress() {
+        if (audio.duration && !isNaN(audio.duration)) {
+          const progressPercent = (audio.currentTime / audio.duration) * 100;
+          progressBar.style.width = `${progressPercent}%`;
+          currentTimeDisplay.textContent = formatTime(audio.currentTime);
+          durationDisplay.textContent = formatTime(audio.duration);
+        }
+        if (isPlaying) {
+          requestAnimationFrame(updateProgress);
+        }
+      }
+
+      playButton.addEventListener('click', () => {
+        if (audio.src) {
+          audio.play().catch(err => console.error('Playback error:', err));
+          isPlaying = true;
+          updateProgress();
+        } else {
+          alert('Select a track from the playlist to begin!');
+        }
+      });
+
+      pauseButton.addEventListener('click', () => {
+        audio.pause();
+        isPlaying = false;
+      });
+
+      stopButton.addEventListener('click', () => {
+        audio.pause();
+        audio.currentTime = 0;
+        isPlaying = false;
+        progressBar.style.width = '0%';
+        currentTimeDisplay.textContent = '0:00';
+      });
+
+      shuffleButton.addEventListener('click', () => {
+        const songs = Array.from(playlistLinks);
+        const randomSong = songs[Math.floor(Math.random() * songs.length)];
+        audio.src = randomSong.getAttribute('data-src');
+        audio.play().catch(err => console.error('Playback error:', err));
+        isPlaying = true;
+        currentSongDisplay.textContent = randomSong.textContent;
+        playlistLinks.forEach(link => link.classList.remove('active'));
+        randomSong.classList.add('active');
+        updateProgress();
+      });
+
+      playlistLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const songSrc = link.getAttribute('data-src');
+          if (songSrc) {
+            if (audio.src !== songSrc) {
+              audio.src = songSrc;
             }
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            timer.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-        }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // Popups
-        const overlay = document.getElementById('popup-overlay');
-        function closePopups() {
-            overlay.classList.remove('active');
-            document.querySelectorAll('.popup').forEach(popup => popup.classList.remove('active'));
-        }
-
-        document.querySelectorAll('.blog-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const popupId = card.getAttribute('data-popup') + '-popup';
-                const popup = document.getElementById(popupId);
-                if (popup) {
-                    overlay.classList.add('active');
-                    popup.classList.add('active');
-                    popup.querySelector('.close-btn').focus();
-                }
-            });
-        });
-
-        document.querySelectorAll('.popup .close-btn').forEach(btn => {
-            btn.addEventListener('click', closePopups);
-        });
-
-        overlay.addEventListener('click', closePopups);
-
-        // Music Player
-        const audio = new Audio();
-        const playButton = document.getElementById('play');
-        const pauseButton = document.getElementById('pause');
-        const stopButton = document.getElementById('stop');
-        const shuffleButton = document.getElementById('shuffle');
-        const currentSongDisplay = document.getElementById('current-song');
-        const progressBar = document.getElementById('progress');
-        const currentTimeDisplay = document.getElementById('current-time');
-        const durationDisplay = document.getElementById('duration');
-        const playlist = document.getElementById('playlist');
-
-        let isPlaying = false;
-
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            const minutes = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${minutes}:${secs < 10 ? '0' + secs : secs}`;
-        }
-
-        function updateProgress() {
-            if (audio.duration) {
-                const progressPercent = (audio.currentTime / audio.duration) * 100;
-                progressBar.style.width = `${progressPercent}%`;
-                currentTimeDisplay.textContent = formatTime(audio.currentTime);
-                durationDisplay.textContent = formatTime(audio.duration);
-            }
-            if (isPlaying) requestAnimationFrame(updateProgress);
-        }
-
-        playButton.addEventListener('click', () => {
-            if (audio.src) {
-                audio.play().catch(() => {
-                    currentSongDisplay.textContent = 'Error playing track';
-                });
-                isPlaying = true;
-                updateProgress();
-            } else {
-                alert('Please select a track from the playlist.');
-            }
-        });
-
-        pauseButton.addEventListener('click', () => {
-            audio.pause();
-            isPlaying = false;
-        });
-
-        stopButton.addEventListener('click', () => {
-            audio.pause();
-            audio.currentTime = 0;
-            isPlaying = false;
-            progressBar.style.width = '0%';
-            currentTimeDisplay.textContent = '0:00';
-        });
-
-        shuffleButton.addEventListener('click', () => {
-            const songs = playlist.querySelectorAll('a');
-            const randomSong = songs[Math.floor(Math.random() * songs.length)];
-            audio.src = randomSong.getAttribute('data-src');
-            audio.play().catch(() => {
-                currentSongDisplay.textContent = 'Error playing track';
-            });
+            audio.play().catch(err => console.error('Playback error:', err));
             isPlaying = true;
-            currentSongDisplay.textContent = randomSong.textContent;
-            playlist.querySelectorAll('a').forEach(link => link.classList.remove('active'));
-            randomSong.classList.add('active');
+            currentSongDisplay.textContent = link.textContent;
+            playlistLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
             updateProgress();
+          }
         });
+      });
 
-        playlist.addEventListener('click', (e) => {
-            e.preventDefault();
-            const link = e.target.closest('a');
-            if (!link) return;
-            const songSrc = link.getAttribute('data-src');
-            if (songSrc) {
-                audio.src = songSrc;
-                audio.play().catch(() => {
-                    currentSongDisplay.textContent = 'Error playing track';
-                });
-                isPlaying = true;
-                currentSongDisplay.textContent = link.textContent;
-                playlist.querySelectorAll('a').forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                updateProgress();
-            }
-        });
+      audio.addEventListener('ended', () => {
+        isPlaying = false;
+        progressBar.style.width = '0%';
+        currentTimeDisplay.textContent = '0:00';
+      });
 
-        audio.addEventListener('ended', () => {
-            isPlaying = false;
-            progressBar.style.width = '0%';
-            currentTimeDisplay.textContent = '0:00';
-        });
+      audio.addEventListener('error', () => {
+        console.error('Audio error:', audio.error);
+        currentSongDisplay.textContent = 'Error loading track';
+        isPlaying = false;
+      });
 
-        // Navigation and Hidden Sections
-        document.querySelector('nav ul').addEventListener('click', (e) => {
-            const link = e.target.closest('a');
-            if (!link) return;
-            e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
-            const targetSection = document.getElementById(targetId);
-            if (targetSection.classList.contains('hidden-section')) {
-                targetSection.classList.add('visible');
-                setTimeout(() => targetSection.classList.remove('visible'), 5000);
-            }
-            targetSection.scrollIntoView({ behavior: 'smooth' });
+      // Show Hidden Sections
+      let hideTimeout;
+      document.querySelectorAll('nav ul li a').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetSection = document.getElementById(targetId);
+          if (targetSection.classList.contains('hidden-section')) {
+            targetSection.classList.add('visible');
+            clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(() => targetSection.classList.remove('visible'), 5000);
+          }
+          window.scrollTo({ top: targetSection.offsetTop - 20, behavior: 'smooth' });
         });
+      });
     </script>
 </body>
 </html>
