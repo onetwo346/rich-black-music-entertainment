@@ -636,6 +636,7 @@
       .slide-img {
         position:absolute;
         top:0;left:0;width:100%;height:100%;object-fit:cover;
+        object-position:top;
         opacity:0;
         transition:opacity 1.1s;
         pointer-events:none;
@@ -670,20 +671,18 @@
     </header>
 
     <section id="home">
-        <div id="hero" style="position:relative; overflow:hidden;">
-            <!-- Hero Slideshow -->
-            <div class="hero-slideshow">
-                <img src="acj1.jpg" class="slide-img active" alt="ACJ 1" />
-                <img src="acj2.jpg" class="slide-img" alt="ACJ 2" />
-                <img src="acj3.jpg" class="slide-img" alt="ACJ 3" />
-                <img src="acj4.jpg" class="slide-img" alt="ACJ 4" />
-            </div>
-            <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(20,20,20,0.45);z-index:1;"></div>
-            <div style="position:relative;z-index:2;">
-                <h1 id="typewriter-headline"></h1>
-                <p>Hello Rich&Black gang, our new drops are in now!</p>
-                <button id="cta-btn" style="margin-top:30px;padding:16px 36px;font-size:1.2rem;font-weight:700;background:linear-gradient(90deg,#ff6f61,#e65a50);color:#fff;border:none;border-radius:8px;box-shadow:0 4px 16px rgba(255,111,97,0.3);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;">Listen to the Latest Drop</button>
-            </div>
+        <div id="hero" class="hero-section">
+          <div class="hero-slideshow">
+            <img src="IMG_3731.gif" class="slide-img active" alt="Slideshow Image 1">
+            <img src="gif1.png" class="slide-img" alt="Slideshow Image 2">
+            <img src="gif2.png" class="slide-img" alt="Slideshow Image 3">
+          </div>
+          <div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(20,20,20,0.45);z-index:1;"></div>
+          <div style="position:relative;z-index:2;">
+            <h1 id="typewriter-headline"></h1>
+            <p>Hello Rich&Black gang, our new drops are in now!</p>
+            <button id="cta-btn" style="margin-top:30px;padding:16px 36px;font-size:1.2rem;font-weight:700;background:linear-gradient(90deg,#ff6f61,#e65a50);color:#fff;border:none;border-radius:8px;box-shadow:0 4px 16px rgba(255,111,97,0.3);cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;">Listen to the Latest Drop</button>
+          </div>
         </div>
     </section>
 
@@ -1101,6 +1100,19 @@
         heroIdx = (heroIdx+1)%heroSlides.length;
         heroSlides[heroIdx].classList.add('active');
       }, 3800);
+
+      // Slideshow logic
+      const slideshowSlides = document.querySelectorAll('.slide-img');
+      let slideshowCurrentSlide = 0;
+      function showSlideshowSlide(idx) {
+        slideshowSlides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === idx);
+        });
+      }
+      setInterval(() => {
+        slideshowCurrentSlide = (slideshowCurrentSlide + 1) % slideshowSlides.length;
+        showSlideshowSlide(slideshowCurrentSlide);
+      }, 7000); // Change image every 7 seconds
     </script>
 </body>
 </html>
