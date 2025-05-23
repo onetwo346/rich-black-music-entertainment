@@ -2111,7 +2111,7 @@
             <!-- Featured Announcement Card -->
             <div class="blog-card announcement-card" data-popup="immediate-release">
                 <div class="blog-card-glow"></div>
-                <img src="release.jpg" alt="New Release" class="blog-card-img" onerror="this.src='https://via.placeholder.com/800x400/0f172a/6366f1?text=New+Release'; this.onerror=null;">
+                <img src="sikasem.jpg" alt="Sikasem Release" class="blog-card-img">
                 <div class="blog-card-content">
                     <div class="blog-card-badge">Just Released</div>
                     <h3>Sikasem - Out Now</h3>
@@ -2126,7 +2126,7 @@
             <!-- Upcoming Event Card -->
             <div class="blog-card" data-popup="upcoming-event">
                 <div class="blog-card-glow"></div>
-                <img src="event.jpg" alt="Upcoming Event" class="blog-card-img" onerror="this.src='https://via.placeholder.com/800x400/0f172a/ec4899?text=Live+Event'; this.onerror=null;">
+                <img src="event.jpg" alt="Upcoming Event" class="blog-card-img" onerror="this.src='https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'; this.onerror=null;">
                 <div class="blog-card-content">
                     <div class="blog-card-badge event-badge">Live Event</div>
                     <h3>Accra Live Concert</h3>
@@ -2141,7 +2141,7 @@
             <!-- New Songs Card -->
             <div class="blog-card" data-popup="new-songs">
                 <div class="blog-card-glow"></div>
-                <img src="songs.jpg" alt="New Songs" class="blog-card-img" onerror="this.src='https://via.placeholder.com/800x400/0f172a/10b981?text=New+Tracks'; this.onerror=null;">
+                <img src="songs.jpg" alt="New Songs" class="blog-card-img" onerror="this.src='https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'; this.onerror=null;">
                 <div class="blog-card-content">
                     <div class="blog-card-badge tracks-badge">New Tracks</div>
                     <h3>Latest Releases</h3>
@@ -2372,9 +2372,9 @@
 
     <section id="contact" class="hidden-section">
         <h2>Contact Us</h2>
-        <p>For inquiries, collaborations, or feedback, reach out to us at: <a href="mailto:cosmoscoderr@gmail.com">cosmoscoderr@gmail.com</a>.</p>
+        <p>For inquiries, collaborations, or feedback, reach out to us at: <a href="mailto:info@richandblack.studio">info@richandblack.studio</a>.</p>
         <div class="social-links">
-            <a href="#" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <!-- Social links removed as requested -->
         </div>
     </section>
 
@@ -2383,8 +2383,8 @@
             <div class="footer-column">
                 <h4>RICH&BLACK STUDIO</h4>
                 <p>Ghana's premier music studio representing the Central Region. We blend tradition with innovation to create unforgettable sonic experiences.</p>
-                <div class="social-links">
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <div class="footer-social">
+                    <!-- Social links removed as requested -->
                 </div>
             </div>
             <div class="footer-column">
@@ -2400,7 +2400,7 @@
             <div class="footer-column">
                 <h4>Contact Us</h4>
                 <ul>
-                    <li><a href="mailto:cosmoscoderr@gmail.com"><i class="fas fa-envelope"></i> cosmoscoderr@gmail.com</a></li>
+                    <li><a href="#" id="reveal-email"><i class="fas fa-envelope"></i> <span id="email-placeholder">Click to reveal email</span><span id="actual-email" style="display: none;">cosmoscoderr@gmail.com</span></a></li>
                     <li><a href="#"><i class="fas fa-map-marker-alt"></i> Central Region, Ghana</a></li>
                     <li><a href="#"><i class="fas fa-phone"></i> Contact Form</a></li>
                 </ul>
@@ -2443,9 +2443,28 @@
       const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const body = document.body;
       if (prefersDarkMode) body.classList.add('dark-mode');
-      document.getElementById('theme-toggle').addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-      });
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+        });
+      }
+      
+      // Email reveal functionality
+      const revealEmailBtn = document.getElementById('reveal-email');
+      if (revealEmailBtn) {
+        revealEmailBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const placeholder = document.getElementById('email-placeholder');
+          const actualEmail = document.getElementById('actual-email');
+          if (placeholder && actualEmail) {
+            placeholder.style.display = 'none';
+            actualEmail.style.display = 'inline';
+            // Update the href to be a mailto link after revealing
+            revealEmailBtn.href = 'mailto:' + actualEmail.textContent;
+          }
+        });
+      }
 
       // Blog/News Popups
       const blogCards = document.querySelectorAll('.blog-card');
