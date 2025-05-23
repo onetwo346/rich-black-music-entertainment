@@ -19,37 +19,57 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       }
 
       body {
-        font-family: 'Poppins', sans-serif; /* Modern font for professionalism */
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        color: #e0e0e0;
         line-height: 1.6;
-        color: #333;
-        background-color: #f9f9f9; /* Softer background */
-        transition: background-color 0.3s, color 0.3s;
+        transition: all 0.3s ease;
         overflow-x: hidden;
       }
 
+      :root {
+        --primary-color: #ff6f61;
+        --secondary-color: #4a90e2;
+        --accent-color: #2ecc71;
+        --text-color: #e0e0e0;
+        --glass-bg: rgba(255, 255, 255, 0.1);
+        --glass-border: rgba(255, 255, 255, 0.2);
+      }
+
       header {
-        background: #1a1a1a; /* Slightly lighter black for depth */
-        color: #fff;
-        padding: 30px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        padding: 2rem;
         text-align: center;
-        border-bottom: 3px solid #ff6f61; /* Accent border */
+        position: relative;
+        z-index: 10;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       }
 
       .logo {
-        width: 120px;
+        width: 150px;
         height: auto;
-        margin-bottom: 15px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        margin-bottom: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+      }
+
+      .logo:hover {
+        transform: scale(1.05);
       }
 
       nav {
-        background: #2c2c2c;
-        padding: 15px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        padding: 1.5rem;
         text-align: center;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
       }
 
       nav ul {
@@ -57,39 +77,77 @@
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 20px;
+        gap: 2rem;
+        padding: 1rem;
       }
 
       nav ul li a {
-        color: #fff;
+        color: var(--text-color);
         text-decoration: none;
-        font-weight: 500;
-        font-size: 1.1rem;
-        padding: 8px 15px;
-        border-radius: 5px;
-        transition: background 0.3s, color 0.3s;
+        font-weight: 600;
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      nav ul li a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--primary-color);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.3s ease;
       }
 
       nav ul li a:hover {
-        background: #ff6f61;
-        color: #fff;
+        color: var(--primary-color);
+      }
+
+      nav ul li a:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
       }
 
       section {
-        padding: 50px 20px;
-        margin: 30px auto;
-        max-width: 1200px; /* Centered content with max-width */
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        padding: 4rem 2rem;
+        margin: 2rem auto;
+        max-width: 1400px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 24px;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--glass-border);
+      }
+
+      h1, h2, h3 {
+        color: var(--text-color);
+        margin-bottom: 2rem;
+        font-weight: 700;
+        line-height: 1.2;
       }
 
       h2 {
-        color: #1a1a1a;
-        margin-bottom: 25px;
-        font-size: 2.2rem;
+        font-size: clamp(2rem, 5vw, 3rem);
         text-align: center;
-        font-weight: 600;
+        position: relative;
+      }
+
+      h2::after {
+        content: '';
+        position: absolute;
+        bottom: -0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--primary-color);
       }
 
       /* Announcement Section */
@@ -123,52 +181,61 @@
       /* Hero Section */
       #hero {
         position: relative;
-        background-image: url('IMG_3731.gif');
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(10, 10, 10, 0.9)),
+                  url('IMG_3731.gif');
         background-size: cover;
         background-position: center;
         text-align: center;
-        padding: 80px 20px;
-        border-radius: 12px;
+        padding: 120px 20px;
+        border-radius: 24px;
         overflow: hidden;
+        background-attachment: fixed;
       }
 
-      #hero::before {
+      #hero::after {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.6);
+        background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(10, 10, 10, 0.8));
         z-index: 1;
       }
 
       #hero h1, #hero p, #hero #countdown {
         position: relative;
         z-index: 2;
-        color: #fff;
+        color: var(--text-color);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
 
       #hero h1 {
-        font-size: 2.8rem;
-        margin-bottom: 15px;
-        animation: fadeIn 2s ease-in-out;
+        font-size: clamp(3rem, 8vw, 4.5rem);
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        animation: fadeInUp 1s ease-out;
       }
 
       #hero p {
-        font-size: 1.3rem;
-        margin-bottom: 20px;
-        animation: fadeIn 3s ease-in-out;
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeInUp 1.2s ease-out;
       }
 
       #countdown {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
         font-weight: bold;
-        background: rgba(255, 111, 97, 0.8);
-        padding: 10px 20px;
-        border-radius: 8px;
+        background: linear-gradient(135deg, var(--primary-color), #ff4757);
+        padding: 1rem 2rem;
+        border-radius: 16px;
         display: inline-block;
         animation: pulse 2s infinite;
+        box-shadow: 0 8px 32px rgba(255, 111, 97, 0.3);
       }
 
       /* Blog/News Section */
@@ -214,6 +281,129 @@
       .blog-card p {
         color: #ccc;
         font-size: 0.95rem;
+      }
+
+      /* Mixtape Card Styles */
+      .mixtape-card {
+        padding: 20px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+        backdrop-filter: blur(8px);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .mixtape-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.3);
+      }
+
+      .mixtape-card h3 {
+        font-size: 1.25rem;
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(90deg, #6a82fb, #fc5c7d);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .mixtape-card p {
+        color: #fff;
+        font-weight: 500;
+        margin-top: 3px;
+      }
+
+      .mixtape-card img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 14px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      }
+
+      .mixtape-card span {
+        margin-left: auto;
+        font-size: 1.5rem;
+        color: #fff;
+        transition: transform 0.3s;
+      }
+
+      /* Tracklist styles */
+      .mixtape-tracklist {
+        display: none;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: var(--glass-bg);
+        border: var(--glass-border);
+        border-radius: var(--border-radius);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .mixtape-tracklist a {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: var(--transition);
+        border-radius: var(--border-radius);
+      }
+
+      .mixtape-tracklist a:hover {
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(5px);
+      }
+
+      .mixtape-tracklist a.active {
+        color: var(--primary-color);
+        background: rgba(255, 111, 97, 0.1);
+      }
+
+      .mixtape-tracklist a i {
+        margin-right: 1rem;
+        font-size: 1.2rem;
+      }
+
+      /* Sikasem Tracklist styles */
+      .sikasem-tracklist {
+        display: none;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: var(--glass-bg);
+        border: var(--glass-border);
+        border-radius: var(--border-radius);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      .sikasem-tracklist a {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        margin: 0.5rem 0;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: var(--transition);
+        border-radius: var(--border-radius);
+      }
+
+      .sikasem-tracklist a:hover {
+        background: rgba(255, 255, 255, 0.05);
+        transform: translateX(5px);
+      }
+
+      .sikasem-tracklist a.active {
+        color: var(--primary-color);
+        background: rgba(255, 111, 97, 0.1);
+      }
+
+      .sikasem-tracklist a i {
+        margin-right: 1rem;
+        font-size: 1.2rem;
       }
 
       /* Videos Section */
@@ -313,20 +503,34 @@
 
       /* Music Player */
       .cosmic-music-player {
-        background: #1a1a1a;
-        padding: 20px;
-        border-radius: 12px;
-        color: #fff;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        padding: 24px;
+        border-radius: 20px;
+        color: var(--text-color);
         text-align: center;
-        max-width: 500px; /* Smaller size */
+        max-width: 600px;
         margin: 0 auto;
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--glass-border);
+        transition: all 0.3s ease;
       }
 
-      .cosmic-music-player h3 {
-        font-size: 1.5rem;
-        color: #ff6f61;
-        margin-bottom: 15px;
+      .music-studio-heading {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary-color), #ff4757);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .cosmic-music-player:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 64px rgba(0, 0, 0, 0.3);
       }
 
       .current-song {
@@ -746,13 +950,22 @@
       }
     </style>
     <!-- Google Fonts for Professional Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
 </head>
 <body class="no-js">
     <header>
         <img src="IMG_3717.jpeg" alt="RICH&BLACK STUDIO Logo" class="logo" />
-        <h1>RICH&BLACK STUDIO</h1>
-        <p>Representing, Ghana Central Region</p>
+        <div class="header-content">
+            <h1>RICH&BLACK STUDIO</h1>
+            <p class="region-tagline">Representing Ghana Central Region</p>
+            <div class="header-socials">
+                <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+            </div>
+        </div>
         <nav>
             <ul>
                 <li><a href="#home">Home</a></li>
@@ -867,7 +1080,7 @@
         <div class="music-flex-row" style="display: flex; gap: 32px; align-items: flex-start;">
             <div style="flex: 2; min-width: 320px;">
                 <div class="cosmic-music-player">
-                    <h3>Cosmic Audio Interface</h3>
+                    <h3 class="music-studio-heading">RICH&BLACK MUSIC STUDIO</h3>
                     <div class="current-song" id="current-song">Select a track to play</div>
                     <div class="progress-bar">
                         <div class="progress" id="progress"></div>
@@ -913,6 +1126,22 @@
                     </ul>
                 </div>
                 <!-- BROTHERHOOD Mixtape Interactive Card End -->
+
+                <!-- ACJ-Sikasem Interactive Card Start -->
+                <div class="mixtape-card glassmorphism" id="sikasem-song" style="padding:20px; border-radius:20px; background:rgba(255,255,255,0.10); box-shadow:0 8px 32px 0 rgba(31,38,135,0.25); backdrop-filter:blur(8px); cursor:pointer; margin-top:20px;">
+                    <div style="display:flex; align-items:center; gap:18px;" onclick="toggleSikasemTracks()">
+                        <img src="sikasem.jpg" alt="ACJ-Sikasem Cover" style="width:80px; height:80px; object-fit:cover; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,0.18);">
+                        <div>
+                            <h3 style="font-size:1.25rem; font-family:'Inter',sans-serif; background:linear-gradient(90deg,#ff6f61,#ff4757);-webkit-background-clip:text;-webkit-text-fill-color:transparent; background-clip:text; color:transparent;">ACJ-Sikasem</h3>
+                            <p style="color:#fff; font-weight:500; margin-top:3px;">by ACJ</p>
+                        </div>
+                        <span id="sikasem-arrow" style="margin-left:auto; font-size:1.5rem; color:#fff; transition:transform 0.3s;">▼</span>
+                    </div>
+                    <ul id="sikasem-tracklist" class="mixtape-tracklist" style="margin-top:16px; display:none;">
+                        <li><a href="#" onclick="playMixtapeSong(event, 'ACJ - Sikasem.mp3', 'Sikasem')"><strong>Sikasem</strong></a></li>
+                    </ul>
+                </div>
+                <!-- ACJ-Sikasem Interactive Card End -->
             </div>
         </div>
         <div class="no-js-fallback" style="display: none;">
@@ -1167,6 +1396,19 @@
       function toggleMixtapeTracks() {
         const tracklist = document.getElementById('brotherhood-tracklist');
         const arrow = document.getElementById('mixtape-arrow');
+        if (tracklist.style.display === 'none') {
+          tracklist.style.display = 'block';
+          arrow.style.transform = 'rotate(180deg)';
+        } else {
+          tracklist.style.display = 'none';
+          arrow.style.transform = 'rotate(0deg)';
+        }
+      }
+
+      // Sikasem song expand/collapse logic
+      function toggleSikasemTracks() {
+        const tracklist = document.getElementById('sikasem-tracklist');
+        const arrow = document.getElementById('sikasem-arrow');
         if (tracklist.style.display === 'none') {
           tracklist.style.display = 'block';
           arrow.style.transform = 'rotate(180deg)';
