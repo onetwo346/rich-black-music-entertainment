@@ -27,6 +27,8 @@ function syncComments(event) {
 
 // Initialize the comments system
 function initComments() {
+  console.log('Initializing comments system...');
+  
   // Load comments from localStorage
   loadComments();
   
@@ -41,6 +43,131 @@ function initComments() {
 
   // Set up periodic comment sync
   setInterval(loadComments, 5000); // Sync every 5 seconds
+  
+  // Initialize visitor peer connection (for non-logged in users)
+  if (!currentUser) {
+    initVisitorPeer();
+  }
+}
+
+// Initialize a peer connection for visitors
+function initVisitorPeer() {
+  console.log('Initializing visitor peer connection...');
+  // Only create if peer doesn't exist
+  if (typeof peer === 'undefined' || !peer) {
+    // Generate a temporary visitor ID
+    const visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
+    console.log('Created visitor ID:', visitorId);
+    
+    // Load PeerJS from CDN if not already loaded
+    if (typeof Peer === 'undefined') {
+      console.log('Loading PeerJS library...');
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js';
+      script.onload = () => {
+        setupVisitorPeer(visitorId);
+      };
+      document.head.appendChild(script);
+    } else {
+      setupVisitorPeer(visitorId);
+    }
+  }
+}
+
+// Setup peer connection for visitors
+function setupVisitorPeer(visitorId) {
+  console.log('Setting up visitor peer with ID:', visitorId);
+  try {
+    // Create a new Peer with the visitor ID
+    peer = new Peer(visitorId);
+    connections = {};
+    
+    // Handle connection open
+    peer.on('open', (id) => {
+      console.log('Visitor peer connected with ID:', id);
+      // Connect to known peers
+      const knownPeers = JSON.parse(localStorage.getItem('rb_known_peers') || '[]');
+      knownPeers.forEach(peerId => {
+        if (peerId !== visitorId) {
+          connectToPeer(peerId);
+        }
+      });
+    });
+    
+    // Handle incoming connections
+    peer.on('connection', (conn) => {
+      console.log('Incoming connection from:', conn.peer);
+      handleVisitorConnection(conn);
+    });
+    
+    // Handle errors
+    peer.on('error', (err) => {
+      console.error('PeerJS error:', err);
+    });
+  } catch (e) {
+    console.error('Error setting up visitor peer:', e);
+  }
+}
+
+// Connect to a specific peer
+function connectToPeer(peerId) {
+  console.log('Connecting to peer:', peerId);
+  if (!peer) return;
+  
+  try {
+    const conn = peer.connect(peerId);
+    if (currentUser) {
+      handleConnection(conn);
+    } else {
+      handleVisitorConnection(conn);
+    }
+  } catch (e) {
+    console.error('Error connecting to peer:', e);
+  }
+}
+
+// Handle visitor connection
+function handleVisitorConnection(conn) {
+  console.log('Handling visitor connection:', conn.peer);
+  // Store connection
+  connections[conn.peer] = conn;
+  
+  // Handle connection open
+  conn.on('open', () => {
+    console.log('Visitor connected to peer:', conn.peer);
+    
+    // Request comments
+    conn.send({
+      type: 'request_comments'
+    });
+    
+    // Add to known peers
+    addKnownPeer(conn.peer);
+  });
+  
+  // Handle incoming data
+  conn.on('data', (data) => {
+    console.log('Visitor received data:', data);
+    handleCommentData(data);
+  });
+  
+  // Handle connection close
+  conn.on('close', () => {
+    console.log('Visitor connection closed:', conn.peer);
+    delete connections[conn.peer];
+  });
+}
+
+// Add a peer to known peers
+function addKnownPeer(peerId) {
+  // Get known peers from localStorage
+  const knownPeers = JSON.parse(localStorage.getItem('rb_known_peers') || '[]');
+  
+  // Add peer if not already in list
+  if (!knownPeers.includes(peerId)) {
+    knownPeers.push(peerId);
+    localStorage.setItem('rb_known_peers', JSON.stringify(knownPeers));
+  }
 }
 
 // Load comments from localStorage
@@ -608,7 +735,29 @@ function broadcastReply(commentId, reply, contentType, contentId) {
 function handleCommentData(data) {
   console.log('Received peer data:', data);
 
-  if (data.type === 'sync_comments') {
+  if (data.type === 'request_comments') {
+    console.log('Received request for comments, sending all comments');
+    // Send all comments to the requesting peer
+    if (data.peerId && connections[data.peerId]) {
+      connections[data.peerId].send({
+        type: 'sync_comments',
+        comments: comments
+      });
+    } else if (data.conn) {
+      data.conn.send({
+        type: 'sync_comments',
+        comments: comments
+      });
+    } else {
+      // Broadcast to all connections
+      for (const peerId in connections) {
+        connections[peerId].send({
+          type: 'sync_comments',
+          comments: comments
+        });
+      }
+    }
+  } else if (data.type === 'sync_comments') {
     console.log('Syncing comments from peer');
     // Merge incoming comments with local comments
     for (const contentType in data.comments) {
