@@ -7,6 +7,24 @@ let comments = {
   blog: {}    // Comments for blog posts
 };
 
+// Global comments storage key
+const GLOBAL_COMMENTS_KEY = 'rb_global_comments';
+
+// Function to sync comments with other tabs/windows
+function syncComments(event) {
+  if (event.key === GLOBAL_COMMENTS_KEY) {
+    try {
+      const newComments = JSON.parse(event.newValue);
+      if (newComments) {
+        comments = newComments;
+        renderAllComments();
+      }
+    } catch (e) {
+      console.error('Error syncing comments:', e);
+    }
+  }
+}
+
 // Initialize the comments system
 function initComments() {
   // Load comments from localStorage
@@ -17,19 +35,35 @@ function initComments() {
   
   // Setup comment actions (like, reply)
   setupCommentActions();
+
+  // Listen for changes in other tabs/windows
+  window.addEventListener('storage', syncComments);
+
+  // Set up periodic comment sync
+  setInterval(loadComments, 5000); // Sync every 5 seconds
 }
 
-// Load comments from localStorage and merge with existing comments
+// Load comments from localStorage
 function loadComments() {
-  const savedComments = localStorage.getItem('rb_comments');
+  const savedComments = localStorage.getItem(GLOBAL_COMMENTS_KEY);
   if (savedComments) {
     try {
       const loadedComments = JSON.parse(savedComments);
-      // Merge comments, keeping the most recent version of each comment
+      
+      // Initialize comments structure if needed
+      if (!comments.songs) comments.songs = {};
+      if (!comments.blog) comments.blog = {};
+      
+      // Merge loaded comments with existing comments
       for (const contentType in loadedComments) {
         if (!comments[contentType]) comments[contentType] = {};
+        
         for (const contentId in loadedComments[contentType]) {
-          if (!comments[contentType][contentId]) comments[contentType][contentId] = [];
+          if (!comments[contentType][contentId]) {
+            comments[contentType][contentId] = [];
+          }
+          
+          // Merge comments for this content, avoiding duplicates
           loadedComments[contentType][contentId].forEach(loadedComment => {
             const existingIndex = comments[contentType][contentId].findIndex(c => c.id === loadedComment.id);
             if (existingIndex === -1) {
@@ -38,9 +72,12 @@ function loadComments() {
           });
         }
       }
+      
+      // Update UI
       renderAllComments();
-      // Broadcast loaded comments to peers
-      if (peer && connections) {
+      
+      // Broadcast to peers if connected
+      if (typeof peer !== 'undefined' && peer && connections) {
         for (const contentType in comments) {
           for (const contentId in comments[contentType]) {
             comments[contentType][contentId].forEach(comment => {
@@ -51,13 +88,25 @@ function loadComments() {
       }
     } catch (e) {
       console.error('Error loading comments:', e);
+      // Initialize empty comments if there's an error
+      comments = { songs: {}, blog: {} };
     }
   }
 }
 
-// Save comments to localStorage
+// Save comments to localStorage and broadcast to other tabs/windows
 function saveComments() {
-  localStorage.setItem('rb_comments', JSON.stringify(comments));
+  localStorage.setItem(GLOBAL_COMMENTS_KEY, JSON.stringify(comments));
+  
+  // Broadcast to peers
+  if (peer && connections) {
+    for (const peerId in connections) {
+      connections[peerId].send({
+        type: 'sync_comments',
+        comments: comments
+      });
+    }
+  }
 }
 
 // Setup comment forms
@@ -479,19 +528,44 @@ function handleReplySubmit(e) {
 
 // Broadcast a comment to all connected peers
 function broadcastComment(comment, contentType, contentId) {
-  if (!peer || !connections) return;
+  console.log('Broadcasting comment:', { comment, contentType, contentId });
   
-  const message = {
-    type: 'comment',
-    comment: comment,
-    contentType: contentType,
-    contentId: contentId
-  };
+  // First save locally
+  if (!comments[contentType]) comments[contentType] = {};
+  if (!comments[contentType][contentId]) comments[contentType][contentId] = [];
   
-  // Send to all connections
-  for (const peerId in connections) {
-    connections[peerId].send(message);
+  // Check if comment already exists
+  const existingIndex = comments[contentType][contentId].findIndex(c => c.id === comment.id);
+  if (existingIndex === -1) {
+    comments[contentType][contentId].push(comment);
   }
+  
+  // Save to localStorage
+  saveComments();
+  
+  // Then broadcast to peers if connected
+  if (typeof peer !== 'undefined' && peer && connections) {
+    console.log('Broadcasting to peers...');
+    const message = {
+      type: 'comment',
+      comment: comment,
+      contentType: contentType,
+      contentId: contentId
+    };
+    
+    // Send to all connections
+    for (const peerId in connections) {
+      try {
+        connections[peerId].send(message);
+        console.log('Sent to peer:', peerId);
+      } catch (e) {
+        console.error('Error sending to peer:', e);
+      }
+    }
+  }
+  
+  // Update UI
+  renderComments(contentType, contentId);
 }
 
 // Broadcast a like to all connected peers
@@ -532,13 +606,38 @@ function broadcastReply(commentId, reply, contentType, contentId) {
 
 // Handle incoming comment data from peers
 function handleCommentData(data) {
-  if (data.type === 'comment') {
+  console.log('Received peer data:', data);
+
+  if (data.type === 'sync_comments') {
+    console.log('Syncing comments from peer');
+    // Merge incoming comments with local comments
+    for (const contentType in data.comments) {
+      if (!comments[contentType]) comments[contentType] = {};
+      for (const contentId in data.comments[contentType]) {
+        if (!comments[contentType][contentId]) comments[contentType][contentId] = [];
+        data.comments[contentType][contentId].forEach(incomingComment => {
+          const existingIndex = comments[contentType][contentId].findIndex(c => c.id === incomingComment.id);
+          if (existingIndex === -1) {
+            console.log('Adding new comment from peer:', incomingComment);
+            comments[contentType][contentId].push(incomingComment);
+          }
+        });
+      }
+    }
+    // Save merged comments and update UI
+    saveComments();
+    renderAllComments();
+  } else if (data.type === 'comment') {
+    console.log('Adding new comment from peer');
     addComment(data.comment, data.contentType, data.contentId);
   } else if (data.type === 'like') {
+    console.log('Updating like from peer');
     updateLikeCount(data.commentId, data.likes, data.contentType, data.contentId);
   } else if (data.type === 'reply') {
+    console.log('Adding reply from peer');
     addReply(data.commentId, data.reply, data.contentType, data.contentId);
   } else if (data.type === 'delete') {
+    console.log('Deleting comment from peer');
     deleteComment(data.commentId, data.contentType, data.contentId);
   }
 }

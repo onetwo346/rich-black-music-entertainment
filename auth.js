@@ -34,6 +34,45 @@ function checkLoginStatus() {
   }
 }
 
+// Handle forgot password
+function handleForgotPassword(e) {
+  e.preventDefault();
+  const email = document.getElementById('forgot-email').value;
+  
+  if (!email) {
+    showNotification('Please enter your email address', 'error');
+    return;
+  }
+  
+  if (!validateEmail(email)) {
+    showNotification('Please enter a valid email address', 'error');
+    return;
+  }
+  
+  // Find user with this email
+  const users = JSON.parse(localStorage.getItem('rb_users') || '[]');
+  const user = users.find(u => u.email === email);
+  
+  if (!user) {
+    showNotification('No account found with this email', 'error');
+    return;
+  }
+  
+  // Generate temporary password
+  const tempPassword = Math.random().toString(36).slice(-8);
+  
+  // Update user's password
+  user.password = tempPassword;
+  localStorage.setItem('rb_users', JSON.stringify(users));
+  
+  // In a real app, you would send this via email
+  // For demo, we'll show it in a notification
+  showNotification(`Your temporary password is: ${tempPassword}\nPlease login and change it immediately.`, 'info', 10000);
+  
+  // Switch back to login form
+  toggleAuthForms('login');
+}
+
 // Setup login/signup modal triggers
 function setupAuthTriggers() {
   const loginBtn = document.getElementById('login-btn');
@@ -81,6 +120,23 @@ function setupAuthTriggers() {
   
   if (signupForm) {
     signupForm.addEventListener('submit', handleSignup);
+  }
+  
+  // Setup forgot password form
+  const forgotForm = document.getElementById('forgot-password-form');
+  if (forgotForm) {
+    forgotForm.addEventListener('submit', handleForgotPassword);
+  }
+  
+  // Setup forgot password link
+  const forgotLink = document.getElementById('forgot-password-link');
+  if (forgotLink) {
+    forgotLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('login-form-container').style.display = 'none';
+      document.getElementById('signup-form-container').style.display = 'none';
+      document.getElementById('forgot-password-container').style.display = 'block';
+    });
   }
 }
 
@@ -455,7 +511,7 @@ function showAdminPortal() {
 }
 
 // Show notification
-function showNotification(message, type = 'success') {
+function showNotification(message, type = 'success', duration = 3000) {
   const notification = document.createElement('div');
   notification.className = `notification ${type}`;
   notification.textContent = message;
