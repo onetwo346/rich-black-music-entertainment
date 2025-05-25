@@ -7,6 +7,16 @@ let connections = {};
 let currentUser = null;
 let userList = [];
 
+// Helper function to hash passwords using SHA-256
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer)); // Convert buffer to byte array
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // Convert byte array to hex string
+  return hashHex;
+}
+
 // Initialize the authentication system
 function initAuth() {
   // Check if user is already logged in
@@ -141,8 +151,15 @@ function toggleAuthForms(showForm) {
   }
 }
 
+// Validate email format
+function validateEmail(email) {
+  const re = /\S+@\S+\.\S+/; // Basic email validation
+  return re.test(String(email).toLowerCase());
+}
+
+
 // Handle login form submission
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
   
   const username = document.getElementById('login-username').value;
@@ -179,9 +196,10 @@ function handleLogin(e) {
   
   // Regular user login
   const users = JSON.parse(localStorage.getItem('rb_users') || '[]');
+  const hashedLoginPassword = await hashPassword(password);
   
   // Find user
-  const user = users.find(u => u.username === username && u.password === password);
+  const user = users.find(u => u.username === username && u.password === hashedLoginPassword);
   
   if (user) {
     // Login successful
@@ -217,7 +235,7 @@ function handleLogin(e) {
 }
 
 // Handle signup form submission
-function handleSignup(e) {
+async function handleSignup(e) {
   e.preventDefault();
   
   const username = document.getElementById('signup-username').value;
@@ -265,11 +283,12 @@ function handleSignup(e) {
   const userId = generateUserId();
   const avatar = generateAvatar(username);
   
+  const hashedPassword = await hashPassword(password);
   const newUser = {
     id: userId,
     username,
     email,
-    password, // In a real app, this would be hashed
+    password: hashedPassword, // Password is now hashed
     avatar,
     isAdmin: false,
     joinDate: new Date().toISOString(),

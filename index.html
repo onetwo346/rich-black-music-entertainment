@@ -3523,7 +3523,7 @@
                 <div class="artist-card">
                     <div class="artist-image-container">
                         <div class="artist-image-glow"></div>
-                        <img src="boona.jpg" alt="Agona Yoona" />
+                        <img src="yoona.jpg" alt="Agona Yoona" />
                     </div>
                     <div class="artist-info">
                         <h3>Agona Yoona</h3>
@@ -4810,7 +4810,17 @@
       // Artists Section - Tap to Show and Auto-Hide after exactly 30 seconds
       let artistsTimer = null;
       
+      // Use a more specific click handler that won't interfere with other functionality
       document.addEventListener('click', function(event) {
+        // Skip if clicking on form elements, buttons, or modal content
+        if (event.target.closest('form') || 
+            event.target.tagName === 'BUTTON' || 
+            event.target.tagName === 'INPUT' || 
+            event.target.closest('.modal-content') ||
+            event.target.closest('#auth-modal-container')) {
+          return;
+        }
+        
         // Check if artists section is hidden
         const artistsSection = document.getElementById('artists');
         if (artistsSection && artistsSection.classList.contains('hidden-section')) {
@@ -4911,6 +4921,371 @@
       document.head.appendChild(styleSheet);
     </script>
 
+<!-- Authentication Modals -->
+<div id="auth-modal" class="modal-overlay">
+    <div id="auth-modal-container" class="modal-content">
+        <button id="close-auth-modal" class="modal-close">&times;</button>
+        
+        <!-- Login Form -->
+        <div id="login-form-container" class="auth-form-container">
+            <h2>Login</h2>
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Login</button>
+                </div>
+                <div class="form-links">
+                    <a href="#" id="forgot-username">Forgot Username?</a>
+                    <a href="#" id="forgot-password">Forgot Password?</a>
+                </div>
+                <div class="form-switch">
+                    <p>Don't have an account? <a href="#" id="switch-to-signup">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Signup Form -->
+        <div id="signup-form-container" class="auth-form-container" style="display: none;">
+            <h2>Create Account</h2>
+            <form id="signup-form" class="auth-form">
+                <div class="form-group">
+                    <label for="signup-username">Username</label>
+                    <input type="text" id="signup-username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="Choose a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" placeholder="Confirm your password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Create Account</button>
+                </div>
+                <div class="form-switch">
+                    <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Forgot Username Modal -->
+<div id="forgot-username-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <h2>Recover Username</h2>
+        <form id="forgot-username-form" class="auth-form">
+            <div class="form-group">
+                <label for="username-recovery-email">Email</label>
+                <input type="email" id="username-recovery-email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Recover Username</button>
+                <button type="button" id="back-to-login-from-username" class="btn-secondary">Back to Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div id="forgot-password-modal" class="modal-overlay">
+    <div class="modal-content">
+        <button class="modal-close">&times;</button>
+        <h2>Reset Password</h2>
+        <form id="forgot-password-form" class="auth-form">
+            <div class="form-group">
+                <label for="recovery-email">Email</label>
+                <input type="email" id="recovery-email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Reset Password</button>
+                <button type="button" id="back-to-login-from-password" class="btn-secondary">Back to Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Comment Management Modal -->
+<div id="comment-management-modal" class="modal-overlay">
+    <div class="modal-content comment-management-content">
+        <button class="modal-close">&times;</button>
+        <h2>Manage Your Comments</h2>
+        <div id="user-comments-container">
+            <!-- User comments will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Welcome Modal for New Users -->
+<div id="welcome-modal" class="modal-overlay">
+    <div class="modal-content welcome-modal-content">
+        <button class="modal-close">&times;</button>
+        <div class="welcome-content">
+            <h2>Welcome to RICH&BLACK STUDIO!</h2>
+            <p>Thank you for joining our cosmic community! Here you can:</p>
+            <ul>
+                <li>Discover amazing music from our talented artists</li>
+                <li>Connect with other music lovers</li>
+                <li>Share your thoughts and comments</li>
+                <li>Stay updated on new releases and events</li>
+            </ul>
+            <button id="welcome-continue" class="btn-primary">Continue to Your Dashboard</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add CSS for the modals -->
+<style>
+    /* Modal Styles */
+    .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal-overlay.active {
+        display: flex;
+        opacity: 1;
+    }
+    
+    .modal-content {
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(10px);
+        border-radius: var(--border-radius-lg);
+        border: 1px solid var(--glass-border);
+        padding: 2rem;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: var(--glass-shadow);
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+    }
+    
+    .modal-overlay.active .modal-content {
+        transform: translateY(0);
+    }
+    
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+    
+    .modal-close:hover {
+        color: var(--primary-color);
+    }
+    
+    /* Auth Form Styles */
+    .auth-form-container {
+        width: 100%;
+    }
+    
+    .auth-form-container h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        background: var(--gradient-text);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .form-group label {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    .form-group input {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--border-radius-sm);
+        padding: 0.75rem 1rem;
+        color: var(--text-color);
+        font-size: 1rem;
+        width: 100%;
+        transition: all 0.2s ease;
+    }
+    
+    .form-group input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        outline: none;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .form-actions button {
+        flex: 1;
+    }
+    
+    .btn-primary {
+        background: var(--gradient-cosmic);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius-sm);
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(99, 102, 241, 0.3);
+    }
+    
+    .btn-secondary {
+        background: var(--glass-bg);
+        color: var(--text-color);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--border-radius-sm);
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-secondary:hover {
+        background: var(--glass-bg-hover);
+        border-color: var(--primary-color);
+    }
+    
+    .form-links {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .form-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    
+    .form-links a:hover {
+        color: var(--primary-color);
+    }
+    
+    .form-switch {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+    
+    .form-switch a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+    
+    .form-switch a:hover {
+        color: var(--primary-light);
+        text-decoration: underline;
+    }
+    
+    /* Welcome Modal Styles */
+    .welcome-modal-content {
+        max-width: 600px;
+        text-align: center;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.8));
+    }
+    
+    .welcome-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    .welcome-content h2 {
+        background: var(--gradient-text);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-size: 2rem;
+        margin-bottom: 0;
+    }
+    
+    .welcome-content p {
+        font-size: 1.1rem;
+        color: var(--text-color);
+    }
+    
+    .welcome-content ul {
+        text-align: left;
+        color: var(--text-secondary);
+        line-height: 1.8;
+    }
+    
+    #welcome-continue {
+        margin-top: 1rem;
+        padding: 0.75rem 2rem;
+    }
+    
+    /* Comment Management Styles */
+    .comment-management-content {
+        max-width: 800px;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    #user-comments-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+</style>
+
 <!-- P2P Authentication and Comments System -->
 <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -4924,6 +5299,7 @@
 <script>
 // Authentication and User Management
 document.addEventListener('DOMContentLoaded', function() {
+  initAuth(); // Initialize authentication system
     // Forgot Password Flow
     document.getElementById('forgot-password').addEventListener('click', function(e) {
         e.preventDefault();
