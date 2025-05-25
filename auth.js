@@ -7,16 +7,6 @@ let connections = {};
 let currentUser = null;
 let userList = [];
 
-// Helper function to hash passwords using SHA-256
-async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer)); // Convert buffer to byte array
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // Convert byte array to hex string
-  return hashHex;
-}
-
 // Initialize the authentication system
 function initAuth() {
   // Check if user is already logged in
@@ -159,7 +149,7 @@ function validateEmail(email) {
 
 
 // Handle login form submission
-async function handleLogin(e) {
+function handleLogin(e) {
   e.preventDefault();
   
   const username = document.getElementById('login-username').value;
@@ -196,10 +186,9 @@ async function handleLogin(e) {
   
   // Regular user login
   const users = JSON.parse(localStorage.getItem('rb_users') || '[]');
-  const hashedLoginPassword = await hashPassword(password);
   
   // Find user
-  const user = users.find(u => u.username === username && u.password === hashedLoginPassword);
+  const user = users.find(u => u.username === username && u.password === password);
   
   if (user) {
     // Login successful
@@ -235,7 +224,7 @@ async function handleLogin(e) {
 }
 
 // Handle signup form submission
-async function handleSignup(e) {
+function handleSignup(e) {
   e.preventDefault();
   
   const username = document.getElementById('signup-username').value;
@@ -283,12 +272,11 @@ async function handleSignup(e) {
   const userId = generateUserId();
   const avatar = generateAvatar(username);
   
-  const hashedPassword = await hashPassword(password);
   const newUser = {
     id: userId,
     username,
     email,
-    password: hashedPassword, // Password is now hashed
+    password, // Store password as plain text (not secure, but as requested)
     avatar,
     isAdmin: false,
     joinDate: new Date().toISOString(),

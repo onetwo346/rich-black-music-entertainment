@@ -19,13 +19,36 @@ function initComments() {
   setupCommentActions();
 }
 
-// Load comments from localStorage
+// Load comments from localStorage and merge with existing comments
 function loadComments() {
   const savedComments = localStorage.getItem('rb_comments');
   if (savedComments) {
     try {
-      comments = JSON.parse(savedComments);
+      const loadedComments = JSON.parse(savedComments);
+      // Merge comments, keeping the most recent version of each comment
+      for (const contentType in loadedComments) {
+        if (!comments[contentType]) comments[contentType] = {};
+        for (const contentId in loadedComments[contentType]) {
+          if (!comments[contentType][contentId]) comments[contentType][contentId] = [];
+          loadedComments[contentType][contentId].forEach(loadedComment => {
+            const existingIndex = comments[contentType][contentId].findIndex(c => c.id === loadedComment.id);
+            if (existingIndex === -1) {
+              comments[contentType][contentId].push(loadedComment);
+            }
+          });
+        }
+      }
       renderAllComments();
+      // Broadcast loaded comments to peers
+      if (peer && connections) {
+        for (const contentType in comments) {
+          for (const contentId in comments[contentType]) {
+            comments[contentType][contentId].forEach(comment => {
+              broadcastComment(comment, contentType, contentId);
+            });
+          }
+        }
+      }
     } catch (e) {
       console.error('Error loading comments:', e);
     }
@@ -53,6 +76,7 @@ function handleCommentSubmit(e) {
   // Check if user is logged in
   if (!currentUser) {
     showAuthModal('login');
+    showNotification('Please log in to comment', 'info');
     return;
   }
   
@@ -582,6 +606,13 @@ function deleteComment(commentId, contentType, contentId) {
   const commentIndex = contentComments.findIndex(c => c.id === commentId);
   
   if (commentIndex === -1) return;
+  
+  // Check if current user is the comment author
+  const comment = contentComments[commentIndex];
+  if (!currentUser || (currentUser.id !== comment.userId && !currentUser.isAdmin)) {
+    showNotification('You can only delete your own comments', 'error');
+    return;
+  }
   
   // Remove comment
   contentComments.splice(commentIndex, 1);
