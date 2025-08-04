@@ -64,33 +64,18 @@ function setupCommentProfileLinks() {
 
 // Setup admin login button
 function setupAdminLoginButton() {
+    // Admin login disabled - use admin.html directly
     const adminLoginBtn = document.getElementById('admin-login-btn');
     if (adminLoginBtn) {
-        adminLoginBtn.addEventListener('click', showAdminLoginModal);
+        adminLoginBtn.addEventListener('click', () => {
+            window.open('admin.html', '_blank');
+        });
     }
 }
 
-// Show admin login modal
+// Show admin login modal - disabled, redirect to admin.html
 function showAdminLoginModal() {
-    const adminLoginModal = document.getElementById('admin-login-modal');
-    if (adminLoginModal) {
-        adminLoginModal.style.display = 'block';
-    }
-    
-    // Close modal when clicking outside
-    window.addEventListener('click', function(e) {
-        if (e.target === adminLoginModal) {
-            adminLoginModal.style.display = 'none';
-        }
-    });
-    
-    // Close modal when clicking close button
-    const closeBtn = adminLoginModal.querySelector('.close');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            adminLoginModal.style.display = 'none';
-        });
-    }
+    window.open('admin.html', '_blank');
 }
 
 // Create user profile if it doesn't exist

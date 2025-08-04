@@ -211,34 +211,7 @@ function handleLogin(e) {
   const username = document.getElementById('login-username').value;
   const password = document.getElementById('login-password').value;
   
-  // Check for admin credentials
-  if (username === 'admin' && password === 'guru') {
-    // Admin login successful
-    currentUser = {
-      id: 'admin',
-      username: 'Administrator',
-      email: 'admin@richandblack.com',
-      avatar: generateAvatar('Administrator'),
-      isAdmin: true,
-      joinDate: new Date('2023-01-01').toISOString()
-    };
-    
-    // Save admin status
-    localStorage.setItem('adminLoggedIn', 'true');
-    localStorage.setItem('rb_user_data', JSON.stringify(currentUser));
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    
-    // Close modal
-    const authModal = document.getElementById('auth-modal');
-    if (authModal) authModal.classList.remove('active');
-    
-    // Show admin portal
-    showAdminPortal();
-    
-    // Show welcome notification
-    showNotification('Welcome, Administrator!');
-    return;
-  }
+  // Remove admin login from fan page - admin access only through admin.html
   
   // Regular user login
   const users = JSON.parse(localStorage.getItem('rb_users') || '[]');
@@ -491,24 +464,7 @@ function showOnboardingModal() {
   }
 }
 
-// Show admin portal
-function showAdminPortal() {
-  document.body.classList.add('admin-mode');
-  
-  // Hide main content and dashboard
-  const mainContent = document.getElementById('main-content');
-  const dashboard = document.getElementById('dashboard');
-  const adminPortal = document.getElementById('admin-portal');
-  
-  if (mainContent) mainContent.style.display = 'none';
-  if (dashboard) dashboard.style.display = 'none';
-  if (adminPortal) adminPortal.style.display = 'block';
-  
-  // Load admin data
-  if (window.loadAdminData) {
-    window.loadAdminData();
-  }
-}
+// Admin access removed from fan page - use admin.html directly
 
 // Show notification
 function showNotification(message, type = 'success', duration = 3000) {
@@ -571,6 +527,10 @@ function setupPeer() {
   peer.on('open', (id) => {
     console.log('My peer ID is: ' + id);
     broadcastPresence();
+    // If not admin, connect to admin peer
+    if (!currentUser.isAdmin) {
+      connectToPeer('admin');
+    }
   });
   
   // Handle incoming connections
@@ -678,6 +638,82 @@ function handlePeerData(peerId, data) {
     case 'like':
       // Update like count for a comment
       updateLikeCount(data.commentId, data.likes);
+      break;
+    case 'new_post':
+      // Handle new post from admin
+      console.log('Received new post from admin:', data.post);
+      let allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+      if (!allPosts.some(p => p.id === data.post.id)) {
+        allPosts.unshift(data.post);
+        localStorage.setItem('all_posts', JSON.stringify(allPosts));
+        console.log('Post saved to localStorage, total posts:', allPosts.length);
+      } else {
+        console.log('Post already exists, skipping');
+      }
+      // Refresh posts if function exists
+      if (typeof renderPosts === 'function') {
+        console.log('Calling renderPosts()');
+        renderPosts();
+      }
+      // Refresh announcements if function exists
+                      if (typeof loadPostsDashboardMirror === 'function') {
+                    console.log('Refreshing Posts Dashboard');
+                    loadPostsDashboardMirror();
+      }
+      // Show notification
+      showNotification('New post from RICH & BLACK!');
+      
+      // Force show Studio Updates section
+      if (typeof window.forceShowStudioUpdates === 'function') {
+        window.forceShowStudioUpdates();
+      }
+      break;
+    case 'delete_post':
+      // Handle post deletion from admin
+      console.log('Received post deletion from admin:', data.postId);
+      let allPostsForDeletion = JSON.parse(localStorage.getItem('all_posts') || '[]');
+      allPostsForDeletion = allPostsForDeletion.filter(p => p.id !== data.postId);
+      localStorage.setItem('all_posts', JSON.stringify(allPostsForDeletion));
+      console.log('Post deleted from localStorage, remaining posts:', allPostsForDeletion.length);
+      
+      // Refresh posts if function exists
+      if (typeof renderPosts === 'function') {
+        console.log('Calling renderPosts() after deletion');
+        renderPosts();
+      }
+      // Refresh announcements if function exists
+                      if (typeof loadPostsDashboardMirror === 'function') {
+                    console.log('Refreshing Posts Dashboard after deletion');
+                    loadPostsDashboardMirror();
+      }
+      // Show notification
+      showNotification('Post deleted by RICH & BLACK');
+      break;
+    case 'new_music':
+      // Handle new music upload
+      let musicLibrary = JSON.parse(localStorage.getItem('music_library') || '[]');
+      if (!musicLibrary.some(m => m.id === data.music.id)) {
+        musicLibrary.unshift(data.music);
+        localStorage.setItem('music_library', JSON.stringify(musicLibrary));
+      }
+      // Refresh music library if function exists
+      if (typeof renderMusicLibrary === 'function') {
+        renderMusicLibrary();
+      }
+      // Show notification
+      showNotification('New music added by RICH & BLACK!');
+      break;
+    case 'new_notification':
+      // Handle new global notification
+      let globalNotifications = JSON.parse(localStorage.getItem('global_notifications') || '[]');
+      if (!globalNotifications.some(n => n.id === data.notification.id)) {
+        globalNotifications.unshift(data.notification);
+        localStorage.setItem('global_notifications', JSON.stringify(globalNotifications));
+      }
+      // Refresh notifications if function exists
+      if (typeof loadNotifications === 'function') {
+        loadNotifications();
+      }
       break;
     default:
       console.log('Unknown data type:', data.type);

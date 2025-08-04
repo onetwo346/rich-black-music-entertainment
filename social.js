@@ -1,122 +1,5 @@
 // social.js - Handles social media functionality
 
-// Demo data for posts
-const demoUsers = [
-  { 
-    id: 'user_001', 
-    username: 'booms', 
-    email: 'booms@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=1', 
-    isVerified: true,
-    bio: 'Music Producer | RICH&BLACK',
-    joinDate: new Date('2023-01-15').toISOString(),
-    followers: 1500,
-    following: 42,
-    isAdmin: false
-  },
-  { 
-    id: 'user_002', 
-    username: 'acj', 
-    email: 'acj@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=2', 
-    isVerified: true,
-    bio: 'Artist | RICH&BLACK',
-    joinDate: new Date('2023-02-20').toISOString(),
-    followers: 3200,
-    following: 28,
-    isAdmin: false
-  },
-  { 
-    id: 'user_003', 
-    username: 'paaed', 
-    email: 'paaed@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=3', 
-    isVerified: true,
-    bio: 'Producer | RICH&BLACK',
-    joinDate: new Date('2023-03-10').toISOString(),
-    followers: 890,
-    following: 35,
-    isAdmin: false
-  },
-  { 
-    id: 'user_004', 
-    username: 'music_lover', 
-    email: 'fan@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=4',
-    bio: 'Music Enthusiast',
-    joinDate: new Date('2023-04-05').toISOString(),
-    followers: 120,
-    following: 150,
-    isAdmin: false
-  },
-  { 
-    id: 'user_005', 
-    username: 'ghana_beats', 
-    email: 'ghana@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=5',
-    bio: 'Promoting Ghanaian Music Worldwide',
-    joinDate: new Date('2023-01-30').toISOString(),
-    followers: 4300,
-    following: 210,
-    isAdmin: false
-  }
-];
-
-const demoPosts = [
-    {
-        id: 1,
-        userId: 2,
-        content: 'Just dropped a new track! Check out "Sikasem" on our music player 🎵',
-        timestamp: '2 hours ago',
-        likes: 24,
-        comments: [
-            { id: 1, userId: 1, content: 'Fire track! 🔥', timestamp: '1 hour ago' },
-            { id: 2, userId: 5, content: 'Been waiting for this!', timestamp: '45 minutes ago' }
-        ],
-        liked: false,
-        type: 'music',
-        mediaUrl: 'music/sikasem.mp3'
-    },
-    {
-        id: 2,
-        userId: 3,
-        content: 'Working on some new visuals for the studio. What do you think?',
-        timestamp: '5 hours ago',
-        likes: 18,
-        comments: [
-            { id: 3, userId: 2, content: 'Looking good!', timestamp: '4 hours ago' },
-            { id: 4, userId: 4, content: 'Can\'t wait to see more', timestamp: '3 hours ago' }
-        ],
-        liked: true,
-        type: 'image',
-        mediaUrl: 'https://picsum.photos/id/237/600/400'
-    },
-    {
-        id: 3,
-        userId: 1,
-        content: 'Just vibing in the studio today. Working on some new material for y\'all!',
-        timestamp: '1 day ago',
-        likes: 32,
-        comments: [],
-        liked: false,
-        type: 'text'
-    },
-    {
-        id: 4,
-        userId: 5,
-        content: 'Who\'s excited for the upcoming concert? Drop a 🙌 in the comments!',
-        timestamp: '2 days ago',
-        likes: 45,
-        comments: [
-            { id: 5, userId: 1, content: '🙌', timestamp: '2 days ago' },
-            { id: 6, userId: 4, content: 'Can\'t wait!', timestamp: '1 day ago' },
-            { id: 7, userId: 3, content: 'It\'s going to be epic! 🙌', timestamp: '1 day ago' }
-        ],
-        liked: true,
-        type: 'text'
-    }
-];
-
 // Current user (for demo)
 const currentUser = {
     id: 1,
@@ -134,7 +17,6 @@ let sidebar;
 let socialContainer;
 let feedContainer;
 let profileContainer;
-let messagesContainer;
 let postCreateForm;
 let postsList;
 
@@ -247,7 +129,6 @@ function initSocialUI() {
     socialContainer = document.getElementById('social-container');
     feedContainer = document.getElementById('feed-container');
     profileContainer = document.getElementById('profile-container');
-    messagesContainer = document.getElementById('messages-container');
     postCreateForm = document.getElementById('post-create-form');
     postsList = document.getElementById('posts-list');
     
@@ -294,362 +175,16 @@ function initSidebarNav() {
                 // Hide all sections
                 if (feedContainer) feedContainer.style.display = 'none';
                 if (profileContainer) profileContainer.style.display = 'none';
-                if (messagesContainer) messagesContainer.style.display = 'none';
                 
                 // Show target section
                 if (target === 'feed' && feedContainer) {
                     feedContainer.style.display = 'block';
                 } else if (target === 'profile' && profileContainer) {
                     profileContainer.style.display = 'block';
-                } else if (target === 'messages' && messagesContainer) {
-                    messagesContainer.style.display = 'block';
                 }
             });
         });
     }
-}
-function createPost(e) {
-    e.preventDefault();
-    
-    // Check if user is logged in
-    if (!currentUser || !currentUser.id) {
-        if (typeof showNotification === 'function') {
-            showNotification('Please log in to create a post', 'error');
-        } else {
-            alert('Please log in to create a post');
-        }
-        return;
-    }
-    
-    const postContent = document.getElementById('post-content').value;
-    if (!postContent.trim()) {
-        if (typeof showNotification === 'function') {
-            showNotification('Post content cannot be empty', 'error');
-        }
-        return;
-    }
-    
-    // Create new post object
-    const newPost = {
-        id: Date.now(),
-        userId: currentUser.id,
-        username: currentUser.username,
-        avatar: currentUser.avatar,
-        content: postContent,
-        timestamp: new Date().toISOString(),
-        likes: 0,
-        comments: [],
-        liked: false,
-        type: 'text'
-    };
-    
-    // Get existing posts from localStorage or use demo posts
-    let posts = JSON.parse(localStorage.getItem('rb_posts') || '[]');
-    if (posts.length === 0) {
-        posts = [...demoPosts];
-    }
-    
-    // Add to posts array
-    posts.unshift(newPost);
-    
-    // Save to localStorage
-    localStorage.setItem('rb_posts', JSON.stringify(posts));
-    
-    // Clear input
-    document.getElementById('post-content').value = '';
-    
-    // Re-render posts
-    renderPosts();
-    
-    // Show success notification
-    if (typeof showNotification === 'function') {
-        showNotification('Post created successfully');
-    }
-}
-
-// Render posts in feed
-function renderPosts() {
-    if (!postsList) return;
-    
-    postsList.innerHTML = '';
-    
-    demoPosts.forEach(post => {
-        const user = demoUsers.find(u => u.id === post.userId);
-        if (!user) return;
-        
-        const postElement = document.createElement('div');
-        postElement.className = 'post-item';
-        postElement.setAttribute('data-post-id', post.id);
-        
-        // Media content based on post type
-        let mediaContent = '';
-        if (post.type === 'image' && post.mediaUrl) {
-            mediaContent = `<img src="${post.mediaUrl}" alt="Post image" class="post-image">`;
-        } else if (post.type === 'music' && post.mediaUrl) {
-            mediaContent = `
-                <div class="post-audio">
-                    <audio controls>
-                        <source src="${post.mediaUrl}" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
-            `;
-        }
-        
-        // Post options menu (only for current user's posts)
-        const postOptions = post.userId === currentUser.id ? `
-            <div class="post-options">
-                <button class="post-options-btn">
-                    <i class="fas fa-ellipsis-h"></i>
-                </button>
-                <div class="post-options-menu">
-                    <div class="post-option edit">
-                        <i class="fas fa-edit"></i> Edit
-                    </div>
-                    <div class="post-option delete">
-                        <i class="fas fa-trash"></i> Delete
-                    </div>
-                </div>
-            </div>
-        ` : '';
-        
-        // Verified badge for verified users
-        const verifiedBadge = user.isVerified ? '<i class="fas fa-check-circle" style="color: #3b82f6; margin-left: 5px;"></i>' : '';
-        
-        // Comments HTML
-        let commentsHTML = '';
-        if (post.comments.length > 0) {
-            commentsHTML = '<div class="post-comments">';
-            post.comments.forEach(comment => {
-                const commentUser = demoUsers.find(u => u.id === comment.userId);
-                if (!commentUser) return;
-                
-                // Delete button for user's own comments
-                const deleteBtn = comment.userId === currentUser.id ? `
-                    <button class="comment-delete-btn" data-comment-id="${comment.id}">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                ` : '';
-                
-                commentsHTML += `
-                    <div class="post-comment-item" data-comment-id="${comment.id}">
-                        <img src="${commentUser.avatar}" alt="${commentUser.username}" class="comment-avatar">
-                        <div class="comment-content">
-                            ${deleteBtn}
-                            <div class="comment-username">${commentUser.username}</div>
-                            <div class="comment-text">${comment.content}</div>
-                            <div class="comment-time">${comment.timestamp}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            // Add comment form
-            commentsHTML += `
-                <div class="post-comment-form">
-                    <img src="${currentUser.avatar}" alt="${currentUser.username}" class="comment-avatar">
-                    <input type="text" class="comment-input" placeholder="Write a comment...">
-                    <button class="comment-submit">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            `;
-            
-            commentsHTML += '</div>';
-        }
-        
-        postElement.innerHTML = `
-            <div class="post-header">
-                <img src="${user.avatar}" alt="${user.username}" class="post-avatar">
-                <div class="post-user-info">
-                    <div class="post-username">${user.username}${verifiedBadge}</div>
-                    <div class="post-time">${post.timestamp}</div>
-                </div>
-                ${postOptions}
-            </div>
-            <div class="post-content">${post.content}</div>
-            ${mediaContent}
-            <div class="post-actions">
-                <div class="post-action ${post.liked ? 'liked' : ''}" data-action="like">
-                    <i class="fas fa-heart"></i>
-                    <span>${post.likes}</span>
-                </div>
-                <div class="post-action" data-action="comment">
-                    <i class="fas fa-comment"></i>
-                    <span>${post.comments.length}</span>
-                </div>
-                <div class="post-action" data-action="share">
-                    <i class="fas fa-share"></i>
-                    <span>Share</span>
-                </div>
-            </div>
-            ${commentsHTML}
-            ${post.comments.length === 0 ? `
-                <div class="post-comment-form">
-                    <img src="${currentUser.avatar}" alt="${currentUser.username}" class="comment-avatar">
-                    <input type="text" class="comment-input" placeholder="Write a comment...">
-                    <button class="comment-submit">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            ` : ''}
-        `;
-        
-        postsList.appendChild(postElement);
-    });
-    
-    // Add event listeners to posts
-    addPostEventListeners();
-}
-
-// Add event listeners to post elements
-function addPostEventListeners() {
-    // Post options toggle
-    document.querySelectorAll('.post-options-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const menu = this.nextElementSibling;
-            menu.classList.toggle('show');
-            
-            // Close other menus
-            document.querySelectorAll('.post-options-menu.show').forEach(m => {
-                if (m !== menu) m.classList.remove('show');
-            });
-        });
-    });
-    
-    // Close menus when clicking outside
-    document.addEventListener('click', function() {
-        document.querySelectorAll('.post-options-menu.show').forEach(menu => {
-            menu.classList.remove('show');
-        });
-    });
-    
-    // Post actions (like, comment, share)
-    document.querySelectorAll('.post-action').forEach(action => {
-        action.addEventListener('click', function() {
-            const postId = parseInt(this.closest('.post-item').getAttribute('data-post-id'));
-            const actionType = this.getAttribute('data-action');
-            
-            if (actionType === 'like') {
-                toggleLike(postId);
-            } else if (actionType === 'comment') {
-                focusCommentInput(postId);
-            } else if (actionType === 'share') {
-                sharePost(postId);
-            }
-        });
-    });
-    
-    // Comment submission
-    document.querySelectorAll('.comment-submit').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const postId = parseInt(this.closest('.post-item').getAttribute('data-post-id'));
-            const input = this.previousElementSibling;
-            addComment(postId, input.value);
-            input.value = '';
-        });
-    });
-    
-    // Comment input enter key
-    document.querySelectorAll('.comment-input').forEach(input => {
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const postId = parseInt(this.closest('.post-item').getAttribute('data-post-id'));
-                addComment(postId, this.value);
-                this.value = '';
-            }
-        });
-    });
-    
-    // Delete comment
-    document.querySelectorAll('.comment-delete-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const postId = parseInt(this.closest('.post-item').getAttribute('data-post-id'));
-            const commentId = parseInt(this.getAttribute('data-comment-id'));
-            deleteComment(postId, commentId);
-        });
-    });
-    
-    // Delete post
-    document.querySelectorAll('.post-option.delete').forEach(option => {
-        option.addEventListener('click', function() {
-            const postId = parseInt(this.closest('.post-item').getAttribute('data-post-id'));
-            deletePost(postId);
-        });
-    });
-}
-
-// Toggle like on a post
-function toggleLike(postId) {
-    const post = demoPosts.find(p => p.id === postId);
-    if (!post) return;
-    
-    if (post.liked) {
-        post.likes--;
-        post.liked = false;
-    } else {
-        post.likes++;
-        post.liked = true;
-    }
-    
-    renderPosts();
-}
-
-// Focus comment input
-function focusCommentInput(postId) {
-    const postElement = document.querySelector(`.post-item[data-post-id="${postId}"]`);
-    if (!postElement) return;
-    
-    const commentInput = postElement.querySelector('.comment-input');
-    if (commentInput) {
-        commentInput.focus();
-    }
-}
-
-// Add a comment to a post
-function addComment(postId, content) {
-    if (!content.trim()) return;
-    
-    const post = demoPosts.find(p => p.id === postId);
-    if (!post) return;
-    
-    const newComment = {
-        id: post.comments.length > 0 ? Math.max(...post.comments.map(c => c.id)) + 1 : 1,
-        userId: currentUser.id,
-        content: content,
-        timestamp: 'Just now'
-    };
-    
-    post.comments.push(newComment);
-    renderPosts();
-}
-
-// Delete a comment
-function deleteComment(postId, commentId) {
-    const post = demoPosts.find(p => p.id === postId);
-    if (!post) return;
-    
-    const commentIndex = post.comments.findIndex(c => c.id === commentId);
-    if (commentIndex === -1) return;
-    
-    post.comments.splice(commentIndex, 1);
-    renderPosts();
-}
-
-// Delete a post
-function deletePost(postId) {
-    const postIndex = demoPosts.findIndex(p => p.id === postId);
-    if (postIndex === -1) return;
-    
-    demoPosts.splice(postIndex, 1);
-    renderPosts();
-}
-
-// Share a post (demo)
-function sharePost(postId) {
-    alert('Sharing post #' + postId + ' (Demo)');
 }
 
 // Check if user is logged in
@@ -758,7 +293,6 @@ function updateUIForLoggedInUser() {
     // Show feed by default
     if (feedContainer) feedContainer.style.display = 'block';
     if (profileContainer) profileContainer.style.display = 'none';
-    if (messagesContainer) messagesContainer.style.display = 'none';
     
     // Set active nav item
     const feedNavItem = document.querySelector('.sidebar-nav-item[data-target="feed"]');
@@ -791,3 +325,289 @@ function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+
+// Helper function to get time ago string from timestamp
+function getTimeAgo(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days < 1) {
+        if (hours < 1) {
+            if (minutes < 1) {
+                return 'just now';
+            }
+            return `${minutes}m ago`;
+        }
+        return `${hours}h ago`;
+    } else if (days < 7) {
+        return `${days}d ago`;
+    }
+
+    return date.toLocaleDateString();
+}
+
+// POSTS DASHBOARD MIRROR FUNCTION
+function loadPostsDashboardMirror() {
+    console.log('🔍 Loading Posts Dashboard Mirror...');
+    
+    // Get all posts from localStorage
+    const allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+    console.log('📦 Posts from localStorage:', allPosts);
+    
+    const postsListContainer = document.getElementById('postsListMirror');
+    console.log('📋 Posts container found:', !!postsListContainer);
+    
+    if (!postsListContainer) return;
+    
+    // Update stats
+    document.getElementById('totalPostsMirror').textContent = allPosts.length;
+    document.getElementById('totalViewsMirror').textContent = allPosts.reduce((sum, post) => sum + (post.views || 0), 0);
+    document.getElementById('totalLikesMirror').textContent = allPosts.reduce((sum, post) => sum + (post.likes?.length || 0), 0);
+    
+    // Clear container
+    postsListContainer.innerHTML = '';
+    
+    if (allPosts.length === 0) {
+        postsListContainer.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.6); padding: 2rem;">No posts yet.</div>';
+        return;
+    }
+    
+    // Sort newest first
+    allPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+    // Add each post
+    allPosts.forEach(post => {
+        const postDiv = document.createElement('div');
+        postDiv.className = 'post-item';
+        
+        const timeAgo = getTimeAgo(post.timestamp);
+        
+        postDiv.innerHTML = `
+            <div class="post-header">
+                <div class="post-meta">
+                    <span class="post-type-badge">${post.type?.toUpperCase() || 'TEXT'}</span>
+                    <div class="post-title">${post.title || 'Post'}</div>
+                    <div class="post-timestamp">${timeAgo}</div>
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="post-content">${post.content}</div>
+            <div class="post-stats">
+                <div class="stat">
+                    <i class="fas fa-eye"></i>
+                    <span>${post.views || 0} views</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-heart"></i>
+                    <span>${post.likes?.length || 0} likes</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-comment"></i>
+                    <span>${post.comments?.length || 0} replies</span>
+                </div>
+            </div>
+        `;
+        
+        postsListContainer.appendChild(postDiv);
+    });
+}
+
+// Initialize posts dashboard mirror when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // FORCE COMMUNITY SECTION TO SHOW
+    showCommunitySection();
+    
+    // Load the posts dashboard
+    loadPostsDashboardMirror();
+    
+    // Check for updates every 1 second for real-time feel
+    setInterval(function() {
+        loadPostsDashboardMirror();
+    }, 1000);
+});
+
+// Also call when page is fully loaded
+window.addEventListener('load', function() {
+    // FORCE COMMUNITY SECTION TO SHOW AGAIN
+    showCommunitySection();
+    loadPostsDashboardMirror();
+});
+
+// Initialize P2P connection for real-time updates
+function initializePeerConnection() {
+    console.log('Initializing P2P connection...');
+    
+    // Create a new peer connection
+    const peer = new Peer();
+    
+    peer.on('open', function(id) {
+        console.log('Connected with peer ID:', id);
+        
+        // Listen for connections from admin
+        peer.on('connection', function(conn) {
+            console.log('Received connection from:', conn.peer);
+            
+            conn.on('data', function(data) {
+                console.log('Received data:', data);
+                
+                if (data.type === 'new_post') {
+                    console.log('New post received:', data.post);
+                    // Update posts in localStorage
+                    let allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+                    allPosts.unshift(data.post);
+                    localStorage.setItem('all_posts', JSON.stringify(allPosts));
+                    // Refresh posts dashboard
+                    loadPostsDashboardMirror();
+                }
+                
+                if (data.type === 'delete_post') {
+                    console.log('Post deletion received:', data.postId);
+                    // Remove post from localStorage
+                    let allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+                    allPosts = allPosts.filter(post => post.id !== data.postId);
+                    localStorage.setItem('all_posts', JSON.stringify(allPosts));
+                    // Refresh posts dashboard
+                    loadPostsDashboardMirror();
+                }
+            });
+        });
+    });
+    
+    peer.on('error', function(err) {
+        console.error('P2P connection error:', err);
+    });
+    
+    // Store peer instance globally
+    window.fanPeer = peer;
+}
+
+// Force community section to be visible if it exists
+function showCommunitySection() {
+    console.log('👀 Trying to show community section...');
+    const communitySection = document.getElementById('community');
+    console.log('🏠 Community section found:', !!communitySection);
+    if (communitySection) {
+        communitySection.classList.remove('hidden-section');
+        communitySection.classList.add('visible');
+        communitySection.style.display = 'block';
+        communitySection.style.opacity = '1';
+        console.log('✅ Community section should now be visible');
+        
+        // Clear any hide timeouts that might be running
+        if (typeof window.hideTimeout !== 'undefined') {
+            clearTimeout(window.hideTimeout);
+        }
+        
+        // Make sure it stays visible by overriding the timeout system
+        communitySection.setAttribute('data-permanent-visible', 'true');
+        
+        console.log('Community section made permanently visible');
+    }
+}
+
+// Auto-show community section on load if there are posts
+setTimeout(() => {
+    const allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+    console.log('Checking for posts on load:', allPosts.length, allPosts);
+    if (allPosts.length > 0) {
+        showCommunitySection();
+        loadPostsDashboardMirror();
+    }
+}, 500);
+
+// Also check every 3 seconds to ensure Community Hub stays visible if there are posts
+setInterval(() => {
+    const allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+    if (allPosts.length > 0) {
+        const communitySection = document.getElementById('community');
+        if (communitySection && !communitySection.classList.contains('visible')) {
+            console.log('Posts exist but Community Hub not visible, fixing...');
+            showCommunitySection();
+            loadPostsDashboardMirror();
+        }
+    }
+}, 3000);
+
+// Add manual function to force show community and load posts
+window.forceShowStudioUpdates = function() {
+    console.log('Forcing Posts Dashboard to show...');
+    console.log('Current localStorage posts:', JSON.parse(localStorage.getItem('all_posts') || '[]'));
+    showCommunitySection();
+    loadPostsDashboardMirror();
+    
+    // Also scroll to community section
+    const communitySection = document.getElementById('community');
+    if (communitySection) {
+        communitySection.scrollIntoView({ behavior: 'smooth' });
+    }
+};
+
+// Add a function to manually test adding a post
+window.testAdminPost = function() {
+    const testPost = {
+        id: Date.now(),
+        userId: 'admin',
+        username: 'Rich & Black',
+        avatar: 'https://ui-avatars.com/api/?name=R+B&background=random',
+        title: 'Test Post',
+        content: 'Test post from console! This should appear in the Posts Dashboard.',
+        type: 'text',
+        priority: 'normal',
+        timestamp: new Date().toISOString(),
+        likes: [],
+        comments: [],
+        views: 0
+    };
+    
+    let allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+    allPosts.unshift(testPost);
+    localStorage.setItem('all_posts', JSON.stringify(allPosts));
+    console.log('Test post added to localStorage');
+    console.log('Current posts:', allPosts);
+    showCommunitySection();
+    loadPostsDashboardMirror();
+    
+    // Also scroll to the community section
+    setTimeout(() => {
+        const communitySection = document.getElementById('community');
+        if (communitySection) {
+            communitySection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 500);
+};
+
+// Quick debug function
+window.debugPosts = function() {
+    const allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+    
+    console.log('=== DEBUG POSTS ===');
+    console.log('Total posts:', allPosts.length);
+    console.log('All posts:', allPosts);
+    
+    const communitySection = document.getElementById('community');
+    const postsListContainer = document.getElementById('postsListMirror');
+    
+    console.log('Community section visible:', communitySection ? !communitySection.classList.contains('hidden-section') : 'not found');
+    console.log('Community section classes:', communitySection ? communitySection.className : 'not found');
+    console.log('Posts container found:', !!postsListContainer);
+    console.log('Posts container content:', postsListContainer ? postsListContainer.innerHTML : 'not found');
+    
+    if (allPosts.length > 0) {
+        console.log('Posts exist, forcing render...');
+        showCommunitySection();
+        loadPostsDashboardMirror();
+    } else {
+        console.log('No posts found. Create one first!');
+    }
+};

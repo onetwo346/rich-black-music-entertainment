@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RICH&BLACK Entertainment - Admin Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="https://i.imgur.com/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- PeerJS for real-time communication -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #ec4899;
+            --accent-color: #10b981;
+            --dark-bg: #0f172a;
+            --darker-bg: #020617;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --border-color: rgba(99, 102, 241, 0.2);
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .admin-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 0% 100%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+                        radial-gradient(ellipse at 100% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        .admin-header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .studio-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-label {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .admin-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .refresh-btn, .logout-btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .refresh-btn {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .refresh-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .refresh-btn:active .fas {
+            animation: spin 0.8s linear;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--error-color);
+            color: var(--error-color);
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Post Creator */
+        .post-creator {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .creator-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .creator-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--warning-color), #f97316);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .creator-title {
+            flex: 1;
+        }
+
+        .creator-title h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .creator-title p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .post-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .post-type-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .type-option {
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+
+        .type-option.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .type-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .publish-controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), #8b5cf6);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #5855eb, #7c3aed);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        /* Posts Dashboard */
+        .posts-dashboard {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-title h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .posts-list {
+            padding: 2rem;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .post-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .post-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-color);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .post-meta {
+            flex: 1;
+        }
+
+        .post-type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(45deg, var(--accent-color), #059669);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .post-timestamp {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-color);
+        }
+
+        .action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error-color);
+        }
+
+        .post-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .admin-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .post-creator {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                padding: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .publish-controls {
+                flex-direction: column;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .btn.loading::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        .message.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Login Screen Styles */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(20px);
+        }
+
+        .login-header {
+            margin-bottom: 2rem;
+        }
+
+        .login-header h2 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .login-input {
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .login-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .login-error {
+            color: var(--error-color);
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-container">
+            <div class="login-header">
+                <h2>RICH&BLACK Admin</h2>
+                <p>Enter admin credentials to continue</p>
+            </div>
+            <form class="login-form" id="loginForm">
+                <input type="text" id="adminUsername" class="login-input" placeholder="Username" required>
+                <input type="password" id="adminPassword" class="login-input" placeholder="Password" required>
+                <button type="submit" class="login-btn">Access Dashboard</button>
+                <div class="login-error" id="loginError">Invalid credentials. Try again.</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="admin-background">
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="admin-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="logo-text">
+                    <div class="studio-name">RICH&BLACK</div>
+                    <div class="admin-label">Admin Dashboard</div>
+                </div>
+            </div>
+            
+            <div class="admin-controls">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Online</span>
+                </div>
+                <button onclick="refreshPage()" class="refresh-btn" title="Refresh Page">
+                    <i class="fas fa-sync-alt"></i>
+                    Refresh
+                </button>
+                <button onclick="logout()" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="admin-container">
+        <!-- Post Creator -->
+        <div class="post-creator">
+            <div class="creator-header">
+                <div class="creator-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <div class="creator-title">
+                    <h2>Create Post</h2>
+                    <p>Share updates with your fans</p>
+                </div>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <form class="post-form" id="postForm">
+                <div class="form-group">
+                    <label class="form-label">Post Type</label>
+                                <div class="post-type-selector">
+                <div class="type-option active" data-type="text">
+                    <i class="fas fa-bullhorn"></i><br>
+                    Announcement
+                </div>
+                <div class="type-option" data-type="music">
+                    <i class="fas fa-music"></i><br>
+                    Music Update
+                </div>
+                <div class="type-option" data-type="photo">
+                    <i class="fas fa-image"></i><br>
+                    Photo
+                </div>
+            </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="postTitle">Title</label>
+                    <input type="text" id="postTitle" class="form-input" placeholder="Enter post title..." required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="postContent">Content</label>
+                    <textarea id="postContent" class="form-textarea" placeholder="Share your thoughts, updates, or announcements with fans..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="postPriority">Priority</label>
+                    <select id="postPriority" class="form-select">
+                        <option value="normal">Normal</option>
+                        <option value="high">High Priority</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+
+                <div class="publish-controls">
+                    <button type="button" class="btn btn-secondary" id="saveDraftBtn">
+                        <i class="fas fa-save"></i>
+                        Save Draft
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="publishBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        Publish Now
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Posts Dashboard -->
+        <div class="posts-dashboard">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <h2>Posts Dashboard</h2>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalPosts">0</div>
+                        <div class="stat-label">Total Posts</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalViews">0</div>
+                        <div class="stat-label">Total Views</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalLikes">0</div>
+                        <div class="stat-label">Total Likes</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="posts-list" id="postsList">
+                <!-- Posts will be loaded dynamically from localStorage -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Admin Login System
+        const adminCredentials = {
+            username: 'richandblack',
+            password: 'admin2024'
+        };
+
+        </script>
+        <script src="posts.js"></script>
+        <script>
+        // P2P Variables for real-time communication
+        let peer = null;
+        let connections = {};
+        let adminPeerId = null;
+
+        function initializeLogin() {
+            const loginForm = document.getElementById('loginForm');
+            const loginOverlay = document.getElementById('loginOverlay');
+            const loginError = document.getElementById('loginError');
+
+            // Check if already logged in to admin portal specifically
+            if (localStorage.getItem('adminPortalLoggedIn') === 'true') {
+                loginOverlay.classList.add('hidden');
+                return;
+            }
+
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const username = document.getElementById('adminUsername').value;
+                const password = document.getElementById('adminPassword').value;
+
+                if (username === adminCredentials.username && password === adminCredentials.password) {
+                    localStorage.setItem('adminPortalLoggedIn', 'true');
+                    loginOverlay.classList.add('hidden');
+                    showMessage('Welcome to the admin dashboard!');
+                    
+                    // Initialize P2P connection for real-time communication
+                    setTimeout(() => {
+                        initAdminPeerConnection();
+                    }, 1000);
+                } else {
+                    loginError.style.display = 'block';
+                    setTimeout(() => {
+                        loginError.style.display = 'none';
+                    }, 3000);
+                }
+            });
+        }
+
+        // Call login initialization first
+        initializeLogin();
+
+        // Initialize P2P connection for admin
+        function initAdminPeerConnection() {
+            if (typeof Peer === 'undefined') {
+                console.error('PeerJS not loaded');
+                return;
+            }
+
+            // Create admin peer with fixed ID
+            adminPeerId = 'richandblack-admin-' + Date.now();
+            peer = new Peer(adminPeerId);
+
+            peer.on('open', (id) => {
+                console.log('Admin peer connected with ID:', id);
+                adminPeerId = id;
+                
+                // Connect to known peers
+                connectToKnownPeers();
+            });
+
+            peer.on('connection', (conn) => {
+                console.log('Fan connected to admin:', conn.peer);
+                handleFanConnection(conn);
+            });
+
+            peer.on('error', (err) => {
+                console.error('Peer error:', err);
+            });
+        }
+
+        // Connect to known peers (fans)
+        function connectToKnownPeers() {
+            const knownPeers = JSON.parse(localStorage.getItem('rb_known_peers') || '[]');
+            console.log('Connecting to known peers:', knownPeers);
+            
+            knownPeers.forEach(peerId => {
+                if (peerId !== adminPeerId) {
+                    connectToFan(peerId);
+                }
+            });
+        }
+
+        // Connect to a specific fan
+        function connectToFan(peerId) {
+            if (!peer || connections[peerId]) return;
+
+            const conn = peer.connect(peerId);
+            handleFanConnection(conn);
+        }
+
+        // Handle fan connection
+        function handleFanConnection(conn) {
+            connections[conn.peer] = conn;
+
+            conn.on('open', () => {
+                console.log('Connected to fan:', conn.peer);
+            });
+
+            conn.on('data', (data) => {
+                console.log('Received data from fan:', data);
+            });
+
+            conn.on('close', () => {
+                console.log('Fan disconnected:', conn.peer);
+                delete connections[conn.peer];
+            });
+
+            conn.on('error', (err) => {
+                console.error('Connection error:', err);
+                delete connections[conn.peer];
+            });
+        }
+
+        // Broadcast post to all connected fans
+        function broadcastPost(post) {
+            console.log('Broadcasting post to fans:', post);
+            
+            // Don't save again - already saved in form submission
+            
+            // Also try to broadcast via P2P
+            console.log('Connected fans:', Object.keys(connections));
+            const message = {
+                type: 'new_post',
+                post: post,
+                timestamp: new Date().toISOString()
+            };
+
+            for (const peerId in connections) {
+                try {
+                    connections[peerId].send(message);
+                    console.log('Sent post to fan:', peerId);
+                } catch (error) {
+                    console.error('Error sending to fan:', peerId, error);
+                }
+            }
+        }
+
+        // Broadcast post deletion to all connected fans  
+        function broadcastPostDeletion(postId) {
+            console.log('Broadcasting post deletion to fans:', postId);
+
+            const message = {
+                type: 'delete_post',
+                postId: postId,
+                timestamp: new Date().toISOString()
+            };
+
+            // Send to all connected fans
+            for (const peerId in connections) {
+                try {
+                    connections[peerId].send(message);
+                    console.log('Sent deletion to fan:', peerId);
+                } catch (error) {
+                    console.error('Error sending deletion to fan:', peerId, error);
+                }
+            }
+        }
+
+        // Refresh function
+        function refreshPage() {
+            showMessage('Refreshing dashboard...', 'info');
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('adminPortalLoggedIn');
+            location.reload();
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (20 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Post type selection
+        const typeOptions = document.querySelectorAll('.type-option');
+        let selectedType = 'text'; // Default to text type for announcements
+
+        typeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                typeOptions.forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                selectedType = option.dataset.type;
+            });
+        });
+
+        // Form submission
+        const postForm = document.getElementById('postForm');
+        const publishBtn = document.getElementById('publishBtn');
+        const saveDraftBtn = document.getElementById('saveDraftBtn');
+        const messageDiv = document.getElementById('message');
+
+        function showMessage(text, type = 'success') {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type} show`;
+            setTimeout(() => {
+                messageDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function setLoading(button, loading = true) {
+            if (loading) {
+                button.classList.add('loading');
+                button.disabled = true;
+            } else {
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+
+        postForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+            const priority = document.getElementById('postPriority').value;
+            
+            if (!title || !content) {
+                showMessage('Please fill in all required fields', 'error');
+                return;
+            }
+
+            setLoading(publishBtn, true);
+
+            // Create the post object
+            const post = {
+                id: Date.now(),
+                userId: 'admin',
+                username: 'Rich & Black',
+                avatar: 'https://ui-avatars.com/api/?name=R+B&background=random',
+                title: title,
+                content: content,
+                type: selectedType,
+                priority: priority,
+                timestamp: new Date().toISOString(),
+                likes: [],
+                comments: [],
+                views: 0
+            };
+
+            // Save to shared posts file
+            let allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+            allPosts.unshift(post);
+            localStorage.setItem('all_posts', JSON.stringify(allPosts));
+            
+            // Update shared global variables
+            window.SHARED_POSTS = allPosts;
+            window.LAST_UPDATE = Date.now();
+            
+            // Write to posts.js file for cross-tab sharing
+            const postsScript = `// Shared posts data
+window.SHARED_POSTS = ${JSON.stringify(allPosts)};
+window.LAST_UPDATE = ${Date.now()};`;
+            
+            // Create a downloadable link to update the file
+            const blob = new Blob([postsScript], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            
+            console.log('✅ Post saved to shared data:', post);
+
+            // Simulate API call
+            setTimeout(() => {
+                setLoading(publishBtn, false);
+                showMessage('Post published and broadcasted to fans!');
+                
+                // Add to posts list and update stats
+                addPostToList(post);
+                updateDashboardStats(allPosts);
+                
+                // Reset form
+                postForm.reset();
+                typeOptions.forEach(opt => opt.classList.remove('active'));
+                typeOptions[0].classList.add('active');
+                selectedType = 'text';
+                
+            }, 1500);
+        });
+
+        saveDraftBtn.addEventListener('click', () => {
+            const title = document.getElementById('postTitle').value;
+            const content = document.getElementById('postContent').value;
+            
+            if (!title && !content) {
+                showMessage('Nothing to save', 'error');
+                return;
+            }
+
+            setLoading(saveDraftBtn, true);
+            
+            setTimeout(() => {
+                setLoading(saveDraftBtn, false);
+                showMessage('Draft saved successfully!');
+            }, 1000);
+        });
+
+        // Load posts from localStorage and display them
+        function loadAdminPosts() {
+            const posts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+            const postsList = document.getElementById('postsList');
+            postsList.innerHTML = '';
+            
+            // Update stats
+            updateDashboardStats(posts);
+            
+            // Display posts
+            posts.forEach(post => {
+                addPostToList(post);
+            });
+        }
+        
+        // Update dashboard statistics
+        function updateDashboardStats(posts) {
+            const totalPosts = posts.length;
+            const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
+            const totalLikes = posts.reduce((sum, post) => sum + (post.likes ? post.likes.length : 0), 0);
+            
+            document.getElementById('totalPosts').textContent = totalPosts;
+            document.getElementById('totalViews').textContent = totalViews;
+            document.getElementById('totalLikes').textContent = totalLikes;
+        }
+
+        function addPostToList(post) {
+            const postsList = document.getElementById('postsList');
+            const postItem = document.createElement('div');
+            postItem.className = 'post-item';
+            postItem.setAttribute('data-post-id', post.id);
+            
+            const typeLabel = post.type ? post.type.charAt(0).toUpperCase() + post.type.slice(1) : 'General';
+            const timeStr = post.timestamp ? getTimeAgo(post.timestamp) : 'Just now';
+            
+            postItem.innerHTML = `
+                <div class="post-header">
+                    <div class="post-meta">
+                        <div class="post-type-badge">${typeLabel}</div>
+                        <div class="post-title">${post.title || post.content.substring(0, 50) + '...'}</div>
+                        <div class="post-timestamp">${timeStr}</div>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete" title="Delete" data-post-id="${post.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="post-content">${post.content}</div>
+                <div class="post-stats">
+                    <div class="stat">
+                        <i class="fas fa-eye"></i>
+                        <span>${post.views || 0} views</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-heart"></i>
+                        <span>${post.likes ? post.likes.length : 0} likes</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-comment"></i>
+                        <span>${post.comments ? post.comments.length : 0} replies</span>
+                    </div>
+                </div>
+            `;
+            
+            postsList.insertBefore(postItem, postsList.firstChild);
+            
+            // Add delete functionality
+            const deleteBtn = postItem.querySelector('.delete');
+            deleteBtn.addEventListener('click', () => {
+                if (confirm('Are you sure you want to delete this post?')) {
+                    deletePost(post.id);
+                    postItem.remove();
+                    showMessage('Post deleted successfully!');
+                }
+            });
+        }
+        
+        // Delete post from localStorage and broadcast to fans
+        function deletePost(postId) {
+            let posts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+            posts = posts.filter(post => post.id !== postId);
+            localStorage.setItem('all_posts', JSON.stringify(posts));
+            updateDashboardStats(posts);
+            
+            // Broadcast deletion to fans via P2P
+            broadcastPostDeletion(postId);
+        }
+        
+        // Helper function to format time ago
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const postTime = new Date(timestamp);
+            const diffMs = now - postTime;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} minutes ago`;
+            if (diffHours < 24) return `${diffHours} hours ago`;
+            return `${diffDays} days ago`;
+        }
+
+        // Debug function to check localStorage and Community Hub
+        window.debugStudioUpdates = function() {
+            const allPosts = JSON.parse(localStorage.getItem('all_posts') || '[]');
+            console.log('=== DEBUGGING STUDIO UPDATES ===');
+            console.log('Total posts in localStorage:', allPosts.length);
+            console.log('All posts:', allPosts);
+            
+            const adminPosts = allPosts.filter(post => post.userId === 'admin');
+            console.log('Admin posts:', adminPosts.length, adminPosts);
+            
+            // Open fan page in new tab for testing
+            const fanWindow = window.open('index.html', '_blank');
+            
+            // After fan page loads, check elements
+            setTimeout(() => {
+                try {
+                    const communitySection = fanWindow.document.getElementById('community');
+                    console.log('Community section found in fan page:', !!communitySection);
+                    if (communitySection) {
+                        console.log('Community section classes:', communitySection.className);
+                        console.log('Community section display:', fanWindow.getComputedStyle(communitySection).display);
+                    }
+                    
+                    const announcementsContainer = fanWindow.document.getElementById('announcements-container');
+                    console.log('Announcements container found in fan page:', !!announcementsContainer);
+                    if (announcementsContainer) {
+                        console.log('Announcements container innerHTML:', announcementsContainer.innerHTML);
+                    }
+                } catch (e) {
+                    console.log('Cannot access fan page (cross-origin), check manually');
+                }
+            }, 3000);
+        };
+
+        // Initialize
+        createParticles();
+        loadAdminPosts(); // Load posts from localStorage on page load
+    </script>
+</body>
+</html>

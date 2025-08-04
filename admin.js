@@ -11,34 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
 // Make loadAdminData available globally
 window.loadAdminData = loadAdminData;
 
-// Check if user is logged in as admin
+// Check if user is logged in as admin - disabled to prevent auto-redirect from fan page
 function checkAdminStatus() {
-    const adminStatus = localStorage.getItem('adminLoggedIn');
-    if (adminStatus === 'true') {
-        isAdmin = true;
-        showAdminPortal();
-        loadAdminData();
-    }
+    // Admin status check disabled - admin.html handles its own authentication
+    return;
 }
 
 
 
-// Show admin portal
+// Show admin portal - redirect to admin.html
 function showAdminPortal() {
-    document.body.classList.add('admin-mode');
-    document.getElementById('admin-portal').style.display = 'block';
-    document.getElementById('main-content').style.display = 'none';
-    document.getElementById('dashboard').style.display = 'none';
-    
-    // Update admin info
-    updateAdminInfo();
+    window.location.href = 'admin.html';
 }
 
-// Hide admin portal
+// Hide admin portal - redirect back to main site
 function hideAdminPortal() {
-    document.body.classList.remove('admin-mode');
-    document.getElementById('admin-portal').style.display = 'none';
-    document.getElementById('main-content').style.display = 'block';
+    window.location.href = 'index.html';
 }
 
 // Update admin info
@@ -197,6 +185,29 @@ function createAdminPost() {
     // Create notification for all users
     createGlobalNotification('new_post', `Rich & Black just posted: ${postContent.substring(0, 30)}...`, post.id);
     
+    // Broadcast new post to connected peers
+    console.log('Admin post created:', post);
+    console.log('Peer connections available:', typeof peer !== 'undefined' && peer, Object.keys(connections || {}));
+    
+    if (typeof peer !== 'undefined' && peer && typeof connections !== 'undefined') {
+        const message = {
+            type: 'new_post',
+            post: post
+        };
+        console.log('Broadcasting message to peers:', message);
+        
+        for (const peerId in connections) {
+            try {
+                connections[peerId].send(message);
+                console.log('Sent to peer:', peerId);
+            } catch (e) {
+                console.error('Error broadcasting post:', e);
+            }
+        }
+    } else {
+        console.log('No peer connections available for broadcasting');
+    }
+    
     // Reset form
     document.getElementById('admin-post-content').value = '';
     document.querySelector('input[name="post-type"][value="text"]').checked = true;
@@ -238,6 +249,21 @@ function uploadMusic() {
     
     // Create notification for all users
     createGlobalNotification('new_music', `New music added: ${title} by ${artist}`, music.id);
+    
+    // Broadcast new music to connected peers
+    if (typeof peer !== 'undefined' && peer && typeof connections !== 'undefined') {
+        const message = {
+            type: 'new_music',
+            music: music
+        };
+        for (const peerId in connections) {
+            try {
+                connections[peerId].send(message);
+            } catch (e) {
+                console.error('Error broadcasting music:', e);
+            }
+        }
+    }
     
     // Reset form
     document.getElementById('music-title').value = '';
@@ -304,6 +330,21 @@ function createGlobalNotification(type, message, contentId) {
     // Also save to admin notifications
     adminNotifications.unshift(notification);
     localStorage.setItem('admin_notifications', JSON.stringify(adminNotifications));
+    
+    // Broadcast new notification to connected peers
+    if (typeof peer !== 'undefined' && peer && typeof connections !== 'undefined') {
+        const broadcastMessage = {
+            type: 'new_notification',
+            notification: notification
+        };
+        for (const peerId in connections) {
+            try {
+                connections[peerId].send(broadcastMessage);
+            } catch (e) {
+                console.error('Error broadcasting notification:', e);
+            }
+        }
+    }
     
     // Refresh notifications
     renderAdminNotifications();
