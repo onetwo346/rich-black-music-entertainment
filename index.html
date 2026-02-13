@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <title>RICH&BLACK ENTERTAINMENT | Ghana's Music Entertainment</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LH2EW6V2RP"></script>
@@ -174,15 +175,9 @@
       .logo {
         width: 48px;
         height: 48px;
-        object-fit: cover;
+        object-fit: contain;
         border-radius: var(--radius-sm);
-        border: 1px solid var(--border-subtle);
         transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-      }
-
-      .logo:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
       }
 
       .brand-text {
@@ -4738,6 +4733,95 @@
         }
       }
     </style>
+    
+    <!-- Modal Styles for Track Preview -->
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        cursor: move;
+      }
+      .modal-content {
+        background: rgba(15, 23, 42, 0.9);
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: auto;
+        max-width: 500px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        position: relative;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        user-select: none;
+      }
+      .modal-content:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+      }
+      
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      
+      .close:hover {
+        color: white;
+      }
+      
+      #modal-tracks li {
+        padding: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--text-secondary);
+      }
+      
+      #modal-tracks li:last-child {
+        border-bottom: none;
+      }
+      #modal-tracks li {
+        cursor: pointer;
+      }
+      .mixtape-tracklist {
+        display: none;
+      }
+      .song-modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+      .song-modal-content {
+        background: rgba(15, 23, 42, 0.9);
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        width: 80%;
+        max-width: 400px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        text-align: center;
+      }
+      #play-song-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      #play-song-btn:hover {
+        background: var(--primary-dark);
+      }
+    </style>
+    
     <!-- Google Fonts for Professional Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -5058,9 +5142,8 @@
         transition: transform var(--transition-normal), box-shadow var(--transition-normal);
       }
       
-      .mixtape-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      .mixtape-card:hover .mixtape-cover {
+        transform: scale(1.05);
       }
       
       .mixtape-header {
@@ -5804,7 +5887,7 @@
         </nav>
     </header>
 
-    <section id="hero">
+    <section id="hero" data-aos="fade-up" data-aos-duration="1000">
         <div class="hero-bg-pattern"></div>
         <div class="hero-grid-lines"></div>
         <div class="hero-container">
@@ -5867,7 +5950,7 @@
         </div>
     </section>
 
-    <section id="videos">
+    <section id="videos" data-aos="fade-up" data-aos-duration="1000">
         <h2>Videos</h2>
         <div class="video-carousel">
             <button class="carousel-arrow left" aria-label="Previous Video">&#10094;</button>
@@ -6093,7 +6176,7 @@
         }
     </style>
 
-    <section id="about" class="hidden-section about-section">
+    <section id="about" class="hidden-section about-section" data-aos="fade-up" data-aos-duration="1000">
         <div class="about-container">
             <div class="about-content">
                 <div class="about-header">
@@ -6126,7 +6209,7 @@
         </div>
     </section>
 
-    <section id="artists" class="hidden-section">
+    <section id="artists" class="hidden-section" data-aos="fade-up" data-aos-duration="1000">
         <!-- Timer bar will be added here by JavaScript -->
         <div class="section-header">
             <h2>Our Artists</h2>
@@ -6359,9 +6442,39 @@
         }
     </style>
 
-    <section id="music">
+    <style>
+        /* Music Section Rebuild */
+        .music-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
+        }
+        
+        .music-player-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .albums-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <section id="music" data-aos="fade-up" data-aos-duration="1000">
         <h2>Music</h2>
         <div class="music-container">
+            <!-- Centered Music Player -->
             <div class="music-player-wrapper">
                 <div class="cosmic-music-player">
                     <div class="player-header">
@@ -6428,51 +6541,11 @@
                 </div>
             </div>
             
-            <!-- Separate Playlist Section -->
-            <div class="playlist-section">
-                <div class="playlist-card">
-                    <div class="playlist-header">
-                        <div class="playlist-icon">
-                            <i class="fas fa-list"></i>
-                        </div>
-                        <h3 class="playlist-title">Featured Playlist</h3>
-                    </div>
-                    <ul id="playlist" class="playlist">
-                        <li>
-                            <a href="#" data-src="acj-cashdown.mp3">
-                                <div class="track-info">
-                                    <span class="track-title">Cash Down</span>
-                                    <span class="track-artist">ACJ</span>
-                                </div>
-                                <span class="track-duration">3:42</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-src="acj-paid.mp3">
-                                <div class="track-info">
-                                    <span class="track-title">Paid</span>
-                                    <span class="track-artist">ACJ</span>
-                                </div>
-                                <span class="track-duration">3:15</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" data-src="acj-alot.mp3">
-                                <div class="track-info">
-                                    <span class="track-title">A Lot</span>
-                                    <span class="track-artist">ACJ</span>
-                                </div>
-                                <span class="track-duration">4:05</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="mixtapes-container">
+            <!-- Albums and Playlists Grid -->
+            <div class="albums-grid">
                 <!-- BROTHERHOOD Mixtape Interactive Card -->
                 <div class="mixtape-card" id="brotherhood-mixtape">
-                    <div class="mixtape-header" onclick="toggleMixtapeTracks()">
+                    <div class="mixtape-header" onclick="showMixtapeModal('BROTHERHOOD', brotherhoodTracks, this)">
                         <div class="mixtape-cover-container">
                             <img src="bro.jpg" alt="BROTHERHOOD Cover" class="mixtape-cover">
                         </div>
@@ -6491,10 +6564,10 @@
                         <li><a href="#" onclick="playMixtapeSong(event, 'ACJ - Time.mp3', 'Time (feat. Paaed x Agona Yoona)')"><strong>Time</strong> <span class="featuring">(feat. Paaed x Agona Yoona)</span></a></li>
                     </ul>
                 </div>
-
+                
                 <!-- ACJ-Sikasem Interactive Card -->
                 <div class="mixtape-card" id="sikasem-song">
-                    <div class="mixtape-header" onclick="toggleSikasemTracks()">
+                    <div class="mixtape-header" onclick="showMixtapeModal('ACJ-Sikasem', sikasemTracks, this)">
                         <div class="mixtape-cover-container">
                             <img src="sikasem.jpg" alt="ACJ-Sikasem Cover" class="mixtape-cover">
                         </div>
@@ -6505,13 +6578,10 @@
                         <span id="sikasem-arrow" class="mixtape-arrow">▼</span>
                     </div>
                     <ul id="sikasem-tracklist" class="mixtape-tracklist">
-                        <li><a href="#" onclick="playMixtapeSong(event, 'ACJ - Sikasem.mp3', 'Sikasem')"><strong>Sikasem</strong></a></li>
+                        <li><a href="#" onclick="playMixtapeSong(event, 'Sikasem.mp3', 'Sikasem')"><strong>Sikasem</strong> <span class="featuring">(ACJ)</span></a></li>
                     </ul>
                 </div>
             </div>
-        </div>
-        <div class="no-js-fallback" style="display: none;">
-            <p>JavaScript is disabled. Please enable JavaScript to use the music player, or download the tracks directly from our digital store.</p>
         </div>
     </section>
 
@@ -6644,7 +6714,7 @@
         }
     </style>
 
-    <section id="contact" class="hidden-section contact-section">
+    <section id="contact" class="hidden-section contact-section" data-aos="fade-up" data-aos-duration="1000">
         <div class="contact-container">
             <div class="contact-content">
                 <div class="contact-header">
@@ -6939,6 +7009,23 @@
             <div class="onboarding-actions">
                 <button class="onboarding-btn primary">Get Started</button>
             </div>
+        </div>
+    </div>
+    
+    <!-- Track Modal for Album Preview -->
+    <div id="track-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h3 id="modal-title"></h3>
+            <ul id="modal-tracks"></ul>
+        </div>
+    </div>
+    
+    <!-- Song Modal for Individual Song Preview -->
+    <div id="song-modal" class="song-modal">
+        <div class="song-modal-content">
+            <span class="close" id="close-song-modal">&times;</span>
+            <h3 id="song-modal-title"></h3>
         </div>
     </div>
 
@@ -7391,6 +7478,126 @@
           arrow.innerHTML = '▲';
         }
       }
+      
+      // Track lists for modal
+      const featuredTracks = [
+        ['Cash Down', 'acj-cashdown.mp3'],
+        ['Paid', 'acj-paid.mp3'],
+        ['A Lot', 'acj-alot.mp3']
+      ];
+      
+      const brotherhoodTracks = [
+        ['Story (feat. Alpha Khalifa)', 'ACJ - Story.mp3'],
+        ['High Life (ACJ only)', 'ACJ - High Life.mp3'],
+        ['Chill.. (feat. Kwame Nkrumah)', 'ACJ Ft. Kwame Nkrumah - Chill.mp3'],
+        ['Sika Duro (feat. Smen)', 'ACJ - Sika Dur.mp3'],
+        ['Compassion.. (feat. Jo Carter)', 'ACJ - Compassion.mp3'],
+        ['Time (feat. Paaed x Agona Yoona)', 'ACJ - Time.mp3']
+      ];
+      
+      const sikasemTracks = [['Sikasem', 'Sikasem.mp3']];
+      
+      function showMixtapeModal(title, tracks, header) {
+        const modal = document.getElementById('track-modal');
+        document.getElementById('modal-title').textContent = title;
+        const ul = document.getElementById('modal-tracks');
+        ul.innerHTML = '';
+        tracks.forEach(([title, file]) => {
+          const li = document.createElement('li');
+          li.textContent = title;
+          li.onclick = () => showSongModal(title, file);
+          ul.appendChild(li);
+        });
+        
+        // Position to the left of music player
+        const musicPlayer = document.querySelector('.cosmic-music-player');
+        const playerRect = musicPlayer.getBoundingClientRect();
+        modal.style.position = 'fixed';
+        modal.style.top = playerRect.top + 'px';
+        modal.style.left = (playerRect.left - 320) + 'px'; // 320px is approximate modal width
+        modal.style.transform = 'translate(0, 0)';
+        modal.style.display = 'block';
+        
+        // Make modal draggable
+        makeDraggable(modal);
+      }
+      
+      function makeDraggable(element) {
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+        
+        element.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+        
+        function dragStart(e) {
+          if (e.target.classList.contains('close') || e.target.tagName === 'LI' || e.target.tagName === 'BUTTON') return;
+          
+          initialX = e.clientX - xOffset;
+          initialY = e.clientY - yOffset;
+          
+          if (e.target === element || element.contains(e.target)) {
+            isDragging = true;
+            element.style.transition = 'none';
+            element.style.cursor = 'grabbing';
+          }
+        }
+        
+        function drag(e) {
+          if (isDragging) {
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+            
+            xOffset = currentX;
+            yOffset = currentY;
+            
+            // Use transform for smoother performance
+            element.style.transform = `translate(${currentX}px, ${currentY}px)`;
+          }
+        }
+        
+        function dragEnd() {
+          initialX = currentX;
+          initialY = currentY;
+          isDragging = false;
+          element.style.transition = 'transform 0.3s ease';
+          element.style.cursor = 'move';
+        }
+      }
+      
+      function showSongModal(title, file) {
+        document.getElementById('song-modal-title').textContent = title;
+        playMixtapeSong({ preventDefault: () => {} }, file, title);
+        document.getElementById('song-modal').style.display = 'block';
+      }
+      
+      // Event listeners for modal
+      document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('track-modal').style.display = 'none';
+      });
+      
+      window.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('track-modal')) {
+          document.getElementById('track-modal').style.display = 'none';
+        }
+      });
+      
+      // Event listeners for song modal
+      document.getElementById('close-song-modal').addEventListener('click', () => {
+        document.getElementById('song-modal').style.display = 'none';
+      });
+      
+      window.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('song-modal')) {
+          document.getElementById('song-modal').style.display = 'none';
+        }
+      });
 
       // Cosmic Animated Background
       const canvas = document.getElementById('cosmic-bg');
@@ -8821,6 +9028,10 @@ window.addEventListener('storage', function(e) {
         renderAnnouncements();
     }
 });
+</script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init();
 </script>
 </body>
 </html>
